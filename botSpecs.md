@@ -2,6 +2,8 @@
 
 ## Discord Bot
 
+### Generate Teams
+
 ### Generate challenges
 
 - Manage challenge point values
