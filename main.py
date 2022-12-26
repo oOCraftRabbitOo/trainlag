@@ -1,11 +1,16 @@
+import random
 import pandas as pd
-from pointcalc import *
+from pointcalc import pointcalc
+from class_challenge import Challenge
 
 # Load the CSV file from the Google Sheet
-challenges = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
+challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
 
-for index, row in challenges.iterrows():
-    string = row['description']
+# Create empty challenge dict to fill with all challenges (No, I won't put the following code into a list operation.)
+challenges = {}
+
+for index, row in challenge_sheet.iterrows():
+    description = row['description']
     # Generate a new random number between 1 and 10
     random_number = random.randint(row['min'], row['max'])
 
@@ -27,5 +32,11 @@ for index, row in challenges.iterrows():
 
     # Substitute the placeholders using the replace method
     for placeholder, value in placeholders.items():
-        string = string.replace(placeholder, str(value))
-    print(string, f"\033[1m{points} Punkte\033[0m")  # Print text using bold text for points
+        description = description.replace(placeholder, str(value))
+
+    title = row['title']
+    description = f"{description} \033[1m{points} Pünkt\033[0m"
+
+    challenges[index] = Challenge(title, description, points, index)
+    print(challenges[index], end="\n\n")
+
