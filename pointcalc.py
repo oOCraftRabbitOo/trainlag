@@ -20,7 +20,7 @@ def randomly_adjust(value, relative_standard_deviation=0.1) -> int:
 
 
 def pointcalc_creative(points, ppr, random_number, fixed) -> int:
-    # TODO: remove the try except stuff
+    # Test if all cells are filled, if not the points are returned as 0
     for i in [points, ppr, random_number, fixed]:
         try:
             i = int(i)
