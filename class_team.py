@@ -71,3 +71,21 @@ class Team:
 
         # Generate new challenges
         self.generate_challenges()
+
+    def grant_points(self, points):
+        self.points += points
+
+    def deduct_points(self, points):
+        self.grant_points(-points)
+
+    def uncomplete_challenge(self, index):
+        # Get challenge to uncomplete and remove it from completed challenges
+        uncompleted_challenge = self.completed_challenges.pop(index)
+
+        if uncompleted_challenge.type == 'creative':
+            self.completed_creative_challenges.remove(uncompleted_challenge.id)
+        elif uncompleted_challenge.type == 'place':
+            self.places_visited.remove(uncompleted_challenge.id)
+
+        # Deduct points
+        self.deduct_points(uncompleted_challenge.points)
