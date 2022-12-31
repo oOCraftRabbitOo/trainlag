@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # eigene shit lol
-token
+.token
