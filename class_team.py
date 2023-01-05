@@ -23,6 +23,8 @@ class Team:
         names = ""
         for player in self.players:
             names += player.name + " "
+        if self.is_catcher:
+            return f'Team {self.name} ({names[:-1]}) [Fänger]'
         return f'Team {self.name} ({names[:-1]})'  # Remove last space and return
 
     def generate_place_challenge(self):
@@ -155,10 +157,7 @@ def print_teams(teams):
     print("---------")
     print("The Teams:")
     for team in teams:
-        if team.is_catcher:
-            print(team, "[FÄNGER]")
-        else:
-            print(team)
+        print(team)
     print("---------")
 
 
