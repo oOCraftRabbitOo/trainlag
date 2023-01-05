@@ -3,10 +3,11 @@ import random
 
 
 class Team:
-    def __init__(self, players, channel_id, name):
+    def __init__(self, players, channel_id, name, is_catcher=False):
         self.players = players
         self.channel_id = channel_id
         self.name = name
+        self.is_catcher = is_catcher
         self.points = 0
         self.completed_creative_challenges = []  # ids
         self.places_visited = []  # ids
