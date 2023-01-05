@@ -1,4 +1,6 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
+from class_player import Player
+from discord_constants import *
 import random
 import pickle
 
@@ -20,7 +22,7 @@ class Team:
     def __str__(self):
         names = ""
         for player in self.players:
-            names += player + " "
+            names += player.name + " "
         return f'Team {self.name} ({names[:-1]})'  # Remove last space and return
 
     def generate_place_challenge(self):
@@ -123,13 +125,22 @@ class Team:
         self.completed_challenges = loaded_team.completed_challenges
         self.open_challenges = loaded_team.open_challenges
 
+    def switch_roles(self):
+        if self.is_catcher:
+            self.is_catcher = False
+            self.generate_challenges()
+        else:
+            self.is_catcher = True
+            self.open_challenges = []
+        self.backup()
+
 
 def generate_teams(num_catchers=2):
-    # TODO: allgemein für Teams im fertige Spiil
-    teams = [Team(["Nelio"], 1058827059130011708, "alpha"),
-             Team(["Aurèle"], 1058827074569257070, "bravo"),
-             Team(["Julian"], 1058827090973184070, "charlie"),
-             Team(["Timo"], 1058827105166700584, "delta")]
+    # TODO: allgemeiner für Teams im fertige Spiil
+    teams = [Team([Nelio], CHANNELS[0], "alpha"),
+             Team([Aurele], CHANNELS[1], "bravo"),
+             Team([Julian], CHANNELS[2], "charlie"),
+             Team([Timo], CHANNELS[3], "delta")]
 
     # Chose catchers
     catchers = random.sample(teams, num_catchers)
