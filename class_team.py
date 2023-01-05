@@ -1,5 +1,6 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 import random
+import pickle
 
 
 class Team:
@@ -14,6 +15,7 @@ class Team:
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.generate_challenges()
+        self.backup()
 
     def __str__(self):
         names = ""
@@ -68,10 +70,13 @@ class Team:
             self.places_visited.append(completed_challenge.id)
 
         # Grant points
-        self.points += completed_challenge.points
+        self.points += completed_challenge.points  # TODO: use grant_points
 
         # Generate new challenges
         self.generate_challenges()
+
+        # Backup
+        self.backup()  # TODO: Does this work?
 
     def grant_points(self, points):
         self.points += points
@@ -90,3 +95,62 @@ class Team:
 
         # Deduct points
         self.deduct_points(uncompleted_challenge.points)
+
+    def backup(self):
+        # TODO: test
+        # Open a file in binary write mode
+        with open(f'backups/{self.name}.pickle', 'wb') as f:
+            # Serialize the object and write it to the file
+            pickle.dump(self, f)
+
+    def load(self, file=None):
+        # TODO: test
+        if not file:
+            file = f'backups/{self.name}.pickle'
+        # Open a file in binary read mode
+        with open(file, 'rb') as f:
+            # Deserialize the object from the file
+            loaded_team = pickle.load(f)
+
+        # Update all values to the loaded file
+        self.players = loaded_team.players
+        self.channel_id = loaded_team.channel_id
+        self.name = loaded_team.name
+        self.is_catcher = loaded_team.is_catcher
+        self.points = loaded_team.points
+        self.completed_creative_challenges = loaded_team.completed_creative_challenges
+        self.places_visited = loaded_team.places_visited
+        self.completed_challenges = loaded_team.completed_challenges
+        self.open_challenges = loaded_team.open_challenges
+
+
+def generate_teams(num_catchers=2):
+    # TODO: allgemein für Teams im fertige Spiil
+    teams = [Team(["Nelio"], 1058827059130011708, "alpha"),
+             Team(["Aurèle"], 1058827074569257070, "bravo"),
+             Team(["Julian"], 1058827090973184070, "charlie"),
+             Team(["Timo"], 1058827105166700584, "delta")]
+
+    # Chose catchers
+    catchers = random.sample(teams, num_catchers)
+    for team in catchers:
+        team.is_catcher = True
+
+    return teams
+
+
+def print_teams(teams):
+    # Only for debug purposes, prints out the Teams, duh
+    print("---------")
+    print("The Teams:")
+    for team in teams:
+        if team.is_catcher:
+            print(team, "[FÄNGER]")
+        else:
+            print(team)
+    print("---------")
+
+
+if __name__ == "__main__":
+    teams = generate_teams()
+    print_teams(teams)
