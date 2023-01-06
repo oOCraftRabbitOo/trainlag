@@ -30,6 +30,9 @@ class Team:
             return f'Team {self.name} ({names[:-1]}) [Fänger]'
         return f'Team {self.name} ({names[:-1]})'  # Remove last space and return
 
+    def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
+        return self.points > other.points
+
     def generate_place_challenge(self):
         # Randomly select unvisited place (int)
         place = random.randint(0, place_challenges_amount - 1)
