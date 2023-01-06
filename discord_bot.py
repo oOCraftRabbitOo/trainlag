@@ -31,8 +31,11 @@ async def catch(ctx):
     author = ctx.message.author
     roles = author.roles
 
+    # Get the "Fänger" role
+    catcher_role = discord.utils.get(roles, name='Fänger')
+
     # Check if the author has the "Fänger" role
-    if discord.utils.get(roles, name='Fänger') is not None:
+    if catcher_role is not None:
         # Get the ID of the channel where the command was used
         channel_id = ctx.message.channel.id
 
@@ -59,7 +62,21 @@ async def catch(ctx):
 
                 # Switch the roles of the caught and catcher teams
                 caught_team.switch_roles()
+                # TODO: Here is code repetition müüüüüü
+                player_ids = [player.id for player in caught_team.players]
+                for player_id in player_ids:
+                    # Get the member object for the user
+                    member = await ctx.guild.fetch_member(player_id)
+                    # Add the role to the user
+                    await member.edit(roles=member.roles + [catcher_role])
+
                 catcher_team.switch_roles()
+                player_ids = [player.id for player in catcher_team.players]
+                for player_id in player_ids:
+                    # Get the member object for the user
+                    member = await ctx.guild.fetch_member(player_id)
+                    # Remove the role from the user
+                    await member.edit(roles=[r for r in member.roles if r != catcher_role])
         else:
             # The channel is not in the list of channels
             await ctx.send('Das Team chammer nöd fangä!')
@@ -70,7 +87,7 @@ async def catch(ctx):
 
 # Load the token from the .token_shrek file
 token = ''
-with open('.token_shrek', 'r') as f:
+with open('.token', 'r') as f:
     token = f.read()
 
 bot.run(token)

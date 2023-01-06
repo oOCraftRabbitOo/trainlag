@@ -4,7 +4,7 @@ from class_player import Player
 Nelio = Player("Nelio", 289453000370421760)
 Aurele = Player("Aurèle", 334204120946704385)
 Julian = Player("Julian", 299564881135403008)
-Timo = Player("Timo", 299564881135403008)
+Timo = Player("Timo", 319781199910535170)
 
 ALL_PLAYERS = [Nelio, Aurele, Julian, Timo]
 PLAYERS_BY_ID = {player.id: player for player in ALL_PLAYERS}

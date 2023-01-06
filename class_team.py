@@ -7,6 +7,8 @@ import datetime
 import glob
 import os
 
+random.seed = 42 # Fänger: Julian, Timo
+
 class Team:
     def __init__(self, players, channel_id, name, is_catcher=False):
         self.players = players
