@@ -4,7 +4,7 @@ from discord.ext import commands
 from class_team import generate_teams, print_teams
 from discord_constants import *
 
-bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%'))
+bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'))
 setup_complete = False  # Run setup to set to True
 teams = []  # Run setup to fill
 
@@ -15,7 +15,7 @@ async def setup_check(ctx):
         raise Exception('Setup incomplete, du Globi!')
 
 
-async def author_is_runner(ctx):
+def author_is_catcher(ctx):
     # Get the message author and their roles
     author = ctx.message.author
     roles = author.roles
@@ -24,7 +24,7 @@ async def author_is_runner(ctx):
     catcher_role = discord.utils.get(roles, name='Fänger')
 
     # Check if the author has the "Fänger" role
-    return catcher_role is None
+    return catcher_role is not None
 
 @bot.event
 async def on_ready():
@@ -68,7 +68,6 @@ async def setup(ctx):
         team_channel = bot.get_channel(team.channel_id)
         await team_channel.send(team.return_challenges())
 
-    # TODO: finish
     global setup_complete
     setup_complete = True
     print("Setup completed. Have fun!")
@@ -76,7 +75,7 @@ async def setup(ctx):
 
 
 @bot.command()
-async def catch(ctx):
+async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
     await setup_check(ctx)
     # Get the message author and their roles
     author = ctx.message.author
@@ -98,7 +97,7 @@ async def catch(ctx):
             # Get the team for the channel
             caught_team = teams[index]
 
-            # Check if the caught team is already the "Fänger" team
+        # Check if the caught team is already the "Fänger" team
             if caught_team.is_catcher:
                 await ctx.send('Das Team isch scho es Fänger-Team...')
             else:
@@ -128,7 +127,11 @@ async def catch(ctx):
                     member = await ctx.guild.fetch_member(player_id)
                     # Remove the role from the user
                     await member.edit(roles=[r for r in member.roles if r != catcher_role])
-                await ctx.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä!')
+                await ctx.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä! Team Bravo, ihr söttet no Discord neustarte, will ihr susch evtl. nöd alli aktive Challenges gsehnd.')
+
+                # Send challenges to the new runner team
+                team_channel = bot.get_channel(catcher_team.channel_id)
+                await team_channel.send(catcher_team.return_challenges())
         else:
             # The channel is not in the list of channels
             await ctx.send('Das Team chammer nöd fangä!')
@@ -136,6 +139,63 @@ async def catch(ctx):
         # The author does not have the "Fänger" role
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
 
+
+@bot.command()
+async def complete(ctx, challenge_id):
+    await setup_check(ctx)
+    # Only runnable by runners
+    if author_is_catcher(ctx):
+        await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
+        return
+    # Get author's team
+    author = ctx.message.author
+    player = PLAYERS_BY_ID[author.id]
+    for t in teams:
+        if player in t.players:
+            team = t
+            break
+    try:
+        # Complete challenge
+        completed_challenge =team.open_challenges[int(challenge_id)-1]
+        challenge_name = completed_challenge.title
+        challenge_reward = completed_challenge.points
+        team.complete_challenge(int(challenge_id)-1)
+        await ctx.send(f'Nice, d Challenge "{challenge_name}" hät eu {challenge_reward} Pünkt gäh. '
+                       f'Das heisst, ihr händ jetzt {team.points} Pünkt!\n'
+                       f'--------------------------------------------')
+        # Send challenges to the team
+        await ctx.send(team.return_challenges())
+    except ValueError:
+        await ctx.send(f'{challenge_id} isch kei Zahl. Gänd bitte 1, 2 oder 3 ii.')
+    except IndexError:
+        await ctx.send(f'Challenge {challenge_id} schiint nöd z existiere. Gänd bitte 1, 2 oder 3 ii.')
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def finish(ctx):
+    await setup_check(ctx)
+    global setup_complete
+    setup_complete = False
+    # Get a list of teams by highest score
+    winners = teams.copy()
+    winners.sort()
+
+    # Generate the output string
+    out = f"""@everyone Das isch s Podescht:
+--------------------------------------------
+{EMOJI[1]} **{winners[0]}** mit {winners[0].points} Pünkt
+{EMOJI[2]} **{winners[1]}** mit {winners[1].points} Pünkt
+{EMOJI[3]} **{winners[2]}** mit {winners[2].points} Pünkt\n"""
+
+    for n, team in enumerate(winners[3:-1]):
+        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit {winners[3+n].points} Pünkt\n"
+    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit {winners[len(teams)-1].points} Pünkt"
+
+    general_channel = bot.get_channel(GENERAL_CHANNEL)
+    await general_channel.send(out)
+
+
+# TODO: umegäh isch chazedräck
 
 # Load the token from the .token_shrek file
 token = ''
