@@ -4,7 +4,27 @@ from discord.ext import commands
 from class_team import generate_teams, print_teams
 from discord_constants import *
 
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%'))
+setup_complete = False  # Run setup to set to True
+teams = []  # Run setup to fill
+
+
+async def setup_check(ctx):
+    if not setup_complete:
+        await ctx.send('Setup not yet complete. Run `!setup` to setup.')
+        raise Exception('Setup incomplete, du Globi!')
+
+
+async def author_is_runner(ctx):
+    # Get the message author and their roles
+    author = ctx.message.author
+    roles = author.roles
+
+    # Get the "Fänger" role
+    catcher_role = discord.utils.get(roles, name='Fänger')
+
+    # Check if the author has the "Fänger" role
+    return catcher_role is None
 
 @bot.event
 async def on_ready():
@@ -19,6 +39,7 @@ async def on_ready():
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
+    global teams
     teams = generate_teams()
     print_teams(teams)
     # Get catcher role
@@ -41,14 +62,22 @@ async def setup(ctx):
                 # Add the role to the user
                 await member.edit(roles=member.roles + [catcher_role])
 
+    # Generate and send challenges to all non-catcher Teams
+    non_catchers = [team for team in teams if not team.is_catcher]
+    for team in non_catchers:
+        team_channel = bot.get_channel(team.channel_id)
+        await team_channel.send(team.return_challenges())
 
     # TODO: finish
+    global setup_complete
+    setup_complete = True
     print("Setup completed. Have fun!")
     await ctx.send('Setup completed. Have fun!')
 
 
 @bot.command()
 async def catch(ctx):
+    await setup_check(ctx)
     # Get the message author and their roles
     author = ctx.message.author
     roles = author.roles
@@ -71,7 +100,7 @@ async def catch(ctx):
 
             # Check if the caught team is already the "Fänger" team
             if caught_team.is_catcher:
-                await ctx.send('Das Team isch es Fänger-Team...')
+                await ctx.send('Das Team isch scho es Fänger-Team...')
             else:
                 # Get the catcher player object
                 catcher = PLAYERS_BY_ID[author.id]
@@ -99,6 +128,7 @@ async def catch(ctx):
                     member = await ctx.guild.fetch_member(player_id)
                     # Remove the role from the user
                     await member.edit(roles=[r for r in member.roles if r != catcher_role])
+                await ctx.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä!')
         else:
             # The channel is not in the list of channels
             await ctx.send('Das Team chammer nöd fangä!')

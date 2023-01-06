@@ -147,6 +147,12 @@ class Team:
             self.open_challenges = []
         self.backup()
 
+    def return_challenges(self):
+        out = "**Eui Challenges:** \n-------------------------------------------- \n"
+        for challenge in self.open_challenges:
+            out += f"{challenge}\n-------------------------------------------- \n"
+        return out
+
 
 def generate_teams(num_catchers=2):
     # TODO: allgemeiner für Teams im fertige Spiil
