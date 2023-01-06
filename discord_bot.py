@@ -6,11 +6,9 @@ from discord_constants import *
 
 bot = commands.Bot(command_prefix='$')
 
-teams = generate_teams()
-print_teams(teams)
-
 @bot.event
 async def on_ready():
+    print('\n------')
     print('Logged in lul')
     print('On the following servers:')
     for server in bot.guilds:
@@ -20,9 +18,33 @@ async def on_ready():
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def setup(ctx, arg1, arg2):
-    # TODO: put catchers to catcher role
-    await ctx.send(f'You passed {arg1} and {arg2}')
+async def setup(ctx):
+    teams = generate_teams()
+    print_teams(teams)
+    # Get catcher role
+    roles = ctx.guild.roles
+    catcher_role = discord.utils.get(roles, name='Fänger')
+    # Remove catcher roles
+    player_ids = PLAYERS_BY_ID.keys()
+    for player_id in player_ids:
+        # Get the member object for the user
+        member = await ctx.guild.fetch_member(player_id)
+        # Remove the role from the user
+        await member.edit(roles=[r for r in member.roles if r != catcher_role])
+
+    # Add catcher roles to all catchers
+    for team in teams:
+        if team.is_catcher:
+            for player in team.players:
+                # Get the member object for the user
+                member = await ctx.guild.fetch_member(player.id)
+                # Add the role to the user
+                await member.edit(roles=member.roles + [catcher_role])
+
+
+    # TODO: finish
+    print("Setup completed. Have fun!")
+    await ctx.send('Setup completed. Have fun!')
 
 
 @bot.command()
