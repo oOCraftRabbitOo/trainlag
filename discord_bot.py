@@ -27,35 +27,44 @@ async def setup(ctx, arg1, arg2):
 
 @bot.command()
 async def catch(ctx):
-    # Get the message author
+    # Get the message author and their roles
     author = ctx.message.author
+    roles = author.roles
 
-    # Get the role by name
-    catcher_role = discord.utils.get(author.guild.roles, name='Fänger')
-
-    if catcher_role in author.roles:
-        # The author has the role
+    # Check if the author has the "Fänger" role
+    if discord.utils.get(roles, name='Fänger') is not None:
+        # Get the ID of the channel where the command was used
         channel_id = ctx.message.channel.id
+
+        # Check if the channel is in the list of channels
         if channel_id in CHANNELS:
+            # Get the index of the channel in the list
             index = CHANNELS.index(channel_id)
+
+            # Get the team for the channel
             caught_team = teams[index]
+
+            # Check if the caught team is already the "Fänger" team
             if caught_team.is_catcher:
                 await ctx.send('Das Team isch es Fänger-Team...')
             else:
+                # Get the catcher player object
                 catcher = PLAYERS_BY_ID[author.id]
+
+                # Find the team that the catcher belongs to
                 for team in teams:
-                    for player in team.players:
-                        if player == catcher:
-                            catcher_team = team
-                try:
-                    caught_team.switch_roles()
-                    catcher_team.switch_roles()
-                except NameError:
-                    ctx.send('Du bisch zwar Fänger, aber nöd Teil vom Spiil. Sorry.')
+                    if catcher in team.players:
+                        catcher_team = team
+                        break
+
+                # Switch the roles of the caught and catcher teams
+                caught_team.switch_roles()
+                catcher_team.switch_roles()
         else:
+            # The channel is not in the list of channels
             await ctx.send('Das Team chammer nöd fangä!')
     else:
-        # The author does not have the role
+        # The author does not have the "Fänger" role
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
 
 
