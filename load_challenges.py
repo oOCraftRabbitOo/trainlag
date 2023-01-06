@@ -43,9 +43,9 @@ def generate_creative_challenge(index, specific_zone_chance=0.25):
 
     if random.random() < specific_zone_chance and row['zoneable'] == 1:
         points *= 2
-        description = f"{description} Damit ihr Pünkt überchömed, mached das i de Zone {random.choice(zones)}. \033[1m{points} Pünkt\033[0m"
+        description = f"{description} Damit ihr Pünkt überchömed, mached das i de Zone {random.choice(zones)}. *{points} Pünkt*"
     else:
-        description = f"{description} \033[1m{points} Pünkt\033[0m"
+        description = f"{description} *{points} Pünkt*"
 
     return Challenge(title, description, points, index, "creative")
 
@@ -61,7 +61,7 @@ def generate_place_challenge(index):
 
     # Generate title and description
     title = f"Usflug uf {row['Ort']}"
-    description = f"Gönd nach {row['Ort']}. \033[1m{points} Pünkt\033[0m"
+    description = f"Gönd nach {row['Ort']}. *{points} Pünkt*"
 
     return Challenge(title, description, points, index, "place")
 

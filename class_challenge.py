@@ -7,7 +7,7 @@ class Challenge:
         self.type = type
 
     def __str__(self):
-        return f"\033[1m{self.title}\033[0m \n  {self.description}"
+        return f"**{self.title}** \n{self.description}"
 
     def __eq__(self, other):
         return self.type == other.type and self.id == other.id
