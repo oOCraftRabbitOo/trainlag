@@ -3,7 +3,9 @@ from class_player import Player
 from discord_constants import *
 import random
 import pickle
-
+import datetime
+import glob
+import os
 
 class Team:
     def __init__(self, players, channel_id, name, is_catcher=False):
@@ -102,15 +104,23 @@ class Team:
 
     def backup(self):
         # TODO: test
+        # Get the current date and time
+        now = datetime.datetime.now()
+
+        # Generate a filename using the current date and time
+        file = f'backups/{self.name}_{now:%Y-%m-%d_%H-%M-%S}.pickle'
         # Open a file in binary write mode
-        with open(f'backups/{self.name}.pickle', 'wb') as f:
+        with open(file, 'wb') as f:
             # Serialize the object and write it to the file
             pickle.dump(self, f)
 
     def load(self, file=None):
         # TODO: test
-        if not file:
-            file = f'backups/{self.name}.pickle'
+        if file is None:
+            # Find the newest file in the current directory
+            files = glob.glob(f'backups/{self.name}*.pickle')
+            file = max(files, key=os.path.getctime)
+
         # Open a file in binary read mode
         with open(file, 'rb') as f:
             # Deserialize the object from the file
