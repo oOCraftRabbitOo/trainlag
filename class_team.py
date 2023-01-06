@@ -118,7 +118,7 @@ class Team:
         # TODO: test
         if file is None:
             # Find the newest file in the current directory
-            files = glob.glob('backups/*.pickle')
+            files = glob.glob(f'backups/{self.name}*.pickle')
             file = max(files, key=os.path.getctime)
 
         # Open a file in binary read mode
