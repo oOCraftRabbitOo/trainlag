@@ -40,7 +40,7 @@ async def on_ready():
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
     global teams
-    teams = generate_teams()
+    teams = generate_teams(num_catchers=3)
     print_teams(teams)
     # Get catcher role
     roles = ctx.guild.roles
@@ -127,7 +127,8 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
                     member = await ctx.guild.fetch_member(player_id)
                     # Remove the role from the user
                     await member.edit(roles=[r for r in member.roles if r != catcher_role])
-                await ctx.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä! Team Bravo, ihr söttet no Discord neustarte, will ihr susch evtl. nöd alli aktive Challenges gsehnd.')
+                    general_channel = bot.get_channel(GENERAL_CHANNEL)
+                await general_channel.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä! Team {caught_team.name}, ihr söttet no Discord neustarte, will ihr susch evtl. nöd vo allne alli aktive Challenges gsehnd.')
 
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel_id)

@@ -159,10 +159,14 @@ class Team:
 
 def generate_teams(num_catchers=2):
     # TODO: allgemeiner für Teams im fertige Spiil
-    teams = [Team([Nelio], CHANNELS[0], "alpha"),
-             Team([Aurele], CHANNELS[1], "bravo"),
-             Team([Julian], CHANNELS[2], "charlie"),
-             Team([Timo], CHANNELS[3], "delta")]
+    teams = [Team([Nelio, Anna], CHANNELS[0], "alpha"),
+             Team([Aurele, Leandro], CHANNELS[1], "bravo"),
+             Team([Julian, Noah], CHANNELS[2], "charlie"),
+             Team([Timo, Dennis], CHANNELS[3], "delta"),
+             Team([Simon, Ciril, Elric], CHANNELS[4], "echo"),
+             Team([Lucy, Finn, Moritz], CHANNELS[5], "foxtrot"),
+             Team([Marin, Frederic], CHANNELS[6], "guete abig"),
+             Team([Jonatan, Lea, Christopher], CHANNELS[7], "h0i")]
 
     # Chose catchers
     catchers = random.sample(teams, num_catchers)

@@ -6,12 +6,31 @@ Aurele = Player("Aurèle", 334204120946704385)
 Julian = Player("Julian", 299564881135403008)
 Timo = Player("Timo", 319781199910535170)
 
-ALL_PLAYERS = [Nelio, Aurele, Julian, Timo]
+Leandro = Player("Leandro", 1079855346979442850)
+Anna = Player("Anna", 514111562483630080)
+Frederic = Player("Frederic", 774661552603267132)
+Dennis = Player("Dennis", 713069751164731463)
+Finn = Player("Finn", 824684410455851028)
+Elric = Player("Elric", 707269592174690354)
+Ciril = Player("Ciril", 598945447780024360)
+Jonatan = Player("Jonatan", 618114675720323086)
+Simon = Player("Simon", 529765758192975872)
+Marin = Player("Marin", 709377143276175421)
+#Max = Player("Max", 618394223846227969)
+Lea = Player("Lea", 724951300806279210)
+Moritz = Player("Moritz", 428900377195315231)
+Noah = Player("Noah", 1067376649953357894)
+Lucy = Player("Lucy", 607887838658297874)
+Christopher = Player("Christopher", 803320902645317653)
+
+
+ALL_PLAYERS = [Nelio, Aurele, Julian, Timo, Leandro, Anna, Frederic, Dennis, Finn, Elric, Ciril, Jonatan, Simon, Marin, Lea, Moritz, Noah, Lucy, Christopher]
 PLAYERS_BY_ID = {player.id: player for player in ALL_PLAYERS}
 
 # Channel ids
-CHANNELS = [1058827059130011708, 1058827074569257070, 1058827090973184070, 1058827105166700584, 1058827120442359920, 1058827148087009410, 1058827175962361926]
-GENERAL_CHANNEL = 1050023859807592480
+CHANNELS = [1058827059130011708, 1058827074569257070, 1058827090973184070, 1058827105166700584, 1058827120442359920, 1058827148087009410, 1058827175962361926, 1081228497206386708]
+GENERAL_CHANNEL = 1080162053202923621
+
 
 # Emoji Dictionary
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
