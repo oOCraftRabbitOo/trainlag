@@ -60,8 +60,7 @@ async def setup(ctx):
                 # Get the member object for the user
                 member = await ctx.guild.fetch_member(player.id)
                 # Add the role to the user
-                # TODO: reactivate
-                # await member.edit(roles=member.roles + [catcher_role])
+                await member.edit(roles=member.roles + [catcher_role])
 
     # Generate and send challenges to all non-catcher Teams
     non_catchers = [team for team in teams if not team.is_catcher]
