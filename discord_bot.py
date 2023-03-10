@@ -195,10 +195,19 @@ async def finish(ctx):
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(out)
 
+    roles = ctx.guild.roles
+    catcher_role = discord.utils.get(roles, name='Fänger')
+    # Remove catcher roles
+    player_ids = PLAYERS_BY_ID.keys()
+    for player_id in player_ids:
+        # Get the member object for the user
+        member = await ctx.guild.fetch_member(player_id)
+        # Remove the role from the user
+        await member.edit(roles=[r for r in member.roles if r != catcher_role])
 
-# TODO: umegäh isch chazedräck
 
-# Load the token from the .token_shrek file
+
+# Load the token from the .token file
 token = ''
 with open('.token', 'r') as f:
     token = f.read()
