@@ -1,4 +1,5 @@
 from class_player import Player
+from class_team import Team
 
 # ==============
 # = Main Stuff =
