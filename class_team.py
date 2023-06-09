@@ -15,6 +15,7 @@ class Team:
         self.name = name
         self.is_catcher = is_catcher
         self.points = 0
+        self.bounty = BOUNTY_BASE_POINTS
         self.completed_creative_challenges = []  # ids
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
@@ -90,7 +91,7 @@ class Team:
             self.places_visited.append(completed_challenge.id)
 
         # Grant points
-        self.points += completed_challenge.points  # TODO: use grant_points
+        self.grant_points(completed_challenge.points)
 
         # Generate new challenges
         self.generate_challenges()
@@ -100,6 +101,7 @@ class Team:
 
     def grant_points(self, points):
         self.points += points
+        self.bounty += int(points * BOUNTY_PERCENTAGE)
 
     def deduct_points(self, points):
         self.grant_points(-points)
@@ -146,6 +148,7 @@ class Team:
         self.name = loaded_team.name
         self.is_catcher = loaded_team.is_catcher
         self.points = loaded_team.points
+        self.bounty = loaded_team.bounty
         self.completed_creative_challenges = loaded_team.completed_creative_challenges
         self.places_visited = loaded_team.places_visited
         self.completed_challenges = loaded_team.completed_challenges

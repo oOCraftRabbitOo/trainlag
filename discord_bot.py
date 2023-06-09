@@ -174,7 +174,11 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
                 await discord_switch_roles(catcher_team, ctx)
 
                 general_channel = bot.get_channel(GENERAL_CHANNEL)
-                await general_channel.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä! Team {caught_team.name}, ihr söttet no Discord neustarte, will ihr susch evtl. nöd vo allne alli aktive Challenges gsehnd.')
+                await general_channel.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä und defür {caught_team.bounty} Chopfgeld kassiert! Team {caught_team.name}, ihr söttet no Discord neustarte, will ihr susch evtl. nöd vo allne alli aktive Challenges gsehnd.')
+
+                # Grant bounty
+                catcher_team.points += caught_team.bounty
+                caught_team.bounty = BOUNTY_BASE_POINTS
 
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel_id)
