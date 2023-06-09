@@ -22,13 +22,22 @@ class Team:
         self.generate_challenges()
         self.backup()
 
-    def __str__(self):
+    def deb_str(self) -> str:
         names = ""
         for player in self.players:
             names += player.name + " "
         strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel_id}, \npoints: {self.points}, \ncompCChals: {self.completed_creative_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nmembers: ({names[:-1]})'
         if self.is_catcher:
             strink += '\n[Fänger]'
+        return strink
+    
+    def __str__(self) -> str:
+        names = ""
+        for player in self.players:
+            names += player.name + " "
+        strink = f'Team {self.name} ({names[:-1]})'
+        if self.is_catcher:
+            strink += ' [fänger]'
         return strink
 
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
@@ -178,7 +187,7 @@ def print_teams(teams):
     print("---------")
     print("The Teams:")
     for team in teams:
-        print(team)
+        print(team.deb_str())
     print("---------")
 
 

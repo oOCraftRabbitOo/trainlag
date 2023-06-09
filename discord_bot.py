@@ -39,7 +39,7 @@ def author_is_catcher(ctx) -> bool:
 # same as team.switch_roles, but also changes roles on discord server
 async def discord_switch_roles(team: Team, ctx) -> None:
     global catcher_role
-    print(catcher_role)
+    print(f'changing the role of {team.name}')
 
     # get ids of all players in team
     player_ids = [player.id for player in team.players]
@@ -47,18 +47,19 @@ async def discord_switch_roles(team: Team, ctx) -> None:
     for player_id in player_ids:
         # will get member of discord server corresponding to id
         member = await ctx.guild.fetch_member(player_id)
-        print(member)
 
         if not team.is_catcher:
             # add catcher role to current roles
             await member.edit(roles = member.roles + [catcher_role])
+            print(f'made {member} a catcher')
 
         else:
             # remove catcher role from current roles
             await member.edit(roles = [role for role in member.roles if role != catcher_role])
+            print(f'made {member} a runner')
     
     team.switch_roles()
-
+    print()
 
 
 @bot.event
@@ -74,6 +75,8 @@ async def on_ready():
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
+    print('\n\n===\nStarting setup\n----')
+    print('checking whether setup is already done or in progress')
     global setup_complete
     global setup_in_progress
     if setup_complete or setup_in_progress:
@@ -81,18 +84,21 @@ async def setup(ctx):
         raise Exception('Game already in progress')
     setup_in_progress = True
 
-    global teams
-    teams = generate_teams(num_catchers=3)
-    print_teams(teams)
-
     # Get catcher role
+    print('getting server catcher role')
     roles = ctx.guild.roles
     global catcher_role
     catcher_role = discord.utils.get(roles, name='Fänger')
     if catcher_role is None:
         await ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
         raise Exception('No catcher role found')
+    
+    global teams
+    print(f'generating teams with {NUM_CATCHERS} catchers')
+    teams = generate_teams(num_catchers=NUM_CATCHERS)
+    print_teams(teams)
 
+    print('removing catcher roles')
     # Remove catcher roles
     player_ids = PLAYERS_BY_ID.keys()
     for player_id in player_ids:
@@ -100,7 +106,9 @@ async def setup(ctx):
         member = await ctx.guild.fetch_member(player_id)
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
+        print(f'catcher role of {member} removed')
 
+    print('adding catcher roles')
     # Add catcher roles to all catchers
     for team in teams:
         if team.is_catcher:
@@ -109,7 +117,9 @@ async def setup(ctx):
                 member = await ctx.guild.fetch_member(player.id)
                 # Add the role to the user
                 await member.edit(roles=member.roles + [catcher_role])
+                print(f'catcher role added to {member}')
 
+    print('generate and send challenges')
     # Generate and send challenges to all non-catcher Teams
     non_catchers = [team for team in teams if not team.is_catcher]
     for team in non_catchers:

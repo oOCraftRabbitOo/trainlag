@@ -83,3 +83,5 @@ GENERAL_CHANNEL = 1113388616845107262
 
 # Emoji Dictionary
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
+
+NUM_CATCHERS = 3
