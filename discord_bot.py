@@ -130,7 +130,7 @@ async def setup(ctx: commands.Context):
     setup_complete = True
     setup_in_progress = False
     print("Setup completed. Have fun!")
-    await ctx.send('Setup fertig. Vill spass!')
+    await ctx.send('Setup fertig. Vill Spass!')
 
 
 @bot.command()
@@ -302,7 +302,14 @@ async def sync(ctx: commands.Context):
             elif not catcher_role in member.roles and team.is_catcher:
                 await member.edit(roles=member.roles + [catcher_role])
 
-
+@bot.command()
+async def bounty(ctx: commands.Context):
+    output = "Chopfgelder:"
+    bounties = {team: team.bounty for team in teams}
+    sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
+    for team in reversed(sorted_teams_by_bounty):
+        output += f"\n S Team **{team.name}** hät es Chopfgeld vo **{team.bounty}** uf sich"
+    await ctx.send(output)
 
 # Load the token from the .token file
 token = ''
