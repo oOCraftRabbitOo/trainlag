@@ -163,7 +163,7 @@ def generate_teams(num_catchers=2) -> list:
          Team([CraftRibbit], CHANNELS[1], "bravo"),
          Team([CroftRabbit], CHANNELS[2], "charlie"),
          Team([KaiJu], CHANNELS[3], "delta"),
-         Team([Volvox], CHANNELS[4], "charlie")]
+         Team([Volvox], CHANNELS[4], "echo")]
 
     # Choose catchers
     catchers = random.sample(teams, num_catchers)
