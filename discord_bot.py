@@ -74,7 +74,7 @@ async def on_ready():
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def setup(ctx):
+async def setup(ctx: commands.Context):
     print('\n\n===\nStarting setup\n----')
     print('checking whether setup is already done or in progress')
     global setup_complete
@@ -92,6 +92,7 @@ async def setup(ctx):
     if catcher_role is None:
         await ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
         raise Exception('No catcher role found')
+    print(f'the type of catcher_role is {type(catcher_role)}')
     
     global teams
     print(f'generating teams with {NUM_CATCHERS} catchers')
@@ -282,6 +283,20 @@ async def switch(ctx):
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(f"S'Team {team.name} isch jetzt {state}.")
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def sync(ctx: commands.Context):
+    setup_check()
+    global teams
+    global catcher_role
+    for team in teams:
+        for player in team.players:
+            member = await ctx.guild.fetch_member(player.id)
+            if catcher_role in member.roles() and not team.is_catcher:
+                member.edit(roles=[role for role in member.roles() if role != catcher_role])
+            elif not catcher_role in member.roles() and team.is_catcher:
+                member.edit(roles=member.roles() + [catcher_role])
 
 
 
