@@ -26,9 +26,9 @@ class Team:
         names = ""
         for player in self.players:
             names += player.name + " "
+        strink = f'--/n/nTeam {self.name}, \nchannel: {self.channel_id}, \npoints: {self.points}, \ncompCChals: {self.completed_creative_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges} \nmembers: ({names[:-1]})'
         if self.is_catcher:
-            return f'Team {self.name} ({names[:-1]}) [Fänger]'
-        return f'Team {self.name} ({names[:-1]})'  # Remove last space and return
+            strink += ' \n[Fänger]'
 
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
@@ -157,8 +157,7 @@ class Team:
         return out
 
 
-def generate_teams(num_catchers=2):
-    # TODO: allgemeiner für Teams im fertige Spiil
+def generate_teams(num_catchers=2) -> list:
     teams = [Team([Nelio, Anna], CHANNELS[0], "alpha"),
              Team([Aurele, Leandro], CHANNELS[1], "bravo"),
              Team([Julian, Noah], CHANNELS[2], "charlie"),
