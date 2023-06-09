@@ -1,5 +1,9 @@
 from class_player import Player
 
+# ==============
+# = Main Stuff =
+# ==============
+''' Uskommentiert zum teste
 # Players
 Nelio = Player("Nelio", 289453000370421760)
 Aurele = Player("Aurèle", 334204120946704385)
@@ -30,6 +34,34 @@ PLAYERS_BY_ID = {player.id: player for player in ALL_PLAYERS}
 # Channel ids
 CHANNELS = [1058827059130011708, 1058827074569257070, 1058827090973184070, 1058827105166700584, 1058827120442359920, 1058827148087009410, 1058827175962361926, 1081228497206386708]
 GENERAL_CHANNEL = 1080162053202923621
+
+
+# Emoji Dictionary
+EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
+'''
+
+# ==============
+# = Test Stuff =
+# ==============
+# Players
+CraftRabbit = Player("CraftRabbit", 289453000370421760)
+DJOkovic = Player("DJOkovic", 334204120946704385)
+Metrogamer = Player("Metrogamer", 299564881135403008)
+KaiJu = Player("KaiJu", 319781199910535170)
+CroftRabbit = Player("CroftRabbit", 688054074637156625)
+CraftRibbit = Player("CraftRibbit", 505760247789387776)
+Mötrogamer = Player("Mötrogamer", 1113465756856893462)
+SkribblMan = Player("SkribblMan", 796762489592741948)
+MinecraftGamer = Player("MinecraftGamer", 863153180300017695)
+xXWtfIhrHendKeiHobbysIhrMonksXx = Player("xXWtfIhrHendKeiHobbysIhrMonksXx", 714444077789347860)
+
+
+ALL_PLAYERS = [CraftRabbit, DJOkovic, Metrogamer, KaiJu, CroftRabbit, CraftRibbit, Mötrogamer, SkribblMan, MinecraftGamer, xXWtfIhrHendKeiHobbysIhrMonksXx]
+PLAYERS_BY_ID = {player.id: player for player in ALL_PLAYERS}
+
+# Channel ids
+CHANNELS = [1116691418904281128, 1116691484213772381, 1116691495072841778, 1116691505374044190, 1116691516774158488, 1116691527297662986, 1116691539507302457, 1116691554036355072]
+GENERAL_CHANNEL = 1113388616845107262
 
 
 # Emoji Dictionary
