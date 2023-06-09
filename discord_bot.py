@@ -71,6 +71,10 @@ async def on_ready():
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
+    global setup_complete
+    if setup_complete:
+        await ctx.send('Spiel lauft bereits, Spiel mit "finish" beende.')
+        raise Exception('Game already in progress')
     global teams
     teams = generate_teams(num_catchers=3)
     print_teams(teams)
@@ -105,10 +109,9 @@ async def setup(ctx):
         team_channel = bot.get_channel(team.channel_id)
         await team_channel.send(team.return_challenges())
 
-    global setup_complete
     setup_complete = True
     print("Setup completed. Have fun!")
-    await ctx.send('Setup completed. Have fun!')
+    await ctx.send('Setup fertig. Vill spass!')
 
 
 @bot.command()
