@@ -39,6 +39,7 @@ def author_is_catcher(ctx) -> bool:
 # same as team.switch_roles, but also changes roles on discord server
 async def discord_switch_roles(team: Team, ctx) -> None:
     global catcher_role
+    print(catcher_role)
 
     # get ids of all players in team
     player_ids = [player.id for player in team.players]
@@ -46,6 +47,7 @@ async def discord_switch_roles(team: Team, ctx) -> None:
     for player_id in player_ids:
         # will get member of discord server corresponding to id
         member = await ctx.guild.fetch_member(player_id)
+        print(member)
 
         if not team.is_catcher:
             # add catcher role to current roles
