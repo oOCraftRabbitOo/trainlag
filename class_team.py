@@ -1,6 +1,6 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
-from config import *
+from discord_constants import *
 import random
 import pickle
 import datetime
@@ -157,16 +157,7 @@ class Team:
         return out
 
 
-def generate_teams(num_catchers=2):
-
 def generate_teams(num_catchers=2) -> list:
-    teams = [Team([Nelio, Anna], CHANNELS[0], "alpha"),
-             Team([Aurele, Leandro], CHANNELS[1], "bravo"),
-             Team([Julian, Noah], CHANNELS[2], "charlie"),
-             Team([Simon, Ciril, Elric], CHANNELS[4], "echo"),
-             Team([Lucy, Finn, Moritz], CHANNELS[5], "foxtrot"),
-             Team([Timo, Marin, Frederic], CHANNELS[6], "guete abig"),
-             Team([Jonatan, Lea, Christopher], CHANNELS[7], "h0i")]
 
     # Chose catchers
     catchers = random.sample(teams, num_catchers)
