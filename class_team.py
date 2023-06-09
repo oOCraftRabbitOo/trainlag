@@ -1,6 +1,7 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
 from config import *
+from teams import teams
 import random
 import pickle
 import datetime

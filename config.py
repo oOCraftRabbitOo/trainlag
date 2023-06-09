@@ -1,5 +1,4 @@
 from class_player import Player
-from class_team import Team
 
 # ==============
 # = Main Stuff =
@@ -69,11 +68,13 @@ Volvox = Player("Volvox", 354932090594394113)
 ALL_PLAYERS = [CraftRabbit, DJOkovic, Metrogamer, KaiJu, CroftRabbit, CraftRibbit, Mötrogamer, SkribblMan, MinecraftGamer, xXWtfIhrHendKeiHobbysIhrMonksXx, Volvox]
 PLAYERS_BY_ID = {player.id: player for player in ALL_PLAYERS}
 
+'''
 teams = [Team([CraftRabbit], CHANNELS[0], "alpha"),
          Team([CraftRibbit], CHANNELS[1], "bravo"),
          Team([CroftRabbit], CHANNELS[2], "charlie"),
          Team([KaiJu], CHANNELS[3], "delta"),
          Team([Volvox], CHANNELS[4], "charlie")]
+'''
 
 # Channel ids
 CHANNELS = [1116691418904281128, 1116691484213772381, 1116691495072841778, 1116691505374044190, 1116691516774158488, 1116691527297662986, 1116691539507302457, 1116691554036355072]
