@@ -204,6 +204,11 @@ async def finish(ctx):
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
 
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def dump(ctx):
+    print_teams(teams)
+
 
 
 # Load the token from the .token file
