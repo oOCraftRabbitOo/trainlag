@@ -293,10 +293,10 @@ async def sync(ctx: commands.Context):
     for team in teams:
         for player in team.players:
             member = await ctx.guild.fetch_member(player.id)
-            if catcher_role in member.roles() and not team.is_catcher:
-                member.edit(roles=[role for role in member.roles() if role != catcher_role])
-            elif not catcher_role in member.roles() and team.is_catcher:
-                member.edit(roles=member.roles() + [catcher_role])
+            if catcher_role in member.roles and not team.is_catcher:
+                member.edit(roles=[role for role in member.roles if role != catcher_role])
+            elif not catcher_role in member.roles and team.is_catcher:
+                member.edit(roles=member.roles + [catcher_role])
 
 
 
