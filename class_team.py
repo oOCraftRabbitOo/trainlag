@@ -1,7 +1,6 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
 from config import *
-from teams import teams
 import random
 import pickle
 import datetime
@@ -159,6 +158,11 @@ class Team:
 
 
 def generate_teams(num_catchers=2) -> list:
+    teams = [Team([CraftRabbit], CHANNELS[0], "alpha"),
+         Team([CraftRibbit], CHANNELS[1], "bravo"),
+         Team([CroftRabbit], CHANNELS[2], "charlie"),
+         Team([KaiJu], CHANNELS[3], "delta"),
+         Team([Volvox], CHANNELS[4], "charlie")]
 
     # Chose catchers
     catchers = random.sample(teams, num_catchers)
