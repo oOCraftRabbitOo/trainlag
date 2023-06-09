@@ -164,7 +164,7 @@ def generate_teams(num_catchers=2) -> list:
          Team([KaiJu], CHANNELS[3], "delta"),
          Team([Volvox], CHANNELS[4], "charlie")]
 
-    # Chose catchers
+    # Choose catchers
     catchers = random.sample(teams, num_catchers)
     for team in catchers:
         team.is_catcher = True
