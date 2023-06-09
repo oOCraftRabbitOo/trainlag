@@ -6,6 +6,7 @@ from config import *
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'))
 setup_complete = False  # Run setup to set to True
+setup_in_progress = False
 teams = []  # Run setup to fill
 catcher_role = None  # Run setup to fill
 
@@ -72,9 +73,12 @@ async def on_ready():
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx):
     global setup_complete
-    if setup_complete:
+    global setup_in_progress
+    if setup_complete or setup_in_progress:
         await ctx.send('Spiel lauft bereits, Spiel mit "finish" beende.')
         raise Exception('Game already in progress')
+    setup_in_progress = True
+
     global teams
     teams = generate_teams(num_catchers=3)
     print_teams(teams)
@@ -110,6 +114,7 @@ async def setup(ctx):
         await team_channel.send(team.return_challenges())
 
     setup_complete = True
+    setup_in_progress = False
     print("Setup completed. Have fun!")
     await ctx.send('Setup fertig. Vill spass!')
 
@@ -204,7 +209,9 @@ async def finish(ctx):
 
     await setup_check(ctx)
     global setup_complete
+    global setup_in_progress
     setup_complete = False
+    setup_in_progress = False
     # Get a list of teams by highest score
     winners = teams.copy()
     winners.sort()
