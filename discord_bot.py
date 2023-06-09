@@ -307,8 +307,8 @@ async def bounty(ctx: commands.Context):
     output = "Chopfgelder:"
     bounties = {team: team.bounty for team in teams}
     sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
-    for team in reversed(sorted_teams_by_bounty):
-        output += f"\n S Team **{team.name}** hät es Chopfgeld vo **{team.bounty}** uf sich"
+    for team, bounty in reversed(sorted_teams_by_bounty):
+        output += f"\n S Team **{team}** hät es Chopfgeld vo **{bounty}** uf sich"
     await ctx.send(output)
 
 # Load the token from the .token file
