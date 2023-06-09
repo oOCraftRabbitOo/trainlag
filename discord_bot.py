@@ -1,12 +1,13 @@
 import asyncio
 import discord
 from discord.ext import commands
-from class_team import generate_teams, print_teams
+from class_team import generate_teams, print_teams, Team
 from config import *
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'))
 setup_complete = False  # Run setup to set to True
 teams = []  # Run setup to fill
+catcher_role = None  # Run setup to fill
 
 
 async def setup_check(ctx):
@@ -15,16 +16,47 @@ async def setup_check(ctx):
         raise Exception('Setup incomplete, du Globi!')
 
 
-def author_is_catcher(ctx):
-    # Get the message author and their roles
-    author = ctx.message.author
-    roles = author.roles
+def author_is_catcher(ctx) -> bool:
+    global teams
 
-    # Get the "Fänger" role
-    catcher_role = discord.utils.get(roles, name='Fänger')
+    # Get the message author ID
+    authorID = ctx.message.author.id
 
-    # Check if the author has the "Fänger" role
-    return catcher_role is not None
+    # get the player to whom that ID corresponds
+    author = None
+    for i in ALL_PLAYERS:
+        if i.id == authorID:
+            author = i
+    
+    # get the team in which the author is and return whether they are catchers
+    for i in teams:
+        if author in i.players:
+            return i.is_catcher
+    
+    raise Exception(f'Could not find Player {author} with ID {authorID} in any team.')
+
+# same as team.switch_roles, but also changes roles on discord server
+async def discord_switch_roles(team: Team, ctx) -> None:
+    global catcher_role
+
+    # get ids of all players in team
+    player_ids = [player.id for player in team.players]
+
+    for player_id in player_ids:
+        # will get member of discord server corresponding to id
+        member = await ctx.guild.fetch_member(player_id)
+
+        if not team.is_catcher:
+            # add catcher role to current roles
+            await member.edit(roles = member.roles + [catcher_role])
+
+        else:
+            # remove catcher role from current roles
+            await member.edit(roles = [role for role in member.roles if role != catcher_role])
+    
+    team.switch_roles()
+
+
 
 @bot.event
 async def on_ready():
@@ -42,9 +74,14 @@ async def setup(ctx):
     global teams
     teams = generate_teams(num_catchers=3)
     print_teams(teams)
+
     # Get catcher role
     roles = ctx.guild.roles
     catcher_role = discord.utils.get(roles, name='Fänger')
+    if catcher_role is None:
+        ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
+        raise Exception('No catcher role found')
+
     # Remove catcher roles
     player_ids = PLAYERS_BY_ID.keys()
     for player_id in player_ids:
@@ -76,16 +113,12 @@ async def setup(ctx):
 
 @bot.command()
 async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
-    await setup_check(ctx)
-    # Get the message author and their roles
-    author = ctx.message.author
-    roles = author.roles
+    global catcher_roll
 
-    # Get the "Fänger" role
-    catcher_role = discord.utils.get(roles, name='Fänger')
+    await setup_check(ctx)
 
     # Check if the author has the "Fänger" role
-    if catcher_role is not None:
+    if author_is_catcher(ctx):
         # Get the ID of the channel where the command was used
         channel_id = ctx.message.channel.id
 
@@ -95,7 +128,11 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
             index = CHANNELS.index(channel_id)
 
             # Get the team for the channel
-            caught_team = teams[index]
+            try:
+                caught_team = teams[index]
+            except IndexError:
+                await ctx.send('Öppis isch schiefgloffe, wahrschinlich existiert das Team hüt nöd')
+                raise Exception('Index out of range bim teams accesse')
 
         # Check if the caught team is already the "Fänger" team
             if caught_team.is_catcher:
@@ -111,23 +148,10 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
                         break
 
                 # Switch the roles of the caught and catcher teams
-                caught_team.switch_roles()
-                # TODO: Here is code repetition müüüüüü
-                player_ids = [player.id for player in caught_team.players]
-                for player_id in player_ids:
-                    # Get the member object for the user
-                    member = await ctx.guild.fetch_member(player_id)
-                    # Add the role to the user
-                    await member.edit(roles=member.roles + [catcher_role])
+                await discord_switch_roles(caught_team, ctx)
+                await discord_switch_roles(catcher_team, ctx)
 
-                catcher_team.switch_roles()
-                player_ids = [player.id for player in catcher_team.players]
-                for player_id in player_ids:
-                    # Get the member object for the user
-                    member = await ctx.guild.fetch_member(player_id)
-                    # Remove the role from the user
-                    await member.edit(roles=[r for r in member.roles if r != catcher_role])
-                    general_channel = bot.get_channel(GENERAL_CHANNEL)
+                general_channel = bot.get_channel(GENERAL_CHANNEL)
                 await general_channel.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä! Team {caught_team.name}, ihr söttet no Discord neustarte, will ihr susch evtl. nöd vo allne alli aktive Challenges gsehnd.')
 
                 # Send challenges to the new runner team
@@ -148,7 +172,7 @@ async def complete(ctx, challenge_id):
     if author_is_catcher(ctx):
         await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
         return
-    # Get author's team
+    # Get channel's team
     channel = ctx.message.channel.id
     for t in teams:
         if t.channel_id == channel:
@@ -173,6 +197,8 @@ async def complete(ctx, challenge_id):
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def finish(ctx):
+    global catcher_role
+
     await setup_check(ctx)
     global setup_complete
     setup_complete = False
@@ -194,8 +220,6 @@ async def finish(ctx):
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(out)
 
-    roles = ctx.guild.roles
-    catcher_role = discord.utils.get(roles, name='Fänger')
     # Remove catcher roles
     player_ids = PLAYERS_BY_ID.keys()
     for player_id in player_ids:
@@ -208,6 +232,26 @@ async def finish(ctx):
 @commands.has_permissions(manage_guild=True)
 async def dump(ctx):
     print_teams(teams)
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def switch(ctx, team_name):
+    global teams
+
+    # get channel's team
+    channel = ctx.message.channel.id
+    for t in teams:
+        if t.channel_id == channel:
+            team = t
+            break
+    
+    team.switch_roles()
+    if team.is_catcher:
+        state = 'Fänger'
+    else:
+        state = 'Devoränner'
+    
+    ctx.send(f"S'Team {team.name} isch jetzt {state}.")
 
 
 
