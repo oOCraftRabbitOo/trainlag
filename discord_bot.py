@@ -287,7 +287,7 @@ async def switch(ctx):
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def sync(ctx: commands.Context):
-    setup_check()
+    setup_check(ctx)
     global teams
     global catcher_role
     for team in teams:
