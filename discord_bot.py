@@ -2,7 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams
-from discord_constants import *
+from config import *
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'))
 setup_complete = False  # Run setup to set to True
