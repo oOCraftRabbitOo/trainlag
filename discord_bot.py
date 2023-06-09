@@ -258,13 +258,20 @@ async def switch(ctx):
             team = t
             break
     
+    # change the role of the team
     await discord_switch_roles(team, ctx)
+
     if team.is_catcher:
         state = 'Fänger'
     else:
         state = 'Devoränner'
     
     await ctx.send(f"S'Team {team.name} isch jetzt {state}.")
+    if not team.is_catcher:
+        await ctx.send(team.return_challenges())
+
+    general_channel = bot.get_channel(GENERAL_CHANNEL)
+    await general_channel.send(f"S'Team {team.name} isch jetzt {state}.")
 
 
 
