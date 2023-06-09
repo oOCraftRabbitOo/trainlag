@@ -258,7 +258,7 @@ async def switch(ctx):
             team = t
             break
     
-    discord_switch_roles(team, ctx)
+    await discord_switch_roles(team, ctx)
     if team.is_catcher:
         state = 'Fänger'
     else:
