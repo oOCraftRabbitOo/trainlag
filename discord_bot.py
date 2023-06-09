@@ -87,6 +87,7 @@ async def setup(ctx):
 
     # Get catcher role
     roles = ctx.guild.roles
+    global catcher_role
     catcher_role = discord.utils.get(roles, name='Fänger')
     if catcher_role is None:
         await ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
