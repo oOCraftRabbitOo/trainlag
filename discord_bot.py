@@ -147,7 +147,7 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
                 await ctx.send('Das Team isch scho es Fänger-Team...')
             else:
                 # Get the catcher player object
-                catcher = PLAYERS_BY_ID[author.id]
+                catcher = PLAYERS_BY_ID[ctx.author.id]
 
                 # Find the team that the catcher belongs to
                 for team in teams:
