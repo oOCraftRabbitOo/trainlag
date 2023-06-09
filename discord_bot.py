@@ -149,7 +149,7 @@ async def complete(ctx, challenge_id):
         await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
         return
     # Get author's team
-    channel = ctx.message.channel
+    channel = ctx.message.channel.id
     for t in teams:
         if t.channel_id == channel:
             team = t
