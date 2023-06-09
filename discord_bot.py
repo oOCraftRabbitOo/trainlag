@@ -79,7 +79,7 @@ async def setup(ctx):
     roles = ctx.guild.roles
     catcher_role = discord.utils.get(roles, name='Fänger')
     if catcher_role is None:
-        ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
+        await ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
         raise Exception('No catcher role found')
 
     # Remove catcher roles
@@ -251,7 +251,7 @@ async def switch(ctx, team_name):
     else:
         state = 'Devoränner'
     
-    ctx.send(f"S'Team {team.name} isch jetzt {state}.")
+    await ctx.send(f"S'Team {team.name} isch jetzt {state}.")
 
 
 
