@@ -9,13 +9,13 @@ setup_complete = False  # Run setup to set to True
 teams = []  # Run setup to fill
 
 
-async def setup_check(ctx) -> None:
+async def setup_check(ctx):
     if not setup_complete:
         await ctx.send('Setup not yet complete. Run `!setup` to setup.')
         raise Exception('Setup incomplete, du Globi!')
 
 
-def author_is_catcher(ctx) -> bool:
+def author_is_catcher(ctx):
     # Get the message author and their roles
     author = ctx.message.author
     roles = author.roles
@@ -149,10 +149,9 @@ async def complete(ctx, challenge_id):
         await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
         return
     # Get author's team
-    author = ctx.message.author
-    player = PLAYERS_BY_ID[author.id]
+    channel = ctx.message.channel
     for t in teams:
-        if player in t.players:
+        if t.channel_id == channel:
             team = t
             break
     try:
@@ -204,11 +203,6 @@ async def finish(ctx):
         member = await ctx.guild.fetch_member(player_id)
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
-
-@bot.command()
-@commands.has_permissions(manage_guild=True)
-async def dump(ctx):
-    print_teams(teams)
 
 
 
