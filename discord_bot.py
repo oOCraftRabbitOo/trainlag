@@ -248,7 +248,7 @@ async def dump(ctx):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def switch(ctx, team_name):
+async def switch(ctx):
     global teams
 
     # get channel's team
