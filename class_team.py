@@ -26,9 +26,9 @@ class Team:
         names = ""
         for player in self.players:
             names += player.name + " "
-        strink = f'--/n/nTeam {self.name}, \nchannel: {self.channel_id}, \npoints: {self.points}, \ncompCChals: {self.completed_creative_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges} \nmembers: ({names[:-1]})'
+        strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel_id}, \npoints: {self.points}, \ncompCChals: {self.completed_creative_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges} \nmembers: ({names[:-1]})'
         if self.is_catcher:
-            strink += ' \n[Fänger]'
+            strink += '\n[Fänger]'
         return strink
 
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
