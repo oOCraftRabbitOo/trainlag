@@ -181,7 +181,7 @@ def generate_teams(num_catchers: int) -> list[Team]:
     raw_teams = None
 
     #get the team composition data from the json, will be a list of dicts
-    with open('teams.json', 'r') as f:
+    with open(TEAM_FILE, 'r') as f:
         raw_teams = json.load(f)
     
     for raw_team in raw_teams:
