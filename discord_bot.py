@@ -172,6 +172,8 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                         if player.id == ctx.author.id:
                             catcher_team = team
                             break
+                    else: continue
+                    break
                 else:
                     await ctx.send('error, catcher team not found')
                     raise Exception("couldn't find the catcher in any team even though he has to be there because that's how we know he's a catcher, fix ya code!")
