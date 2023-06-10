@@ -102,7 +102,7 @@ async def setup(ctx: commands.Context) -> None:
 
     print('removing catcher roles')
     # Remove catcher roles
-    player_ids = [player.id for player in team.players]
+    player_ids = [player.id for team in teams for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
         member = await ctx.guild.fetch_member(player_id)
@@ -227,6 +227,7 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
 @commands.has_permissions(manage_guild=True)
 async def finish(ctx: commands.Context) -> None:
     global catcher_role
+    global teams
 
     await setup_check(ctx)
     global setup_complete
@@ -252,7 +253,7 @@ async def finish(ctx: commands.Context) -> None:
     await general_channel.send(out)
 
     # Remove catcher roles
-    player_ids = [player.id for player in team.players]
+    player_ids = [player.id for team in teams for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
         member = await ctx.guild.fetch_member(player_id)
