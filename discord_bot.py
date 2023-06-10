@@ -11,13 +11,13 @@ teams = []  # Run setup to fill
 catcher_role = None  # Run setup to fill
 
 
-async def setup_check(ctx):
+async def setup_check(ctx: commands.Context) -> None:
     if not setup_complete:
         await ctx.send('Setup not yet complete. Run `!setup` to setup.')
         raise Exception('Setup incomplete, du Globi!')
 
 
-def author_is_catcher(ctx) -> bool:
+def author_is_catcher(ctx: commands.Context) -> bool:
     global teams
 
     # Get the message author ID
@@ -25,7 +25,8 @@ def author_is_catcher(ctx) -> bool:
 
     # get the player to whom that ID corresponds
     author = None
-    for i in ALL_PLAYERS:
+    all_players = [player for team in teams for player in team.players]
+    for i in all_players:
         if i.id == authorID:
             author = i
     
@@ -37,7 +38,7 @@ def author_is_catcher(ctx) -> bool:
     raise Exception(f'Could not find Player {author} with ID {authorID} in any team.')
 
 # same as team.switch_roles, but also changes roles on discord server
-async def discord_switch_roles(team: Team, ctx) -> None:
+async def discord_switch_roles(team: Team, ctx: commands.Context) -> None:
     global catcher_role
     print(f'changing the role of {team.name}')
 
@@ -63,7 +64,7 @@ async def discord_switch_roles(team: Team, ctx) -> None:
 
 
 @bot.event
-async def on_ready():
+async def on_ready() -> None:
     print('\n------')
     print('Logged in lul')
     print('On the following servers:')
@@ -74,7 +75,7 @@ async def on_ready():
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def setup(ctx: commands.Context):
+async def setup(ctx: commands.Context) -> None:
     print('\n\n===\nStarting setup\n----')
     print('checking whether setup is already done or in progress')
     global setup_complete
@@ -101,7 +102,7 @@ async def setup(ctx: commands.Context):
 
     print('removing catcher roles')
     # Remove catcher roles
-    player_ids = PLAYERS_BY_ID.keys()
+    player_ids = [player.id for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
         member = await ctx.guild.fetch_member(player_id)
@@ -124,7 +125,7 @@ async def setup(ctx: commands.Context):
     # Generate and send challenges to all non-catcher Teams
     non_catchers = [team for team in teams if not team.is_catcher]
     for team in non_catchers:
-        team_channel = bot.get_channel(team.channel_id)
+        team_channel = bot.get_channel(team.channel.id)
         await team_channel.send(team.return_challenges())
 
     setup_complete = True
@@ -134,8 +135,8 @@ async def setup(ctx: commands.Context):
 
 
 @bot.command()
-async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
-    global catcher_roll
+async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
+    global teams
 
     await setup_check(ctx)
 
@@ -144,24 +145,26 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
         # Get the ID of the channel where the command was used
         channel_id = ctx.message.channel.id
 
-        # Check if the channel is in the list of channels
-        if channel_id in CHANNELS:
-            # Get the index of the channel in the list
-            index = CHANNELS.index(channel_id)
+        # Check if the channel is actually a team channel 
+        channel_ids = [t.channel.id for t in teams]
+        if channel_id in channel_ids:
 
-            # Get the team for the channel
-            try:
-                caught_team = teams[index]
-            except IndexError:
-                await ctx.send('Öppis isch schiefgloffe, wahrschinlich existiert das Team hüt nöd')
-                raise Exception('Index out of range bim teams accesse')
+            # find the caught team
+            for t in teams:
+                if t.channel.id == channel_id:
+                    caught_team = t
+                    break
+            else:
+                await ctx.send('error')
+                raise Exception("couldn't find the channel's id in any team, even though there was a check before to see whether it is present, rewrite your software you idiot")
 
         # Check if the caught team is already the "Fänger" team
             if caught_team.is_catcher:
                 await ctx.send('Das Team isch scho es Fänger-Team...')
             else:
                 # Get the catcher player object
-                catcher = PLAYERS_BY_ID[ctx.author.id]
+                players_by_id = {player.id : player.name for team in teams for player in team.players}
+                catcher = players_by_id[ctx.author.id]
 
                 # Find the team that the catcher belongs to
                 for team in teams:
@@ -181,18 +184,18 @@ async def catch(ctx):  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei 
                 caught_team.bounty = BOUNTY_BASE_POINTS
 
                 # Send challenges to the new runner team
-                team_channel = bot.get_channel(catcher_team.channel_id)
+                team_channel = bot.get_channel(catcher_team.channel.id)
                 await team_channel.send(catcher_team.return_challenges())
         else:
             # The channel is not in the list of channels
-            await ctx.send('Das Team chammer nöd fangä!')
+            await ctx.send('Das isch keis team...')
     else:
         # The author does not have the "Fänger" role
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
 
 
 @bot.command()
-async def complete(ctx, challenge_id):
+async def complete(ctx: commands.Context, challenge_id: int) -> None:
     await setup_check(ctx)
     # Only runnable by runners
     if author_is_catcher(ctx):
@@ -201,7 +204,7 @@ async def complete(ctx, challenge_id):
     # Get channel's team
     channel = ctx.message.channel.id
     for t in teams:
-        if t.channel_id == channel:
+        if t.channel.id == channel:
             team = t
             break
     try:
@@ -222,7 +225,7 @@ async def complete(ctx, challenge_id):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def finish(ctx):
+async def finish(ctx: commands.Context) -> None:
     global catcher_role
 
     await setup_check(ctx)
@@ -249,7 +252,7 @@ async def finish(ctx):
     await general_channel.send(out)
 
     # Remove catcher roles
-    player_ids = PLAYERS_BY_ID.keys()
+    player_ids = [player.id for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
         member = await ctx.guild.fetch_member(player_id)
@@ -258,18 +261,18 @@ async def finish(ctx):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def dump(ctx):
+async def dump(ctx: commands.Context) -> None:
     print_teams(teams)
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def switch(ctx):
+async def switch(ctx: commands.Context) -> None:
     global teams
 
     # get channel's team
     channel = ctx.message.channel.id
     for t in teams:
-        if t.channel_id == channel:
+        if t.channel.id == channel:
             team = t
             break
     
@@ -290,7 +293,7 @@ async def switch(ctx):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def sync(ctx: commands.Context):
+async def sync(ctx: commands.Context) -> None:
     await setup_check(ctx)
     global teams
     global catcher_role
@@ -303,7 +306,7 @@ async def sync(ctx: commands.Context):
                 await member.edit(roles=member.roles + [catcher_role])
 
 @bot.command()
-async def bounty(ctx: commands.Context):
+async def bounty(ctx: commands.Context) -> None:
     output = "Chopfgelder:"
     bounties = {team.name: team.bounty for team in teams if not team.is_catcher}
     sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])

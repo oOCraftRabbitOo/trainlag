@@ -1,17 +1,21 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
 from config import *
+from class_channel import Channel
+from class_challenge import Challenge
 import random
 import pickle
 import datetime
 import glob
 import os
+import json
 
 
 class Team:
-    def __init__(self, players, channel_id, name, is_catcher=False):
+    def __init__(self, players: list[Player], channel: Channel, name: str, is_catcher: bool = False) -> None:
         self.players = players
-        self.channel_id = channel_id
+        # self.channel_id = channel_id   | deprecated by adding the channel class
+        self.channel = channel
         self.name = name
         self.is_catcher = is_catcher
         self.points = 0
@@ -44,7 +48,7 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_place_challenge(self):
+    def generate_place_challenge(self) -> Challenge:
         # Randomly select unvisited place (int)
         place = random.randint(0, place_challenges_amount - 1)
         while place in self.places_visited:
@@ -53,7 +57,7 @@ class Team:
         # Generate challenge and return it
         return generate_place_challenge(place)
 
-    def generate_creative_challenge(self):
+    def generate_creative_challenge(self) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, creative_challenges_amount - 1)
         while index in self.completed_creative_challenges:
@@ -62,7 +66,7 @@ class Team:
         # Generate challenge and return it
         return generate_creative_challenge(index)
 
-    def generate_challenges(self):
+    def generate_challenges(self) -> None:
         self.open_challenges = [self.generate_place_challenge(), self.generate_creative_challenge()]
         if random.random() < 0.5:
             # Randomly select a place challenge that's neither completed nor active
@@ -78,7 +82,7 @@ class Team:
         # Append the challenge to the open challenges
         self.open_challenges.append(challenge)
 
-    def complete_challenge(self, index):
+    def complete_challenge(self, index: int) -> None:
         # Index should be 1, 2 or 3
         completed_challenge = self.open_challenges[index]
 
@@ -99,14 +103,14 @@ class Team:
         # Backup
         self.backup()  # TODO: Does this work?
 
-    def grant_points(self, points):
+    def grant_points(self, points: int) -> None:
         self.points += points
         self.bounty += int(points * BOUNTY_PERCENTAGE)
 
-    def deduct_points(self, points):
+    def deduct_points(self, points) -> None:
         self.grant_points(-points)
 
-    def uncomplete_challenge(self, index):
+    def uncomplete_challenge(self, index) -> None:
         # Get challenge to uncomplete and remove it from completed challenges
         uncompleted_challenge = self.completed_challenges.pop(index)
 
@@ -118,7 +122,7 @@ class Team:
         # Deduct points
         self.deduct_points(uncompleted_challenge.points)
 
-    def backup(self):
+    def backup(self) -> None:
         # TODO: test
         # Get the current date and time
         now = datetime.datetime.now()
@@ -130,7 +134,7 @@ class Team:
             # Serialize the object and write it to the file
             pickle.dump(self, f)
 
-    def load(self, file=None):
+    def load(self, file: str = None) -> None:
         # TODO: test
         if file is None:
             # Find the newest file in the current directory
@@ -154,7 +158,7 @@ class Team:
         self.completed_challenges = loaded_team.completed_challenges
         self.open_challenges = loaded_team.open_challenges
 
-    def switch_roles(self):
+    def switch_roles(self) -> None:
         if self.is_catcher:
             self.is_catcher = False
             self.generate_challenges()
@@ -163,19 +167,38 @@ class Team:
             self.open_challenges = []
         self.backup()
 
-    def return_challenges(self):
+    def return_challenges(self) -> str:
         out = "**Eui Challenges:** \n-------------------------------------------- \n"
         for challenge in self.open_challenges:
             out += f"{challenge}\n-------------------------------------------- \n"
         return out
 
 
-def generate_teams(num_catchers=2) -> list:
-    teams = [Team([CraftRabbit], CHANNELS[0], "alpha"),
-         Team([CraftRibbit], CHANNELS[1], "bravo"),
-         Team([CroftRabbit], CHANNELS[2], "charlie"),
-         Team([KaiJu], CHANNELS[3], "delta"),
-         Team([Volvox], CHANNELS[4], "echo")]
+def generate_teams(num_catchers: int) -> list[Team]:
+    teams = []
+    raw_teams = None
+
+    #get the team composition data from the json, will be a list of dicts
+    with open('teams.json', 'r') as f:
+        raw_teams = json.load(f)
+    
+    for raw_team in raw_teams:
+        # get the team name
+        name = raw_team['name']
+
+        #get the players
+        players = []
+        if len(raw_team['players']) == 0:
+            raise Exception(f'no players found in team {name}')
+        for raw_player in raw_team['players']:
+            players.append(Player(raw_player['name'], raw_player['id']))
+
+        #get the channel
+        channel = Channel(
+            raw_team['channel']['name'],
+            raw_team['channel']['id']
+        )
+        teams.append(Team(players, channel, name))
 
     # Choose catchers
     catchers = random.sample(teams, num_catchers)
@@ -185,7 +208,7 @@ def generate_teams(num_catchers=2) -> list:
     return teams
 
 
-def print_teams(teams):
+def print_teams(teams: list[Team]) -> None:
     # Only for debug purposes, prints out the Teams, duh
     print("---------")
     print("The Teams:")

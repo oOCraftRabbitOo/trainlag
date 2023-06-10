@@ -50,7 +50,7 @@ def generate_creative_challenge(index, specific_zone_chance=0.25):
     return Challenge(title, description, points, index, "creative")
 
 
-def generate_place_challenge(index):
+def generate_place_challenge(index: int) -> Challenge:
     row = kaffs_sheet.loc[index]
 
     # Calculate points
