@@ -168,9 +168,13 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
                 # Find the team that the catcher belongs to
                 for team in teams:
-                    if catcher in team.players:
-                        catcher_team = team
-                        break
+                    for player in team.players:
+                        if player.id == ctx.author.id:
+                            catcher_team = team
+                            break
+                else:
+                    await ctx.send('error, catcher team not found')
+                    raise Exception("couldn't find the catcher in any team even though he has to be there because that's how we know he's a catcher, fix ya code!")
 
                 # Switch the roles of the caught and catcher teams
                 await discord_switch_roles(caught_team, ctx)
