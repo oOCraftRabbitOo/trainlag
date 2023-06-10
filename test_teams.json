@@ -91,21 +91,10 @@
                 "name": "mötrogamer",
                 "id": 1113465756856893462
             }
-        ]
-    },
-    {
-        "name": "shitteam"
-    },
-    {
-        "players": [
-            {
-                "name": "baguette",
-                "id": 69420
-            }
         ],
         "channel": {
-            "name": "abig",
-            "id": 1116691539507302457
+            "name": "foxtrott",
+            "id": 1116691527297662986
         }
     }
 ]
