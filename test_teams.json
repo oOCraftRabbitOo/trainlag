@@ -5,6 +5,10 @@
             {
                 "name": "CraftRabbit",
                 "id": 289453000370421760
+            },
+            {
+                "name": "Skribbl Man",
+                "id": 796762489592741948
             }
         ],
         "channel": {
@@ -31,6 +35,18 @@
             {
                 "name": "CroftRabbit",
                 "id": 688054074637156625
+            },
+            {
+                "name": "DJ_Okovic",
+                "id": 334204120946704385
+            },
+            {
+                "name": "xXMinecraft_GamerXx",
+                "id": 863153180300017695
+            },
+            {
+                "name": "xXHobbies oder so kp",
+                "id": 714444077789347860
             }
         ],
         "channel": {
@@ -62,6 +78,34 @@
         "channel": {
             "name": "echo",
             "id": 1116691516774158488
+        }
+    },
+    {
+        "name": "foxtrott",
+        "players": [
+            {
+                "name": "metrogamer",
+                "id": 299564881135403008
+            },
+            {
+                "name": "mötrogamer",
+                "id": 1113465756856893462
+            }
+        ]
+    },
+    {
+        "name": "shitteam"
+    },
+    {
+        "players": [
+            {
+                "name": "baguette",
+                "id": 69420
+            }
+        ],
+        "channel": {
+            "name": "abig",
+            "id": 1116691539507302457
         }
     }
 ]
