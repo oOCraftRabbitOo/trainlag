@@ -187,11 +187,13 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
                 # Grant bounty
                 catcher_team.points += caught_team.bounty
+                received_bounty = caught_team.bounty
                 caught_team.bounty = BOUNTY_BASE_POINTS
+                catcher_team.bounty = BOUNTY_BASE_POINTS
 
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel.id)
-                await team_channel.send(catcher_team.return_challenges())
+                await team_channel.send(f'\n{catcher_team.return_challenges()}')
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis team...')
@@ -290,6 +292,8 @@ async def switch(ctx: commands.Context) -> None:
         state = 'Fänger'
     else:
         state = 'Devoränner'
+
+    team.bounty = BOUNTY_BASE_POINTS
     
     await ctx.send(f"S'Team {team.name} isch jetzt {state}.")
     if not team.is_catcher:
