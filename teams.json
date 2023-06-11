@@ -1,0 +1,124 @@
+[
+    {
+        "name": "alpha",
+        "players": [
+            {
+                "name": "Aurèle",
+                "id": 334204120946704385
+            },
+            {
+                "name": "Philipp",
+                "id": 1091077968434044929
+            }
+        ],
+        "channel": {
+            "name": "alpha",
+            "id": 1058827059130011708
+        }
+    },
+    {
+        "name": "bravo",
+        "players": [
+            {
+                "name": "Nelio",
+                "id": 289453000370421760
+            },
+            {
+                "name": "Simon",
+                "id": 529765758192975872
+            },
+            {
+                "name": "Ciril",
+                "id": 598945447780024360
+            }
+        ],
+        "channel": {
+            "name": "bravo",
+            "id": 1058827074569257070
+        }
+    },
+    {
+        "name": "charlie",
+        "players": [
+            {
+                "name": "Julian",
+                "id": 299564881135403008
+            },
+            {
+                "name": "Christopher",
+                "id": 803320902645317653
+            },
+            {
+                "name": "Jonatan",
+                "id": 618114675720323086
+            }
+        ],
+        "channel": {
+            "name": "charlie",
+            "id": 1058827090973184070
+        }
+    },
+    {
+        "name": "delta",
+        "players": [
+            {
+                "name": "Timo",
+                "id": 319781199910535170
+            },
+            {
+                "name": "Elric",
+                "id": 707269592174690354
+            },
+            {
+                "name": "Lucy",
+                "id": 607887838658297874
+            }
+        ],
+        "channel": {
+            "name": "delta",
+            "id": 1058827105166700584
+        }
+    },
+    {
+        "name": "echo",
+        "players": [
+            {
+                "name": "Frederic",
+                "id": 774661552603267132
+            },
+            {
+                "name": "Noah",
+                "id": 1067376649953357894
+            },
+            {
+                "name": "Lea",
+                "id": 724951300806279210
+            }
+        ],
+        "channel": {
+            "name": "echo",
+            "id": 1058827120442359920
+        }
+    },
+    {
+        "name": "foxtrott",
+        "players": [
+            {
+                "name": "Leandro",
+                "id": 1079855346979442850
+            },
+            {
+                "name": "Dennis",
+                "id": 713069751164731463
+            },
+            {
+                "name": "Moritz",
+                "id": 428900377195315231
+            }
+        ],
+        "channel": {
+            "name": "foxtrott",
+            "id": 1058827148087009410
+        }
+    }
+]
