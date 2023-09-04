@@ -169,9 +169,9 @@ class Team:
 
     def return_challenges(self) -> str:
         lines = '--------------------------------------------'
-        out = f"**Eui Challenges:** \n{lines}\n"
-        for challenge in self.open_challenges:
-            out += f"{challenge}\n{lines}\n"
+        out = f"# Eui Challenges:\n"
+        for num, challenge in enumerate(self.open_challenges):
+            out += f"### {num + 1}: {challenge}\n"
         out += f'\n\n-=[ **Aktuells Chopfgeld**: {self.bounty} Pünkt ]=-\n'
         return out
 
