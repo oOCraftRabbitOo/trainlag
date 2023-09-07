@@ -72,6 +72,9 @@ async def on_ready() -> None:
         print(server.name)
     print('------\n')
 
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def 
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -134,7 +137,7 @@ async def setup(ctx: commands.Context) -> None:
     await ctx.send('Setup fertig. Vill Spass!')
 
 
-@bot.command()
+@bot.command(aliases=['häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
 async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
     global teams
 
@@ -202,7 +205,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
 
 
-@bot.command()
+@bot.command(aliases=['abschlüsse', 'done', 'challenge', 'abschliessen'])
 async def complete(ctx: commands.Context, challenge_id: int) -> None:
     await setup_check(ctx)
     # Only runnable by runners
@@ -316,7 +319,7 @@ async def sync(ctx: commands.Context) -> None:
             elif not catcher_role in member.roles and team.is_catcher:
                 await member.edit(roles=member.roles + [catcher_role])
 
-@bot.command()
+@bot.command(aliases=['chopfgeld', 'kopfgeld', 'chopfgäld', 'wievilfängerhaniamhals', 'kopfgäld'])
 async def bounty(ctx: commands.Context) -> None:
     output = "Chopfgelder:"
     bounties = {team.name: team.bounty for team in teams if not team.is_catcher}
