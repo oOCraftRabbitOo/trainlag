@@ -95,6 +95,8 @@ async def assign(ctx: commands.Context, *args):
 
     assigned_players = [player for tihm in team_list for player in tihm['players']]
     for player in players:
+        print(player.name)
+    for player in players:
         for pleier in player_list:
             if player == pleier: break
         else:
