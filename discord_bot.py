@@ -5,9 +5,7 @@ from class_team import generate_teams, print_teams, Team
 from config import *
 import json
 
-intents = discord.Intents.default()
-intents.messages = True
-intents.members = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'), intents=intents)
 setup_complete = False  # Run setup to set to True
