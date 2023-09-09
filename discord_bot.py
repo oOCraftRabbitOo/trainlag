@@ -88,7 +88,7 @@ async def assign(ctx: commands.Context, *args):
     players = args[1:]
 
     for tihm in team_list:
-        if team == tihm.name: break
+        if team == tihm["name"]: break
     else:
         await ctx.send('Error: Team not found :(')
         raise Exception('Team not found')
