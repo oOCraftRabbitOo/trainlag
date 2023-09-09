@@ -195,7 +195,7 @@ def generate_teams(num_catchers: int) -> list[Team]:
         if len(raw_team['players']) == 0:
             raise Exception(f'no players found in team {name}')
         for raw_player in raw_team['players']:
-            print(f"Raw Player: {raw_player} ({raw_player.type()}), Raw Players: {raw_players} ({raw_players.type()})")
+            print(f"Raw Player: {raw_player} ({type(raw_player)}), Raw Players: {raw_players} ({type(raw_players)})")
             players.append(Player(raw_player['name'], raw_player['id']))
 
         #get the channel
