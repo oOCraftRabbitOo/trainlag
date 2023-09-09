@@ -105,7 +105,7 @@ async def assign(ctx: commands.Context, *args):
                 if player in tihm['players']:
                     tihm['players'].remove(player)
         for tihm in team_list:
-            if tihm.name == team:
+            if tihm["name"] == team:
                 tihm['players'].append(player)
 
     with open(TEAM_FILE, 'w') as f:
