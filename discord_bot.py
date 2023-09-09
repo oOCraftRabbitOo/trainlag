@@ -6,7 +6,7 @@ from config import *
 import json
 
 intents = discord.Intents.default()
-intents.message = True
+intents.messages = True
 intents.members = True
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'), intents=intents)
