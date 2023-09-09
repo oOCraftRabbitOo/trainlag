@@ -5,7 +5,7 @@ from class_player import Player
 # ==============
 # team compositions and channels
 TEAM_FILE = 'test_teams.json'
-PLAYER_FILE = 'players.json'
+PLAYER_FILE = 'test_players.json'
 GENERAL_CHANNEL = 1113388616845107262 
 
 # point calculation

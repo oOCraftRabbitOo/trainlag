@@ -1,6 +1,6 @@
 from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
-from config import *
+from test_config import *
 from class_channel import Channel
 from class_challenge import Challenge
 import random
@@ -168,7 +168,6 @@ class Team:
         self.backup()
 
     def return_challenges(self) -> str:
-        lines = '--------------------------------------------'
         out = f"# Eui Challenges:\n"
         for num, challenge in enumerate(self.open_challenges):
             out += f"### {num + 1}: {challenge}\n"
@@ -183,6 +182,9 @@ def generate_teams(num_catchers: int) -> list[Team]:
     #get the team composition data from the json, will be a list of dicts
     with open(TEAM_FILE, 'r') as f:
         raw_teams = json.load(f)
+
+    with open(PLAYER_FILE, 'r') as f:
+        raw_players = json.load(f)
     
     for raw_team in raw_teams:
         # get the team name
@@ -193,7 +195,7 @@ def generate_teams(num_catchers: int) -> list[Team]:
         if len(raw_team['players']) == 0:
             raise Exception(f'no players found in team {name}')
         for raw_player in raw_team['players']:
-            players.append(Player(raw_player['name'], raw_player['id']))
+            players.append(Player(raw_players[raw_player]['name'], raw_players[raw_player]['id']))
 
         #get the channel
         channel = Channel(
@@ -220,5 +222,5 @@ def print_teams(teams: list[Team]) -> None:
 
 
 if __name__ == "__main__":
-    teams = generate_teams()
+    teams = generate_teams(1)
     print_teams(teams)

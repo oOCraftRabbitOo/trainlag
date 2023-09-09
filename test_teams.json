@@ -1,100 +1,37 @@
 [
-    {
-        "name": "alpha",
-        "players": [
-            {
-                "name": "CraftRabbit",
-                "id": 289453000370421760
-            },
-            {
-                "name": "Skribbl Man",
-                "id": 796762489592741948
-            }
-        ],
-        "channel": {
-            "name": "alpha",
-            "id": 1116691418904281128
-        }
-    },
-    {
-        "name": "bravo",
-        "players": [
-            {
-                "name": "CraftRibbit",
-                "id": 505760247789387776
-            }
-        ],
-        "channel": {
-            "name": "bravo",
-            "id": 1116691484213772381
-        }
-    },
-    {
-        "name": "charlie",
-        "players": [
-            {
-                "name": "CroftRabbit",
-                "id": 688054074637156625
-            },
-            {
-                "name": "DJ_Okovic",
-                "id": 334204120946704385
-            },
-            {
-                "name": "xXMinecraft_GamerXx",
-                "id": 863153180300017695
-            },
-            {
-                "name": "xXHobbies oder so kp",
-                "id": 714444077789347860
-            }
-        ],
-        "channel": {
-            "name": "charlie",
-            "id": 1116691495072841778
-        }
-    },
-    {
-        "name": "delta",
-        "players": [
-            {
-                "name": "KaiJu",
-                "id": 319781199910535170
-            }
-        ],
-        "channel": {
-            "name": "delta",
-            "id": 1116691505374044190
-        }
-    },
-    {
-        "name": "echo",
-        "players": [
-            {
-                "name": "Volvox",
-                "id": 354932090594394113
-            }
-        ],
-        "channel": {
-            "name": "echo",
-            "id": 1116691516774158488
-        }
-    },
-    {
-        "name": "foxtrott",
-        "players": [
-            {
-                "name": "metrogamer",
-                "id": 299564881135403008
-            },
-            {
-                "name": "mötrogamer",
-                "id": 1113465756856893462
-            }
-        ],
-        "channel": {
-            "name": "foxtrott",
-            "id": 1116691527297662986
-        }
-    }
+  {
+    "name": "alpha",
+    "players": ["CraftRabbit", "Skribbl Man"],
+    "channel": { "name": "alpha", "id": 1116691418904281128 }
+  },
+  {
+    "name": "bravo",
+    "players": ["CraftRibbit"],
+    "channel": { "name": "bravo", "id": 1116691484213772381 }
+  },
+  {
+    "name": "charlie",
+    "players": [
+      "CroftRabbit",
+      "DJ_Okovic",
+      "xXMinecraft_GamerXx",
+      "xXHobbies oder so kp"
+    ],
+    "channel": { "name": "charlie", "id": 1116691495072841778 }
+  },
+  {
+    "name": "delta",
+    "players": ["KaiJu"],
+    "channel": { "name": "delta", "id": 1116691505374044190 }
+  },
+  {
+    "name": "echo",
+    "players": ["Volvox"],
+    "channel": { "name": "echo", "id": 1116691516774158488 }
+  },
+  {
+    "name": "foxtrott",
+    "players": ["metrogamer", "m\u00f6trogamer"],
+    "channel": { "name": "foxtrott", "id": 1116691527297662986 }
+  }
 ]
