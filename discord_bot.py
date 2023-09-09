@@ -74,7 +74,8 @@ async def on_ready() -> None:
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
-async def 
+async def assign(ctx: commands.Context):
+    pass
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
