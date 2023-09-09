@@ -124,14 +124,10 @@ async def add_players(ctx: commands.Context, *players):
         raise Exception('game running')
     with open(PLAYER_FILE, 'r') as f:
         player_list = json.load(f)
-    print(player_list)
     player_ids = [player['id'] for player in player_list]
-    print(player_ids)
-    print(players)
     
     guild_players = []
     for player in players:
-        print(player)
         guild_player = ctx.guild.get_member_named(player)
         if guild_player is None:
             await ctx.send(f'Error: Player "{player}" not found :(')
