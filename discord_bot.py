@@ -2,7 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
-from test_config import *
+from config import *
 import json
 
 bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'))
@@ -88,7 +88,7 @@ async def assign(ctx: commands.Context, *args):
     for tihm in team_list:
         if team == tihm.name: break
     else:
-        ctx.send('Error: Team not found :(')
+        await ctx.send('Error: Team not found :(')
         raise Exception('Team not found')
 
     assigned_players = [player for tihm in team_list for player in tihm['players']]
@@ -96,7 +96,7 @@ async def assign(ctx: commands.Context, *args):
         for pleier in player_list:
             if player == pleier: break
         else:
-            ctx.send(f'Error, Player "{player}" not found')
+            await ctx.send(f'Error, Player "{player}" not found')
             raise Exception(f'Player "{player}" not found')
         if player in assigned_players:
             for tihm in team_list:
@@ -109,7 +109,7 @@ async def assign(ctx: commands.Context, *args):
     with open(TEAM_FILE, 'w') as f:
         json.dump(team_list, f)
 
-    ctx.send(f'added players {players} to team {team} without issue')
+    await ctx.send(f'added players {players} to team {team} without issue')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -122,7 +122,7 @@ async def add_players(ctx: commands.Context, *players):
     for player in players:
         guild_player = ctx.guild.get_member(player)
         if guild_player is None:
-            ctx.send(f'Error: Player "{player}" not found :(')
+            await ctx.send(f'Error: Player "{player}" not found :(')
             raise Exception(f'Player "{player}" not found')
         guild_players.append((player, guild_player))
 
@@ -133,7 +133,7 @@ async def add_players(ctx: commands.Context, *players):
     with open(PLAYER_FILE, 'w') as f:
         json.dump(player_list, f)
 
-    ctx.send('Spieler wurden hinzugefügt.')
+    await ctx.send('Spieler wurden hinzugefügt.')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)

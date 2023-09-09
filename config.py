@@ -4,8 +4,9 @@ from class_player import Player
 # = Main Stuff =
 # ==============
 # team compositions and channels
-TEAM_FILE = 'teams.json'
-GENERAL_CHANNEL = 1080162053202923621
+TEAM_FILE = 'test_teams.json'
+PLAYER_FILE = 'test_players.json'
+GENERAL_CHANNEL = 1113388616845107262 
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.1
