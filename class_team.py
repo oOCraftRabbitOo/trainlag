@@ -19,7 +19,7 @@ class Team:
         self.name = name
         self.is_catcher = is_catcher
         self.points = 0
-        self.bounty = BOUNTY_BASE_POINTS
+        self.bounty = BOUNTY_START_POINTS
         self.completed_creative_challenges = []  # ids
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
