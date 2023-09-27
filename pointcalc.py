@@ -37,6 +37,18 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
     return randomly_adjust(value)
 
 
-def pointcalc_place(kaffness, grade) -> int:
+def pointcalc_place(kaffness: int, grade: int) -> int:
     points = POINTS_PER_KAFFNESS * kaffness + POINTS_PER_GRADE * grade
+    return randomly_adjust(points)
+
+def pointcalc_zone(zone: int) -> int:
+    return 0
+
+def pointcalc_specific(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int):
+    points = 0
+    points += POINTS_PER_KAFFNESS * kaffness
+    points += POINTS_PER_GRADE * grade
+    points += pointcalc_zone(zone)
+    points += reps * ppr
+    points += challenge_points
     return randomly_adjust(points)

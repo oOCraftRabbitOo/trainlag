@@ -146,6 +146,7 @@ async def add_players(ctx: commands.Context, *players):
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def setup(ctx: commands.Context) -> None:
+    # ensure that setup doesn't run mutiple times at once
     print('\n\n===\nStarting setup\n----')
     print('checking whether setup is already done or in progress')
     global setup_complete
@@ -165,13 +166,14 @@ async def setup(ctx: commands.Context) -> None:
         raise Exception('No catcher role found')
     print(f'the type of catcher_role is {type(catcher_role)}')
     
+    # generate the teams
     global teams
     print(f'generating teams with {NUM_CATCHERS} catchers')
     teams = generate_teams(num_catchers=NUM_CATCHERS)
     print_teams(teams)
 
-    print('removing catcher roles')
     # Remove catcher roles
+    print('removing catcher roles')
     player_ids = [player.id for team in teams for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
@@ -180,8 +182,8 @@ async def setup(ctx: commands.Context) -> None:
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
         print(f'catcher role of {member} removed')
 
-    print('adding catcher roles')
     # Add catcher roles to all catchers
+    print('adding catcher roles')
     for team in teams:
         if team.is_catcher:
             for player in team.players:
@@ -191,8 +193,8 @@ async def setup(ctx: commands.Context) -> None:
                 await member.edit(roles=member.roles + [catcher_role])
                 print(f'catcher role added to {member}')
 
-    print('generate and send challenges')
     # Generate and send challenges to all non-catcher Teams
+    print('generate and send challenges')
     non_catchers = [team for team in teams if not team.is_catcher]
     for team in non_catchers:
         team_channel = bot.get_channel(team.channel.id)
