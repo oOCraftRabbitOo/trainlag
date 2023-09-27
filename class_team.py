@@ -51,6 +51,9 @@ class Team:
     def generate_place_challenge(self) -> Challenge:
         # Randomly select unvisited place (int)
         place = random.randint(0, place_challenges_amount - 1)
+        if len(self.places_visited) == place_challenges_amount:
+            self.places_visited = []
+            print(f'Oh shit, ran out of places, aww man, team {self}')
         while place in self.places_visited:
             place = random.randint(0, place_challenges_amount - 1)
 
