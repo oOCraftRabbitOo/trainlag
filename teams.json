@@ -101,7 +101,7 @@
         }
     },
     {
-        "name": "foxtrott",
+        "name": "foxtrot",
         "players": [
             {
                 "name": "Leandro",
@@ -140,6 +140,24 @@
         "channel": {
             "name": "guete-abig",
             "id": 1156642390539501638
+        }
+    },
+    
+    {
+        "name": "h0i",
+        "players": [
+            {
+                "name": "Leandro",
+                "id": 1079855346979442850
+            },
+            {
+                "name": "Dennis",
+                "id": 713069751164731463
+            }
+        ],
+        "channel": {
+            "name": "h0i",
+            "id": 1157040466097872957
         }
     }
 ]
