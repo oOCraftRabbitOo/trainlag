@@ -395,7 +395,9 @@ async def bounty(ctx: commands.Context) -> None:
     sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
     for team, bounty in reversed(sorted_teams_by_bounty):
         output += f"\nS Team **{team}** hät es Chopfgeld vo **{bounty}** uf sich"
-    await ctx.send(output)
+
+    general_channel = bot.get_channel(GENERAL_CHANNEL)
+    await general_channel.send(output)
 
 @bot.command(aliases=['punkte', 'ranking', 'rangliste', 'pünkt', 'ranglischte'])
 async def points(ctx: commands.Context) -> None:
@@ -404,7 +406,9 @@ async def points(ctx: commands.Context) -> None:
     sorted_teams_by_points = sorted(pointses.items(), key=lambda x:x[1])
     for team, points in reversed(sorted_teams_by_points):
         output += f"\nS Team **{team}** hät momentan **{points}**."
-    await ctx.send(output)
+        
+    general_channel = bot.get_channel(GENERAL_CHANNEL)
+    await general_channel.send(output)
 
 # Load the token from the .token file
 token = ''
