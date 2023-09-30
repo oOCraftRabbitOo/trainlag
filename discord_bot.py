@@ -2,7 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
-from config import *
+from test_config import *
 import json
 
 intents = discord.Intents.all()

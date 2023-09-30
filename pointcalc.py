@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from config import *
+from test_config import *
 
 
 def randomly_adjust(value: int) -> int:
