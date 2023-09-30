@@ -1,6 +1,23 @@
 import random
 import numpy as np
 from config import *
+import pandas as pd
+
+# Load CSV for Zonic Kaffness
+zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRhpVCJ3bps5pBJ0nhmjmSlcDndXXbE-65rbxvfHjtq_9ylBL9fsMyC5fSfBmarR7DSfpwwgTy_qiKc/pub?gid=0&single=true&output=csv")
+
+def calculate_zonic_kaffness(row):
+    connected_zones = int(row['num conn zones'])
+    connections = int(row['num connections'])
+    train_through = True if row['train through']) == "TRUE" else False
+    mongus = True if row['Mongus']) == "TRUE" else False
+    
+    zonic_kaffness = (6 - connected_zones) * 15 + (6 - connections ** 0.5) * 25 + (0 if train_through else 30) + (50 if mongus else 0)
+    
+    return zonic_kaffness
+
+# Create an empty dictionary to store the results
+zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row)}
 
 
 def randomly_adjust(value: int) -> int:
