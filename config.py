@@ -2,9 +2,9 @@
 # = Main Stuff =
 # ==============
 # team compositions and channels
-TEAM_FILE = 'zoller_teams.json'
-PLAYER_FILE = 'zoller_players.json'
-GENERAL_CHANNEL = 1150146980509667478
+TEAM_FILE = 'teams.json'
+PLAYER_FILE = 'players.json'
+GENERAL_CHANNEL = 1157594572931727412 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.1
