@@ -12,7 +12,7 @@ def calculate_zonic_kaffness(row):
     train_through = True if row['train through'] == "TRUE" else False
     mongus = True if row['Mongus'] == "TRUE" else False
     
-    zonic_kaffness = (6 - connected_zones) * POINTS_PER_CONNECTED_ZONE_LESS_THAN_6 + (6 - connections ** 0.5) * POINTS_PER_BAD_CONNECTIVITY_INDEX + (0 if train_through else POINTS_FOR_NO_TRAIN) + (50 if POINTS_FOR_MONGUS else 0)
+    zonic_kaffness = (6 - connected_zones) * POINTS_PER_CONNECTED_ZONE_LESS_THAN_6 + (6 - connections ** 0.5) * POINTS_PER_BAD_CONNECTIVITY_INDEX + (0 if train_through else POINTS_FOR_NO_TRAIN) + (POINTS_FOR_MONGUS if mongus else 0)
     
     return zonic_kaffness
 
