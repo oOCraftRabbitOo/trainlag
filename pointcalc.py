@@ -61,11 +61,13 @@ def pointcalc_place(kaffness: int, grade: int) -> int:
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc_specific(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int):
+def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int, bias: float) -> int:
     points = 0
     points += POINTS_PER_KAFFNESS * kaffness
     points += POINTS_PER_GRADE * grade
-    points += pointcalc_zone(zone)
+    points += pointcalc_zone(zone) if zone is not None else 0
     points += reps * ppr
     points += challenge_points
+    points *= bias
+    points = int(points)
     return randomly_adjust(points)

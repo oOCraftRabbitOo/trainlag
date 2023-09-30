@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 from datetime import date
-from pointcalc import pointcalc_creative, pointcalc_place, pointcalc_specific
+from pointcalc import pointcalc_creative, pointcalc_place, pointcalc
 from class_challenge import Challenge
 from numpy import isnan
 
@@ -11,19 +11,56 @@ kaffs_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/13DlG2BSQfolPC
 specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1687098896&single=true&output=csv')
 unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=563784869&single=true&output=csv')
 
-# For both sheets generate their lengths = amount of different challenges
-creative_challenges_amount = len(challenge_sheet)
-place_challenges_amount = len(kaffs_sheet)
-specific_challenges_amount = len(specific_sheet)
-unspecific_challenges_amount = len(unspecific_sheet)
-
 # Generate zone lists
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
-def generate_specific_challenge(index):
-    # get data
-    row = specific_sheet.loc[index]
+class RawChallenge:
+    def __init__(self, title: str, description: str, points: int, kaffness: int = 0, grade: int = 0, zone: int = None, bias_sat: float = 1.0, bias_sun: float = 1.0, min_reps: int = 0, max_reps: int = 0, ppr: int = 0, zoneable: bool = False):
+        self.title = title
+        self.description = description
+        self.points = points
+        self.kaffness = kaffness
+        self.grade = grade
+        self.zone = zone
+        self.bias_sat = bias_sat
+        self.bias_sun = bias_sun
+        self.min_reps = min_reps
+        self.max_reps = max_reps
+        self.ppr = ppr
+        self.zoneable = zoneable
+
+    def challenge(self, zoned: bool, id: int, specific: bool):
+        zone = self.zone
+
+        reps = random.randint(self.min_reps, self.max_reps)
+
+        if self.zoneable and zoned:
+            zone = random.choice(zones)
+
+        if date.today().weekday() == 6:
+            bias = self.bias_sun
+        else:
+            bias = self.bias_sat
+
+        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias)
+
+        if not (self.zoneable and zoned):
+            zone = random.choice(zones)
+
+        description = self.description
+        description.replace('%r', str(reps))
+        description.replace('%z', str(zone))
+        if zoned and self.zoneable:
+            description += f' Damit ihr Pünkt überchömed, mached das I de Zone {zone}.'
+        description = description + f' *{points} Pünkt*'
+        
+        return Challenge(self. title, description, points, id, specific)
+
+specific_challenges = []
+
+for i in range(len(specific_sheet)):
+    row = specific_sheet.loc[i]
     place = row['Ort']
     challenge = row['Challenge']
     kaffness = row['Kaffskala']
@@ -58,19 +95,20 @@ def generate_specific_challenge(index):
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
-    reps = random.randint(min_reps, max_reps)
     ppr = int(ppr) if not isnan(ppr) else 0
 
-    # Calculate points
-    points = pointcalc_specific(kaffness, grade, challenge_points, ppr, reps, zone)
-
-    # make description
-    description = raw_description + f' *{points} Pünkt*'
-    description.replace('%r', str(reps))
-
     # Return challenge
-    return Challenge(title, description, points, index, True)
+    specific_challenges.append(RawChallenge(title, raw_description, challenge_points, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
 
+# For both sheets generate their lengths = amount of different challenges
+creative_challenges_amount = len(challenge_sheet)
+place_challenges_amount = len(kaffs_sheet)
+specific_challenges_amount = len(specific_challenges)
+unspecific_challenges_amount = len(unspecific_sheet)
+
+
+def generate_specific_challenge(index):
+    return specific_challenges[index].challenge(True, index, True)
 
 def generate_unspecific_challenge(index):
     return generate_creative_challenge(index, specific_zone_chance=0.0, specific=False)
