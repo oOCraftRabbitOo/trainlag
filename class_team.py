@@ -31,7 +31,7 @@ class Team:
         names = ""
         for player in self.players:
             names += player.name + " "
-        strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel.name}, {self.channel.id}, \npoints: {self.points}, \ncompCChals: {self.completed_creative_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nbounty: {self.bounty}, \nmembers: ({names[:-1]})'
+        strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel.name}, {self.channel.id}, \npoints: {self.points}, \ncompCChals: {self.completed_unspecific_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nbounty: {self.bounty}, \nmembers: ({names[:-1]})'
         if self.is_catcher:
             strink += '\n[Fänger]'
         return strink
@@ -79,7 +79,7 @@ class Team:
     def generate_creative_challenge(self) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, creative_challenges_amount - 1)
-        while index in self.completed_creative_challenges:
+        while index in self.completed_unspecific_challenges:
             index = random.randint(0, creative_challenges_amount - 1)
 
         # Generate challenge and return it
@@ -115,7 +115,7 @@ class Team:
         self.completed_challenges.append(completed_challenge)
 
         if not completed_challenge.specific:
-            self.completed_creative_challenges.append(completed_challenge.id)
+            self.completed_unspecific_challenges.append(completed_challenge.id)
         elif completed_challenge.specific:
             self.places_visited.append(completed_challenge.id)
 
@@ -140,7 +140,7 @@ class Team:
         uncompleted_challenge = self.completed_challenges.pop(index)
 
         if not uncompleted_challenge.specific:
-            self.completed_creative_challenges.remove(uncompleted_challenge.id)
+            self.completed_unspecific_challenges.remove(uncompleted_challenge.id)
         elif uncompleted_challenge.specific:
             self.places_visited.remove(uncompleted_challenge.id)
 
@@ -178,7 +178,7 @@ class Team:
         self.is_catcher = loaded_team.is_catcher
         self.points = loaded_team.points
         self.bounty = loaded_team.bounty
-        self.completed_creative_challenges = loaded_team.completed_creative_challenges
+        self.completed_unspecific_challenges = loaded_team.completed_unspecific_challenges
         self.places_visited = loaded_team.places_visited
         self.completed_challenges = loaded_team.completed_challenges
         self.open_challenges = loaded_team.open_challenges
