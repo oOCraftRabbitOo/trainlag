@@ -20,6 +20,8 @@ unspecific_challenges_amount = creative_challenges_amount
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
+zones.sort()
+print(zones)
 
 def generate_specific_challenge(index):
     # get data
@@ -72,10 +74,10 @@ def generate_specific_challenge(index):
 
 
 def generate_unspecific_challenge(index):
-    pass
+    return generate_creative_challenge(index, specific_zone_chance=0.0, specific=False)
 
 
-def generate_creative_challenge(index, specific_zone_chance=0.25):
+def generate_creative_challenge(index, specific_zone_chance=0.25, specific='creative'):
     row = challenge_sheet.loc[index]
     description = row['description']
     # Generate a new random number between 1 and 10
@@ -106,7 +108,7 @@ def generate_creative_challenge(index, specific_zone_chance=0.25):
     else:
         description = f"{description} *{points} Pünkt*"
 
-    return Challenge(title, description, points, index, "creative")
+    return Challenge(title, description, points, index, specific)
 
 
 def generate_place_challenge(index: int) -> Challenge:

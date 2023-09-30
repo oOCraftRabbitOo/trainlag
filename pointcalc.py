@@ -42,7 +42,7 @@ def pointcalc_place(kaffness: int, grade: int) -> int:
     return randomly_adjust(points)
 
 def pointcalc_zone(zone: int) -> int:
-    return 0
+    return zonic_kaffness_dict[zone]
 
 def pointcalc_specific(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int):
     points = 0
