@@ -412,11 +412,11 @@ async def points(ctx: commands.Context) -> None:
 
 @bot.command(aliases=['hunters', 'fänger', 'jäger', 'decirilischenfengermitewillamitumlautischdoof'])
 async def catchers(ctx: commands.Context) -> None:
-    output = "Das sind d Fänger: "
+    output = "Das sind d Fänger: \n"
     catchers = [team for team in teams if team.is_catcher]
     for catcher in catchers:
         pleiers = [pleier.name for pleier in catcher.players]
-        output += f"**{catcher}** {pleiers}" # Wunderschönä Code ich weiss
+        output += f"**{catcher}** {pleiers}\n" # Wunderschönä Code ich weiss
         
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)

@@ -76,6 +76,7 @@ class Team:
         # Generate challenge and return it
         return generate_place_challenge(place)
 
+    '''
     def generate_creative_challenge(self) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, creative_challenges_amount - 1)
@@ -84,12 +85,13 @@ class Team:
 
         # Generate challenge and return it
         return generate_creative_challenge(index)
+    '''
 
     def generate_challenges(self) -> None:
         time = datetime.datetime.now()
 
         if (time.hour < 16 and time.minute < 30) or 2 + 2 != 5:
-            self.open_challenges = [self.generate_specific_challenge(), None, self.generate_creative_challenge()]
+            self.open_challenges = [self.generate_specific_challenge(), None, self.generate_unspecific_challenge()]
     
             # Randomly select a specific challenge that's neither completed nor active
             challenge = self.generate_specific_challenge()

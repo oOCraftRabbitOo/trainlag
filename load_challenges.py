@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import date
 from pointcalc import pointcalc_creative, pointcalc_place, pointcalc_specific
 from class_challenge import Challenge
+from numpy import isnan
 
 # Load the CSV files from the Google Sheets
 challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
@@ -42,29 +43,30 @@ def generate_specific_challenge(index):
         bias = bias_sun
     else:
         bias = bias_sat
-    if title_override:
+    if type(title_override) == str:
         title = title_override
     else:
         title = f'Usflug uf {place}'
-    if challenge:
+    if type(challenge) == str:
         raw_description = challenge
     else:
-        raw_description = f'gönd nach {place}.'
+        raw_description = f'Gönd nach {place}.'
     kaffness = int(kaffness)
     grade = (int(grade) if isinstance(grade, int) else kaffness)  # Ignores empty cells, '-' and '?'
     zone = int(zone)
     bias = float(bias)
-    challenge_points = int(challenge_points) if challenge_points else 0
-    min_reps = int(min_reps) if min_reps else 0
-    max_reps = int(max_reps) if max_reps else 0
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
     reps = random.randint(min_reps, max_reps)
-    ppr = int(ppr) if ppr else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
 
     # Calculate points
     points = pointcalc_specific(kaffness, grade, challenge_points, ppr, reps, zone)
 
     # make description
     description = raw_description + f' *{points} Pünkt*'
+    description.replace('%r', str(reps))
 
     # Return challenge
     return Challenge(title, description, points, index, True)
