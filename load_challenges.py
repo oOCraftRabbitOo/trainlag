@@ -7,14 +7,14 @@ from class_challenge import Challenge
 # Load the CSV files from the Google Sheets
 challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
 kaffs_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/13DlG2BSQfolPCsoj2LBREeIUgThji_zgeE_q-gHQSL4/export?format=csv')
-specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSvjbPbShJ3NVJ6Jbo6brOePWLePxI3F2t1y8mlEVJeiiEqTKiYNAdkTxFAPQbKP-o2zs9tb5oLLDud/pub?gid=0&single=true&output=csv')
-unspecific_sheet = challenge_sheet.copy()
+specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1687098896&single=true&output=csv')
+unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=563784869&single=true&output=csv')
 
 # For both sheets generate their lengths = amount of different challenges
 creative_challenges_amount = len(challenge_sheet)
 place_challenges_amount = len(kaffs_sheet)
 specific_challenges_amount = len(specific_sheet)
-unspecific_challenges_amount = creative_challenges_amount
+unspecific_challenges_amount = len(unspecific_sheet)
 
 # Generate zone lists
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
@@ -26,8 +26,8 @@ def generate_specific_challenge(index):
     place = row['Ort']
     challenge = row['Challenge']
     kaffness = row['Kaffskala']
-    grade = row['öV Güteklasse']
-    zone = row['zone']
+    grade = row['ÖV Güteklasse']
+    zone = row['Zone']
     bias_sat = row['Bias Sat']
     bias_sun = row['Bias Sun']
     title_override = row['Title Override']
@@ -75,7 +75,7 @@ def generate_unspecific_challenge(index):
 
 
 def generate_creative_challenge(index, specific_zone_chance=0.25, specific='creative'):
-    row = challenge_sheet.loc[index]
+    row = unspecific_sheet.loc[index] # ALARM, FUULE CODER (und au vllt e chli dumm) TODO
     description = row['description']
     # Generate a new random number between 1 and 10
     random_number = random.randint(row['min'], row['max'])
