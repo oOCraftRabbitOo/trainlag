@@ -9,8 +9,8 @@ zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PA
 def calculate_zonic_kaffness(row):
     connected_zones = int(row['num conn zones'])
     connections = int(row['num connections'])
-    train_through = True if row['train through']) == "TRUE" else False
-    mongus = True if row['Mongus']) == "TRUE" else False
+    train_through = True if row['train through'] == "TRUE" else False
+    mongus = True if row['Mongus'] == "TRUE" else False
     
     zonic_kaffness = (6 - connected_zones) * 15 + (6 - connections ** 0.5) * 25 + (0 if train_through else 30) + (50 if mongus else 0)
     
