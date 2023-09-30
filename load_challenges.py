@@ -143,6 +143,24 @@ for i in range(len(zoneable_sheet)):
     specific_challenges.append(raw_challenge_to_append)
     unspecific_challenges.append(raw_challenge_to_append)
 
+for i in range(len(unspecific_sheet)):
+    row = unspecific_sheet.loc[i]
+    description = row['description']
+    challenge_points = row['points']
+    min_reps = row["min"]
+    max_reps = row['max']
+    ppr = row['ppr']
+    fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+
+    # Refine data
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
+    
+    # Return challenge
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+
 # For both sheets generate their lengths = amount of different challenges
 creative_challenges_amount = len(challenge_sheet)
 place_challenges_amount = len(kaffs_sheet)
