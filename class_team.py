@@ -83,15 +83,26 @@ class Team:
         return generate_creative_challenge(index)
 
     def generate_challenges(self) -> None:
-        self.open_challenges = [self.generate_specific_challenge(), None, self.generate_creative_challenge()]
+        time = datetime.datetime.now()
 
-        # Randomly select a specific challenge that's neither completed nor active
-        challenge = self.generate_specific_challenge()
-        while challenge == self.open_challenges[0]:
+        if time.hour < 16 and time.minute < 30:
+            self.open_challenges = [self.generate_specific_challenge(), None, self.generate_creative_challenge()]
+    
+            # Randomly select a specific challenge that's neither completed nor active
             challenge = self.generate_specific_challenge()
+            while challenge == self.open_challenges[0]:
+                challenge = self.generate_specific_challenge()
+    
+            # Append the challenge to the open challenges
+            self.open_challenges[1] = challenge
 
-        # Append the challenge to the open challenges
-        self.open_challenges[1] = challenge
+        else:
+            self.open_challenges = [self.generate_unspecific_challenge()]
+            for _ in range(2):
+                challenge = self.generate_unspecific_challenge()
+                while challenge in self.open_challenges:
+                    challenge = self.generate_unspecific_challenge()
+                self.open_challenges.append(challenge)
 
     def complete_challenge(self, index: int) -> None:
         # Index should be 1, 2 or 3
