@@ -9,14 +9,20 @@ from numpy import isnan
 challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
 kaffs_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/13DlG2BSQfolPCsoj2LBREeIUgThji_zgeE_q-gHQSL4/export?format=csv')
 specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1687098896&single=true&output=csv')
+creative_specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1542871180&single=true&output=csv')
 unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=563784869&single=true&output=csv')
+zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=521408877&single=true&output=csv')
+
+# Make empty lists for specific and non-specific challenges
+specific_challenges = []
+unspecific_challenges = []
 
 # Generate zone lists
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
 class RawChallenge:
-    def __init__(self, title: str, description: str, points: int, kaffness: int = 0, grade: int = 0, zone: int = None, bias_sat: float = 1.0, bias_sun: float = 1.0, min_reps: int = 0, max_reps: int = 0, ppr: int = 0, zoneable: bool = False):
+    def __init__(self, title: str, description: str, points: int, kaffness: int = 0, grade: int = 0, zone: int = None, bias_sat: float = 1.0, bias_sun: float = 1.0, min_reps: int = 0, max_reps: int = 0, ppr: int = 0, zoneable: bool = False, fixed: bool = False):
         self.title = title
         self.description = description
         self.points = points
@@ -29,6 +35,7 @@ class RawChallenge:
         self.max_reps = max_reps
         self.ppr = ppr
         self.zoneable = zoneable
+        self.fixed = fixed
 
     def challenge(self, zoned: bool, id: int, specific: bool):
         zone = self.zone
@@ -56,8 +63,6 @@ class RawChallenge:
         description = description + f' *{points} Pünkt*'
         
         return Challenge(self. title, description, points, id, specific)
-
-specific_challenges = []
 
 for i in range(len(specific_sheet)):
     row = specific_sheet.loc[i]
@@ -99,6 +104,44 @@ for i in range(len(specific_sheet)):
 
     # Return challenge
     specific_challenges.append(RawChallenge(title, raw_description, challenge_points, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
+
+for i in range(len(creative_specific_sheet)):
+    row = creative_specific_sheet.loc[i]
+    description = row['description']
+    challenge_points = row['points']
+    min_reps = row["min"]
+    max_reps = row['max']
+    ppr = row['ppr']
+    fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+
+    # Refine data
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
+    
+    # Return challenge
+    specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+
+for i in range(len(zoneable_sheet)):
+    row = zoneable_sheet.loc[i]
+    description = row['description']
+    challenge_points = row['points']
+    min_reps = row["min"]
+    max_reps = row['max']
+    ppr = row['ppr']
+    fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+
+    # Refine data
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
+    
+    # Return challenge
+    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed)
+    specific_challenges.append(raw_challenge_to_append)
+    unspecific_challenges.append(raw_challenge_to_append)
 
 # For both sheets generate their lengths = amount of different challenges
 creative_challenges_amount = len(challenge_sheet)
