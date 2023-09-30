@@ -1,4 +1,4 @@
-from load_challenges import generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
+from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount, generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
 from class_player import Player
 from config import *
 from class_channel import Channel
@@ -20,7 +20,7 @@ class Team:
         self.is_catcher = is_catcher
         self.points = 0
         self.bounty = BOUNTY_START_POINTS
-        self.completed_creative_challenges = []  # ids
+        self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
@@ -48,6 +48,22 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
+    def generate_specific_challenge(self) -> Challenge:
+        place = random.randint(0, specific_challenges_amount - 1)
+        while place in self.places_visited:
+            place = random.randint(0, place_challenges_amount - 1)
+    
+        return generate_specific_challenge(place)
+        
+    def generate_unspecific_challenge(self) -> Challenge:
+        # Randomly select incomplete challenge (int)
+        index = random.randint(0, unspecific_challenges_amount - 1)
+        while index in self.completed_unspecific_challenges:
+            index = random.randint(0, unspecific_challenges_amount - 1)
+
+        # Generate challenge and return it
+        return generate_unspecific_challenge(index)
+
     def generate_place_challenge(self) -> Challenge:
         # Randomly select unvisited place (int)
         place = random.randint(0, place_challenges_amount - 1)
@@ -67,20 +83,15 @@ class Team:
         return generate_creative_challenge(index)
 
     def generate_challenges(self) -> None:
-        self.open_challenges = [self.generate_place_challenge(), self.generate_creative_challenge()]
-        if random.random() < 0.5:
-            # Randomly select a place challenge that's neither completed nor active
-            challenge = self.generate_place_challenge()
-            while challenge == self.open_challenges[0]:
-                challenge = self.generate_place_challenge()
-        else:
-            # Randomly select a creative challenge that's neither completed nor active
-            challenge = self.generate_creative_challenge()
-            while challenge == self.open_challenges[1]:
-                challenge = self.generate_creative_challenge()
+        self.open_challenges = [self.generate_specific_challenge(), None, self.generate_creative_challenge()]
+
+        # Randomly select a specific challenge that's neither completed nor active
+        challenge = self.generate_specific_challenge()
+        while challenge == self.open_challenges[0]:
+            challenge = self.generate_specific_challenge()
 
         # Append the challenge to the open challenges
-        self.open_challenges.append(challenge)
+        self.open_challenges[1] = challenge
 
     def complete_challenge(self, index: int) -> None:
         # Index should be 1, 2 or 3
@@ -89,9 +100,9 @@ class Team:
         # Save challenge completion
         self.completed_challenges.append(completed_challenge)
 
-        if completed_challenge.type == 'creative':
+        if not completed_challenge.specific:
             self.completed_creative_challenges.append(completed_challenge.id)
-        elif completed_challenge.type == 'place':
+        elif completed_challenge.specific:
             self.places_visited.append(completed_challenge.id)
 
         # Grant points
@@ -114,9 +125,9 @@ class Team:
         # Get challenge to uncomplete and remove it from completed challenges
         uncompleted_challenge = self.completed_challenges.pop(index)
 
-        if uncompleted_challenge.type == 'creative':
+        if not uncompleted_challenge.specific:
             self.completed_creative_challenges.remove(uncompleted_challenge.id)
-        elif uncompleted_challenge.type == 'place':
+        elif uncompleted_challenge.specific:
             self.places_visited.remove(uncompleted_challenge.id)
 
         # Deduct points
