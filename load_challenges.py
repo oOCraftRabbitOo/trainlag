@@ -20,9 +20,6 @@ unspecific_challenges_amount = creative_challenges_amount
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
-zones.sort()
-print(zones)
-
 def generate_specific_challenge(index):
     # get data
     row = specific_sheet.loc[index]
