@@ -12,12 +12,12 @@ def calculate_zonic_kaffness(row):
     train_through = True if row['train through'] == "TRUE" else False
     mongus = True if row['Mongus'] == "TRUE" else False
     
-    zonic_kaffness = (6 - connected_zones) * 15 + (6 - connections ** 0.5) * 25 + (0 if train_through else 30) + (50 if mongus else 0)
+    zonic_kaffness = (6 - connected_zones) * POINTS_PER_CONNECTED_ZONE_LESS_THAN_6 + (6 - connections ** 0.5) * POINTS_PER_BAD_CONNECTIVITY_INDEX + (0 if train_through else POINTS_FOR_NO_TRAIN) + (50 if POINTS_FOR_MONGUS else 0)
     
     return zonic_kaffness
 
 # Create an empty dictionary to store the results
-zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row)}
+zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row) for index, row in zonic_kaffness_sheet.iterrows()}
 
 
 def randomly_adjust(value: int) -> int:
@@ -59,7 +59,7 @@ def pointcalc_place(kaffness: int, grade: int) -> int:
     return randomly_adjust(points)
 
 def pointcalc_zone(zone: int) -> int:
-    return 0
+    return zonic_kaffness_dict[zone]
 
 def pointcalc_specific(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int):
     points = 0
