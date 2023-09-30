@@ -1,163 +1,72 @@
 [
+  {
+    "name": "alpha",
+    "players": ["Aur\u00c3\u00a8le", "Roshi", "Philipp"],
+    "channel":
     {
-        "name": "alpha",
-        "players": [
-            {
-                "name": "Aurèle",
-                "id": 334204120946704385
-            },
-            {
-                "name": "Philipp",
-                "id": 1091077968434044929
-            }
-        ],
-        "channel": {
-            "name": "alpha",
-            "id": 1156641850812280924
-        }
-    },
-    {
-        "name": "bravo",
-        "players": [
-            {
-                "name": "Nelio",
-                "id": 289453000370421760
-            },
-            {
-                "name": "Simon",
-                "id": 529765758192975872
-            },
-            {
-                "name": "Ciril",
-                "id": 598945447780024360
-            }
-        ],
-        "channel": {
-            "name": "bravo",
-            "id": 1156641949453910137
-        }
-    },
-    {
-        "name": "charlie",
-        "players": [
-            {
-                "name": "Julian",
-                "id": 299564881135403008
-            },
-            {
-                "name": "Christopher",
-                "id": 803320902645317653
-            },
-            {
-                "name": "Jonatan",
-                "id": 618114675720323086
-            }
-        ],
-        "channel": {
-            "name": "charlie",
-            "id": 1156642017657503764
-        }
-    },
-    {
-        "name": "delta",
-        "players": [
-            {
-                "name": "Timo",
-                "id": 319781199910535170
-            },
-            {
-                "name": "Elric",
-                "id": 707269592174690354
-            },
-            {
-                "name": "Lucy",
-                "id": 607887838658297874
-            }
-        ],
-        "channel": {
-            "name": "delta",
-            "id": 1156642067099943005
-        }
-    },
-    {
-        "name": "echo",
-        "players": [
-            {
-                "name": "Frederic",
-                "id": 774661552603267132
-            },
-            {
-                "name": "Noah",
-                "id": 1067376649953357894
-            },
-            {
-                "name": "Lea",
-                "id": 724951300806279210
-            }
-        ],
-        "channel": {
-            "name": "echo",
-            "id": 1156642235501269043
-        }
-    },
-    {
-        "name": "foxtrot",
-        "players": [
-            {
-                "name": "Leandro",
-                "id": 1079855346979442850
-            },
-            {
-                "name": "Dennis",
-                "id": 713069751164731463
-            },
-            {
-                "name": "Moritz",
-                "id": 428900377195315231
-            }
-        ],
-        "channel": {
-            "name": "foxtrot",
-            "id": 1156642329424310372
-        }
-    },
-    {
-        "name": "guete abig",
-        "players": [
-            {
-                "name": "Leandro",
-                "id": 1079855346979442850
-            },
-            {
-                "name": "Dennis",
-                "id": 713069751164731463
-            },
-            {
-                "name": "Moritz",
-                "id": 428900377195315231
-            }
-        ],
-        "channel": {
-            "name": "guete-abig",
-            "id": 1156642390539501638
-        }
-    },
-    
-    {
-        "name": "h0i",
-        "players": [
-            {
-                "name": "Leandro",
-                "id": 1079855346979442850
-            },
-            {
-                "name": "Dennis",
-                "id": 713069751164731463
-            }
-        ],
-        "channel": {
-            "name": "h0i",
-            "id": 1157040466097872957
-        }
+      "name": "alpha",
+      "id": 1156641850812280924
     }
+  },
+  {
+    "name": "bravo",
+    "players": ["Moritz", "Ciril"],
+    "channel":
+    {
+      "name": "bravo",
+      "id": 1156641949453910137
+    }
+  },
+  {
+    "name": "charlie",
+    "players": ["Lucy", "Simon"],
+    "channel":
+    {
+      "name": "charlie", "id": 1156642017657503764
+    }
+  },
+  {
+    "name": "delta",
+    "players": ["Christopher", "Noah", "Martin"],
+    "channel":
+    {
+      "name": "delta",
+      "id": 1156642067099943005
+    }
+  },
+  {
+    "name": "echo",
+    "players": ["Leandro", "Dennis"],
+    "channel":
+    {
+      "name": "echo",
+      "id": 1156642235501269043
+    }
+  },
+  {
+    "name": "foxtrot",
+    "players": ["Luis", "Beni", "Julian"],
+    "channel":
+    {
+      "name": "foxtrot",
+      "id": 1156642329424310372
+    }
+  },
+  {
+    "name": "guete abig",
+    "players": ["Marin", "Lea", "Timo"],
+    "channel":
+    {
+      "name": "guete-abig", "id": 1156642390539501638
+    }
+  },
+  {
+    "name": "h0i",
+    "players": ["Mina", "Wiki", "Ada"],
+    "channel":
+    {
+      "name": "h0i",
+      "id": 1157040466097872957
+    }
+  }
 ]
