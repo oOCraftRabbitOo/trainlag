@@ -17,7 +17,7 @@ def calculate_zonic_kaffness(row):
     return zonic_kaffness
 
 # Create an empty dictionary to store the results
-zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row)}
+zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row) for index, row in zonic_kaffness_sheet.iterrows()}
 
 
 def randomly_adjust(value: int) -> int:
@@ -59,7 +59,7 @@ def pointcalc_place(kaffness: int, grade: int) -> int:
     return randomly_adjust(points)
 
 def pointcalc_zone(zone: int) -> int:
-    return 0
+    return zonic_kaffness_dict[zone]
 
 def pointcalc_specific(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int):
     points = 0
