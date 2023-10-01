@@ -52,7 +52,7 @@ class RawChallenge:
         else:
             bias = self.bias_sat
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed)
+        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed, self.zoneable and zoned)
 
         if not (self.zoneable and zoned):
             zone = random.choice(zones)
