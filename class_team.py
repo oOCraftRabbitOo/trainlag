@@ -1,4 +1,4 @@
-from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount, generate_creative_challenge, generate_place_challenge, creative_challenges_amount, place_challenges_amount
+from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount
 from class_player import Player
 from test_config import *
 from class_channel import Channel

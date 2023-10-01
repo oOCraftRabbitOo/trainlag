@@ -2,6 +2,7 @@ import numpy as np
 from test_config import *
 import pandas as pd
 
+print('Generating data for point calculation')
 
 # Load CSV for Zonic Kaffness
 zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRhpVCJ3bps5pBJ0nhmjmSlcDndXXbE-65rbxvfHjtq_9ylBL9fsMyC5fSfBmarR7DSfpwwgTy_qiKc/pub?gid=0&single=true&output=csv")
@@ -53,15 +54,10 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
 
     return randomly_adjust(value)
 
-
-def pointcalc_place(kaffness: int, grade: int) -> int:
-    points = POINTS_PER_KAFFNESS * kaffness + POINTS_PER_GRADE * grade
-    return randomly_adjust(points)
-
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int, bias: float) -> int:
+def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int, bias: float, fixed: bool) -> int:
     points = 0
     points += POINTS_PER_KAFFNESS * kaffness
     points += POINTS_PER_GRADE * grade
@@ -70,4 +66,5 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: 
     points += challenge_points
     points *= bias
     points = int(points)
-    return randomly_adjust(points)
+    points = points if fixed else randomly_adjust(points)
+    return points

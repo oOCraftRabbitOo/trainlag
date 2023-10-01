@@ -1,9 +1,11 @@
 import random
 import pandas as pd
 from datetime import date
-from pointcalc import pointcalc_creative, pointcalc_place, pointcalc
+from pointcalc import pointcalc
 from class_challenge import Challenge
 from numpy import isnan
+
+print('Loading challenges. This may take a while')
 
 # Load the CSV files from the Google Sheets
 challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
@@ -50,7 +52,7 @@ class RawChallenge:
         else:
             bias = self.bias_sat
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias)
+        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed)
 
         if not (self.zoneable and zoned):
             zone = random.choice(zones)
@@ -64,6 +66,9 @@ class RawChallenge:
         
         return Challenge(self. title, description, points, id, specific)
 
+print('Generating challenges')
+
+# get and add kaff challenges
 for i in range(len(specific_sheet)):
     row = specific_sheet.loc[i]
     place = row['Ort']
@@ -105,8 +110,10 @@ for i in range(len(specific_sheet)):
     # Return challenge
     specific_challenges.append(RawChallenge(title, raw_description, challenge_points, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
 
+# get and add creative specific challenges
 for i in range(len(creative_specific_sheet)):
     row = creative_specific_sheet.loc[i]
+    title = row['title']
     description = row['description']
     challenge_points = row['points']
     min_reps = row["min"]
@@ -123,8 +130,10 @@ for i in range(len(creative_specific_sheet)):
     # Return challenge
     specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
+# get and add zoneable challenges
 for i in range(len(zoneable_sheet)):
     row = zoneable_sheet.loc[i]
+    title = row['title']
     description = row['description']
     challenge_points = row['points']
     min_reps = row["min"]
@@ -139,12 +148,14 @@ for i in range(len(zoneable_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed)
+    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
     specific_challenges.append(raw_challenge_to_append)
     unspecific_challenges.append(raw_challenge_to_append)
 
+# get and add creative unspecific challenges
 for i in range(len(unspecific_sheet)):
     row = unspecific_sheet.loc[i]
+    title = row['title']
     description = row['description']
     challenge_points = row['points']
     min_reps = row["min"]
@@ -161,76 +172,12 @@ for i in range(len(unspecific_sheet)):
     # Return challenge
     unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
-# For both sheets generate their lengths = amount of different challenges
-creative_challenges_amount = len(challenge_sheet)
-place_challenges_amount = len(kaffs_sheet)
+# For both lists generate their lengths = amount of different challenges
 specific_challenges_amount = len(specific_challenges)
-unspecific_challenges_amount = len(unspecific_sheet)
-
+unspecific_challenges_amount = len(unspecific_challenges)
 
 def generate_specific_challenge(index):
     return specific_challenges[index].challenge(True, index, True)
 
 def generate_unspecific_challenge(index):
-    return generate_creative_challenge(index, specific_zone_chance=0.0, specific=False)
-
-
-def generate_creative_challenge(index, specific_zone_chance=0.25, specific='creative'):
-    row = unspecific_sheet.loc[index] # ALARM, FUULE CODER (und au vllt e chli dumm) TODO
-    description = row['description']
-    # Generate a new random number between 1 and 10
-    random_number = random.randint(row['min'], row['max'])
-
-    # Select a new random entry from the zone lists
-    random_zone = random.choice(zones)
-    random_s_bahn_zone = random.choice(s_bahn_zones)
-
-    # Create a dictionary that maps placeholders to values
-    placeholders = {
-        '%r': random_number,
-        '%z': random_zone,
-        '%s': random_s_bahn_zone
-    }
-    # Calculate points
-    points = pointcalc_creative(row['points'], row['ppr'], random_number, row['fixed'])
-
-    # Substitute the placeholders using the replace method
-    for placeholder, value in placeholders.items():
-        description = description.replace(placeholder, str(value))
-
-    title = row['title']
-
-    if random.random() < specific_zone_chance and row['zoneable'] == 1:
-        points *= 2
-        description = f"{description} Damit ihr Pünkt überchömed, mached das i de Zone {random.choice(zones)}. *{points} Pünkt*"
-    else:
-        description = f"{description} *{points} Pünkt*"
-
-    return Challenge(title, description, points, index, specific)
-
-
-def generate_place_challenge(index: int) -> Challenge:
-    row = kaffs_sheet.loc[index]
-
-    # Calculate points
-    kaffness = row['Kaffskala']
-    grade = row['Güteklasse']
-    grade = (int(grade) if isinstance(grade, int) else kaffness)  # Ignores empty cells, '-' and '?'
-    points = pointcalc_place(kaffness, grade)
-
-    # Generate title and description
-    title = f"Usflug uf {row['Ort']}"
-    description = f"Gönd nach {row['Ort']}. *{points} Pünkt*"
-
-    return Challenge(title, description, points, index, "place")
-
-
-if __name__ == "__main__":
-    # Print all place challenges, with one random configuration
-    for index in range(place_challenges_amount):
-        print(generate_place_challenge(index), end="\n\n")
-
-    # Print every creative challenge, with one random configuration
-    for index in range(creative_challenges_amount):
-        print(generate_creative_challenge(index), end="\n\n")
-
+    return unspecific_challenges[index].challenge(False, index, False)
