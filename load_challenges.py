@@ -58,8 +58,8 @@ class RawChallenge:
             zone = random.choice(zones)
 
         description = self.description
-        description.replace('%r', str(reps))
-        description.replace('%z', str(zone))
+        description = description.replace('%r', str(reps))
+        description = description.replace('%z', str(zone))
         if zoned and self.zoneable:
             description += f' Damit ihr Pünkt überchömed, mached das I de Zone {zone}.'
         description = description + f' *{points} Pünkt*'
