@@ -1,6 +1,6 @@
 from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount
 from class_player import Player
-from test_config import *
+from config import *
 from class_channel import Channel
 from class_challenge import Challenge
 import random
@@ -51,7 +51,7 @@ class Team:
     def generate_specific_challenge(self) -> Challenge:
         place = random.randint(0, specific_challenges_amount - 1)
         while place in self.places_visited:
-            place = random.randint(0, place_challenges_amount - 1)
+            place = random.randint(0, specific_challenges_amount - 1)
     
         return generate_specific_challenge(place)
         
@@ -66,31 +66,31 @@ class Team:
 
     def generate_place_challenge(self) -> Challenge:
         # Randomly select unvisited place (int)
-        place = random.randint(0, place_challenges_amount - 1)
-        if len(self.places_visited) == place_challenges_amount:
+        place = random.randint(0, specific_challenges_amount - 1)
+        if len(self.places_visited) == specific_challenges_amount:
             self.places_visited = []
             print(f'Oh shit, ran out of places, aww man, team {self}')
         while place in self.places_visited:
-            place = random.randint(0, place_challenges_amount - 1)
+            place = random.randint(0, specific_challenges_amount - 1)
 
         # Generate challenge and return it
-        return generate_place_challenge(place)
+        return generate_specific_challenge(place)
 
     '''
     def generate_creative_challenge(self) -> Challenge:
         # Randomly select incomplete challenge (int)
-        index = random.randint(0, creative_challenges_amount - 1)
+        index = random.randint(0, unspecific_challenges_amount - 1)
         while index in self.completed_unspecific_challenges:
-            index = random.randint(0, creative_challenges_amount - 1)
+            index = random.randint(0, unspecific_challenges_amount - 1)
 
         # Generate challenge and return it
         return generate_creative_challenge(index)
     '''
 
     def generate_challenges(self) -> None:
-        time = datetime.datetime.now()
+        time = datetime.datetime.now().time()
 
-        if (time.hour < 16 and time.minute < 30) or 2 + 2 != 5:
+        if (time < UNSPECIFIC_TIME):
             self.open_challenges = [self.generate_specific_challenge(), None, self.generate_unspecific_challenge()]
     
             # Randomly select a specific challenge that's neither completed nor active
@@ -161,7 +161,7 @@ class Team:
             # Serialize the object and write it to the file
             pickle.dump(self, f)
 
-    def load(self, file: str = None) -> None:
+    def load(self, file: str | None = None) -> None:
         # TODO: test
         if file is None:
             # Find the newest file in the current directory

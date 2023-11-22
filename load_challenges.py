@@ -8,12 +8,11 @@ from numpy import isnan
 print('Loading challenges. This may take a while')
 
 # Load the CSV files from the Google Sheets
-challenge_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/10EaV2iZUAP8oZH7PLdoWGx9lQPvvN3Hfu7jH2zqKPv4/export?format=csv')
-kaffs_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/13DlG2BSQfolPCsoj2LBREeIUgThji_zgeE_q-gHQSL4/export?format=csv')
-specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1687098896&single=true&output=csv')
-creative_specific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1542871180&single=true&output=csv')
-unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=563784869&single=true&output=csv')
-zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=521408877&single=true&output=csv')
+da_new_kaff_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1687098896&single=true&output=csv')
+ortsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1521353166&single=true&output=csv')
+regionsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=94104575&single=true&output=csv')
+unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1008663517&single=true&output=csv')
+zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1768993571&single=true&output=csv')
 
 # Make empty lists for specific and non-specific challenges
 specific_challenges = []
@@ -24,7 +23,20 @@ zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 1
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
 class RawChallenge:
-    def __init__(self, title: str, description: str, points: int, kaffness: int = 0, grade: int = 0, zone: int = None, bias_sat: float = 1.0, bias_sun: float = 1.0, min_reps: int = 0, max_reps: int = 0, ppr: int = 0, zoneable: bool = False, fixed: bool = False):
+    def __init__(self, 
+                 title: str, 
+                 description: str, 
+                 points: int, 
+                 kaffness: int = 0, 
+                 grade: int = 0, 
+                 zone: int | None = None, 
+                 bias_sat: float = 1.0, 
+                 bias_sun: float = 1.0, 
+                 min_reps: int = 0, 
+                 max_reps: int = 0, 
+                 ppr: int = 0, 
+                 zoneable: bool = False, 
+                 fixed: bool = False):
         self.title = title
         self.description = description
         self.points = points
@@ -38,6 +50,9 @@ class RawChallenge:
         self.ppr = ppr
         self.zoneable = zoneable
         self.fixed = fixed
+
+    def __str__(self):
+        return f'r {self.title}, {self.description}, p{self.points}k{self.kaffness}g{self.grade}z{self.zone}, zoneable = {self.zoneable}'
 
     def challenge(self, zoned: bool, id: int, specific: bool):
         zone = self.zone
@@ -60,6 +75,7 @@ class RawChallenge:
         description = self.description
         description = description.replace('%r', str(reps))
         description = description.replace('%z', str(zone))
+        description = description.replace('%s', str(random.choice(s_bahn_zones)))
         if zoned and self.zoneable:
             description += f' Damit ihr Pünkt überchömed, mached das I de Zone {zone}.'
         description = description + f' *{points} Pünkt*'
@@ -69,8 +85,8 @@ class RawChallenge:
 print('Generating challenges')
 
 # get and add kaff challenges
-for i in range(len(specific_sheet)):
-    row = specific_sheet.loc[i]
+for i in range(len(da_new_kaff_sheet)):
+    row = da_new_kaff_sheet.loc[i]
     place = row['Ort']
     challenge = row['Challenge']
     kaffness = row['Kaffskala']
@@ -80,7 +96,7 @@ for i in range(len(specific_sheet)):
     bias_sun = row['Bias Sun']
     title_override = row['Title Override']
     challenge_points = row['Points']
-    min_reps = row["Min"]
+    min_reps = row['Min']
     max_reps = row['Max']
     ppr = row['Points per Repetition']
 
@@ -110,9 +126,9 @@ for i in range(len(specific_sheet)):
     # Return challenge
     specific_challenges.append(RawChallenge(title, raw_description, challenge_points, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
 
-# get and add creative specific challenges
-for i in range(len(creative_specific_sheet)):
-    row = creative_specific_sheet.loc[i]
+# get and add ortsspezifische challenges
+for i in range(len(ortsspezifisch_sheet)):
+    row = ortsspezifisch_sheet.loc[i]
     title = row['title']
     description = row['description']
     challenge_points = row['points']
@@ -129,6 +145,26 @@ for i in range(len(creative_specific_sheet)):
     
     # Return challenge
     specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+
+# get and add creative specific challenges
+for i in range(len(regionsspezifisch_sheet)):
+    row = regionsspezifisch_sheet.loc[i]
+    title = row['title']
+    description = row['description']
+    challenge_points = row['points']
+    min_reps = row["min"]
+    max_reps = row['max']
+    ppr = row['ppr']
+    fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+
+    # Refine data
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
+    
+    # Return challenge
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # get and add zoneable challenges
 for i in range(len(zoneable_sheet)):
@@ -177,7 +213,12 @@ specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
 
 def generate_specific_challenge(index):
-    return specific_challenges[index].challenge(True, index, True)
+    return specific_challenges[index].challenge(zoned=True, id=index, specific=True)
 
 def generate_unspecific_challenge(index):
-    return unspecific_challenges[index].challenge(False, index, False)
+    return unspecific_challenges[index].challenge(zoned=False, id=index, specific=False)
+
+if __name__ == '__main__':
+    print(*unspecific_challenges, sep='\n')
+    print('\n\n====\nspez\n====\n')
+    print(*specific_challenges, sep='\n')

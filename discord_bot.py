@@ -2,7 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
-from test_config import *
+from config import *
 import json
 
 intents = discord.Intents.all()
@@ -177,6 +177,7 @@ async def setup(ctx: commands.Context) -> None:
     player_ids = [player.id for team in teams for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
+        print(player_id)
         member = await ctx.guild.fetch_member(player_id)
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])

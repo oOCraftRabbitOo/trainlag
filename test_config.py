@@ -1,3 +1,5 @@
+import datetime
+
 # team compositions and channels
 TEAM_FILE = 'test_teams.json'
 PLAYER_FILE = 'test_players.json'
@@ -24,3 +26,6 @@ NUM_CATCHERS = 3
 BOUNTY_BASE_POINTS = 100
 BOUNTY_START_POINTS = 250
 BOUNTY_PERCENTAGE = 0.25
+
+# times
+UNSPECIFIC_TIME = datetime.time(hour=16, minute=30)
