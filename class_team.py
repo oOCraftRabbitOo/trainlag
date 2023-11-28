@@ -202,51 +202,53 @@ class Team:
         return out
 
 
-def generate_teams(num_catchers: int) -> list[Team]:
-    teams = []
-    raw_teams = None
-
-    #get the team composition data from the json, will be a list of dicts
+def get_teams_from_json() -> list:
     with open(TEAM_FILE, 'r') as f:
-        raw_teams = json.load(f)
+        return json.load(f)
 
+def get_players_from_json() -> list:
     with open(PLAYER_FILE, 'r') as f:
-        raw_players = json.load(f)
-    
-    for raw_team in raw_teams:
-        # get the team name
-        name = raw_team['name']
+        return json.load(f)
 
-        #get the players
-        players = []
-        if len(raw_team['players']) == 0:
-            raise Exception(f'no players found in team {name}')
-        for raw_player in raw_team['players']:
-            print(f"Raw Player: {raw_player} ({type(raw_player)}), Raw Players: {raw_players} ({type(raw_players)})")
+def get_players_in_team(raw_players, all_players) -> list[Player]:
+    players_in_team = []
+    if len(raw_players) == 0:
+        raise Exception(f'no players found in team {name}')
+    for raw_player in raw_players:
+        print(f"Raw Player: {raw_player} ({type(raw_player)}), Raw Players: {raw_players} ({type(raw_players)})")
+        raw_id = get_player_id(raw_player, all_players)
+        players_in_team.append(Player(raw_player, raw_id))
+    return players_in_team
 
-            # Get ID from raw_players that matches with the name (raw_player)
-            raw_id = None
-            for raw_pleier in raw_players:
-                if raw_pleier["name"] == raw_player:
-                    raw_id = raw_pleier["id"]
-                    break
-                    
-            players.append(Player(raw_player, raw_id))
+def get_player_id(player_name, all_players) -> int:
+    for raw_player in all_players:
+        if raw_player["name"] == player_name:
+            return raw_player["id"]
+    return None
 
-        #get the channel
-        channel = Channel(
-            raw_team['channel']['name'],
-            raw_team['channel']['id']
-        )
-        teams.append(Team(players, channel, name))
-
-    # Choose catchers
+def choose_catchers(teams, num_catchers):
     catchers = random.sample(teams, num_catchers)
     for team in catchers:
         team.is_catcher = True
 
-    return teams
+def generate_teams(num_catchers: int) -> list[Team]:
+    teams = get_teams_from_json()
+    players = get_players_from_json()
 
+    for raw_team in teams:
+        # get the team name
+        name = raw_team['name']
+        players_in_team = get_players_in_team(raw_team['players'], players)
+        channel = Channel(
+            raw_team['channel']['name'],
+            raw_team['channel']['id']
+        )
+
+        teams.append(Team(players_in_team, channel, name))
+
+    choose_catchers(teams, num_catchers)
+
+    return teams
 
 def print_teams(teams: list[Team]) -> None:
     # Only for debug purposes, prints out the Teams, duh
