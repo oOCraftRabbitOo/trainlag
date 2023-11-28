@@ -210,10 +210,10 @@ def get_players_from_json() -> list:
     with open(PLAYER_FILE, 'r') as f:
         return json.load(f)
 
-def get_players_in_team(raw_players, all_players) -> list[Player]:
+def get_players_in_team(raw_players, all_players, team_name) -> list[Player]:
     players_in_team = []
     if len(raw_players) == 0:
-        raise Exception(f'no players found in team {name}')
+        raise Exception(f'no players found in team {team_name}')
     for raw_player in raw_players:
         print(f"Raw Player: {raw_player} ({type(raw_player)}), Raw Players: {raw_players} ({type(raw_players)})")
         raw_id = get_player_id(raw_player, all_players)
@@ -232,13 +232,14 @@ def choose_catchers(teams, num_catchers):
         team.is_catcher = True
 
 def generate_teams(num_catchers: int) -> list[Team]:
-    teams = get_teams_from_json()
+    teams = []
+    raw_teams = get_teams_from_json()
     players = get_players_from_json()
 
-    for raw_team in teams:
+    for raw_team in raw_teams:
         # get the team name
         name = raw_team['name']
-        players_in_team = get_players_in_team(raw_team['players'], players)
+        players_in_team = get_players_in_team(raw_team['players'], players, name)
         channel = Channel(
             raw_team['channel']['name'],
             raw_team['channel']['id']
