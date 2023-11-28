@@ -224,7 +224,7 @@ def get_player_id(player_name, all_players) -> int:
     for raw_player in all_players:
         if raw_player["name"] == player_name:
             return raw_player["id"]
-    return None
+    raise Exception("Couldn't find id???")
 
 def choose_catchers(teams, num_catchers):
     catchers = random.sample(teams, num_catchers)
