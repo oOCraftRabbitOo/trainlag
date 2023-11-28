@@ -256,7 +256,15 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await discord_switch_roles(catcher_team, ctx)
 
                 general_channel = bot.get_channel(GENERAL_CHANNEL)
-                await general_channel.send(f'Team {catcher_team.name} hät Team {caught_team.name} gfangä und defür {caught_team.bounty} Chopfgeld kassiert! Team {caught_team.name}, ihr söttet no Discord neustarte, will ihr susch evtl. nöd vo allne alli aktive Challenges gsehnd.')
+                catcher_names = ""
+                caught_names = ""
+                for player in catcher_team.players:
+                    catcher_names += player.name + ' '
+                for player in caught_team.players:
+                    caught_names += player.name + ' '
+                catcher_names = catcher_names[:-1]
+                caught_names = caught_names[:-1]
+                await general_channel.send(f'S Team **{catcher_team.name}** *({catcher_names})* hät s Team **{caught_team.name}** *({caught_names})* gfangä und defür **{caught_team.bounty} Pünkt** Chopfgeld kassiert!')
 
                 # Grant bounty
                 catcher_team.points += caught_team.bounty
