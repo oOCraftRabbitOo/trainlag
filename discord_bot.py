@@ -162,7 +162,7 @@ async def setup(ctx: commands.Context) -> None:
     global catcher_role
     catcher_role = discord.utils.get(roles, name='Fänger')
     if catcher_role is None:
-        await ctx.send('Es existiert kei "Fänger" rolle, Abbruch')
+        await ctx.send('Es existiert kei "Fänger"-Rolle. Abbruch.')
         raise Exception('No catcher role found')
     print(f'the type of catcher_role is {type(catcher_role)}')
     
@@ -269,7 +269,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await team_channel.send(f'\n{catcher_team.return_challenges()}')
         else:
             # The channel is not in the list of channels
-            await ctx.send('Das isch keis team...')
+            await ctx.send('Das isch keis Team...')
     else:
         # The author does not have the "Fänger" role
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
@@ -423,8 +423,19 @@ async def catchers(ctx: commands.Context) -> None:
     catchers = [team for team in teams if team.is_catcher]
     for catcher in catchers:
         pleiers = [pleier.name for pleier in catcher.players]
-        output += f"**{catcher}** {pleiers}\n" # Wunderschönä Code ich weiss
+        output += f"**{catcher}** {pleiers}\n"  # Wunderschönä Code ich weiss
         
+    general_channel = bot.get_channel(GENERAL_CHANNEL)
+    await general_channel.send(output)
+
+@bot.command(aliases=['mitspieler', 'spieler', 'players', 'namen', 'namelist', 'allplayers'])
+async def names(ctx: commands.Context) -> None:
+    output = "Das sind dini Mitspieler: \n"
+    playernames = [player.name for team in teams for player in team.players]
+    for name in playernames[:-1]:
+        output += f"{name}, "
+    output = f"{output[:-2]} und {names[-1]}."
+
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)
 
