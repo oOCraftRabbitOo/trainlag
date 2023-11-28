@@ -391,6 +391,8 @@ async def sync(ctx: commands.Context) -> None:
 
 @bot.command(aliases=['chopfgeld', 'kopfgeld', 'chopfgäld', 'wievilfängerhaniamhals', 'kopfgäld'])
 async def bounty(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
     output = "So stahts mit de Chopfgelder:"
     bounties = {team.name: team.bounty for team in teams if not team.is_catcher}
     sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
@@ -402,6 +404,8 @@ async def bounty(ctx: commands.Context) -> None:
 
 @bot.command(aliases=['punkte', 'ranking', 'rangliste', 'pünkt', 'ranglischte'])
 async def points(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
     output = "Das isch d Ranglischte bis jetzt:"
     pointses = {team.name: team.points for team in teams}
     sorted_teams_by_points = sorted(pointses.items(), key=lambda x:x[1])
@@ -413,6 +417,8 @@ async def points(ctx: commands.Context) -> None:
 
 @bot.command(aliases=['hunters', 'fänger', 'jäger', 'decirilischenfengermitewillamitumlautischdoof'])
 async def catchers(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
     output = "Das sind d Fänger: \n"
     catchers = [team for team in teams if team.is_catcher]
     for catcher in catchers:
