@@ -24,6 +24,7 @@ class Team:
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
+        self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.generate_challenges()
         self.backup()
 
@@ -100,6 +101,14 @@ class Team:
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
+
+        elif (time < self.normal_mode_time):
+            self.open_challenges = [self.generate_specific_challenge()]
+            for _ in range(2):
+                challenge = self.generate_specific_challenge()
+                while challenge in self.open_challenges:
+                    challenge = self.generate_specific_challenge()
+                self.open_challenges.append(challenge)
 
         else:
             self.open_challenges = [self.generate_unspecific_challenge()]
@@ -215,7 +224,6 @@ def get_players_in_team(raw_players, all_players, team_name) -> list[Player]:
     if len(raw_players) == 0:
         raise Exception(f'no players found in team {team_name}')
     for raw_player in raw_players:
-        print(f"Raw Player: {raw_player} ({type(raw_player)}), Raw Players: {raw_players} ({type(raw_players)})")
         raw_id = get_player_id(raw_player, all_players)
         players_in_team.append(Player(raw_player, raw_id))
     return players_in_team

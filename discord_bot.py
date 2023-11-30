@@ -7,7 +7,7 @@ import json
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenileki o ', 'ß', '#', 'use any prefix ', '?', '§', '%', '/', '+'), intents=intents)
+bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenleki o ', 'ß', '#', 'use any prefix ', '&', '?', '§', '%', '/', '+', '.', ',', '¿'), intents=intents)
 setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
@@ -74,6 +74,10 @@ async def on_ready() -> None:
     for server in bot.guilds:
         print(server.name)
     print('------\n')
+
+@bot.command()
+async def decirilischdoof(ctx: commands.Context):
+    await ctx.send('Korrekt')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -145,6 +149,56 @@ async def add_players(ctx: commands.Context, *players):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
+async def test(ctx: commands.Context):
+    print('testing...')
+
+    # Test catcher role
+    roles = ctx.guild.roles
+    catcher_role = discord.utils.get(roles, name='Fänger')
+    if catcher_role is None:
+        await ctx.send('Cannot find catcher role (must be named "Fänger")')
+        print('Cannot find catcher role')
+        return
+
+    # test team generation
+    teams = generate_teams(num_catchers=NUM_CATCHERS)
+    players = [player for team in teams for player in team.players]
+    discord_players = []
+    for player in players:
+        discord_player = await ctx.guild.fetch_member(player.id)
+        if discord_player is None:
+            await ctx.send(f"Couldn't find player {player.name} ({player.id})")
+            print(f"Couldn't find player {player.name} ({player.id})")
+            return
+        discord_players.append(discord_player)
+    for player, member in zip(players, discord_players):
+        try:
+            if catcher_role in member.roles:
+                await member.edit(roles=[r for r in member.roles if r != catcher_role])
+            else:
+                await member.edit(roles=member.roles + [catcher_role])
+                await member.edit(roles=[r for r in member.roles if r != catcher_role])
+        except discord.Forbidden:
+            await ctx.send(f"couldn't give or remove catcher role to player {player.name} ({player.id})")
+            print(f"couldn't give or remove catcher role to player {player.name} ({player.id})")
+            return
+
+    if bot.get_channel(GENERAL_CHANNEL) is None:
+        await ctx.send(f"Can't find game channel ({GENERAL_CHANNEL})")
+        print(f"Can't find game channel ({GENERAL_CHANNEL})") 
+        return
+
+    for team in teams:
+        if bot.get_channel(team.channel.id) is None:
+            await ctx.send(f"Can't find channel of team {team.name} ({team.channel.id})")
+            print(f"Can't find channel of team {team.name} ({team.channel.id})")
+            return
+    
+    await ctx.send("Test successful, everything works!")
+    print("Test successful, everything works!")
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
 async def setup(ctx: commands.Context) -> None:
     # ensure that setup doesn't run mutiple times at once
     print('\n\n===\nStarting setup\n----')
@@ -193,6 +247,8 @@ async def setup(ctx: commands.Context) -> None:
                 # Add the role to the user
                 await member.edit(roles=member.roles + [catcher_role])
                 print(f'catcher role added to {member}')
+            team_channel = bot.get_channel(team.channel.id)
+            await team_channel.send("## Ihr sind Fänger!\nIn 15 Minute geyts für üch ou los, denn chönder es anders Team go fange.\nBitte spreched eu während dere Zyt mit de andere Fänger ab.")
 
     # Generate and send challenges to all non-catcher Teams
     print('generate and send challenges')
@@ -207,7 +263,7 @@ async def setup(ctx: commands.Context) -> None:
     await ctx.send('Setup fertig. Vill Spass!')
 
 
-@bot.command(aliases=['häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
+@bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
 async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
     global teams
 
@@ -328,15 +384,15 @@ async def finish(ctx: commands.Context) -> None:
     winners.sort()
 
     # Generate the output string
-    out = f"""@everyone Das isch s Podescht:
---------------------------------------------
-{EMOJI[1]} **{winners[0]}** mit {winners[0].points} Pünkt
-{EMOJI[2]} **{winners[1]}** mit {winners[1].points} Pünkt
-{EMOJI[3]} **{winners[2]}** mit {winners[2].points} Pünkt\n"""
+    print('Generating rankings')
+    out = f"""# Das isch s Podescht:
+{EMOJI[1]} **{winners[0]}** mit *{winners[0].points} Pünkt*
+{EMOJI[2]} **{winners[1]}** mit *{winners[1].points} Pünkt*
+{EMOJI[3]} **{winners[2]}** mit *{winners[2].points} Pünkt*\n"""
 
     for n, team in enumerate(winners[3:-1]):
-        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit {winners[3+n].points} Pünkt\n"
-    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit {winners[len(teams)-1].points} Pünkt"
+        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit *{winners[3+n].points} Pünkt*\n"
+    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit *{winners[len(teams)-1].points} Pünkt*"
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(out)
@@ -348,6 +404,9 @@ async def finish(ctx: commands.Context) -> None:
         member = await ctx.guild.fetch_member(player_id)
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
+        print(f'removed catcher role for {member.name}')
+
+    print('Game has finished!')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)

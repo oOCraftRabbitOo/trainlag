@@ -28,4 +28,5 @@ BOUNTY_START_POINTS = 250
 BOUNTY_PERCENTAGE = 0.25
 
 # times
-UNSPECIFIC_TIME = datetime.time(hour=16, minute=30)
+UNSPECIFIC_TIME = datetime.time(hour=20, minute=29)
+SPECIFIC_PERIOD = datetime.timedelta(minutes=1)

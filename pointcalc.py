@@ -5,7 +5,7 @@ import pandas as pd
 print('Generating data for point calculation')
 
 # Load CSV for Zonic Kaffness
-zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRhpVCJ3bps5pBJ0nhmjmSlcDndXXbE-65rbxvfHjtq_9ylBL9fsMyC5fSfBmarR7DSfpwwgTy_qiKc/pub?gid=0&single=true&output=csv")
+zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1336941165&single=true&output=csv")
 
 def calculate_zonic_kaffness(row):
     connected_zones = int(row['num conn zones'])
