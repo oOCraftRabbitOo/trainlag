@@ -4,7 +4,7 @@
 # team compositions and channels
 TEAM_FILE = 'teams.json'
 PLAYER_FILE = 'players.json'
-GENERAL_CHANNEL = 1157594572931727412 # channel for game info
+GENERAL_CHANNEL = 1180846828309200976 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.1
@@ -27,3 +27,7 @@ NUM_CATCHERS = 3
 BOUNTY_BASE_POINTS = 100
 BOUNTY_START_POINTS = 250
 BOUNTY_PERCENTAGE = 0.25
+
+# times
+UNSPECIFIC_TIME = datetime.time(hour=16, minute=30)
+SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
