@@ -95,7 +95,7 @@ async def assign(ctx: commands.Context, *args):
     players = args[1:]
 
     for tihm in team_list:
-        if team == tihm["name"]: break
+        if team.lower() == tihm["name"].lower(): break
     else:
         await ctx.send('Error: Team not found :(')
         raise Exception('Team not found')
@@ -103,13 +103,15 @@ async def assign(ctx: commands.Context, *args):
     assigned_players = [player for tihm in team_list for player in tihm['players']]
     for player in players:
         for pleier in player_list:
-            if player == pleier["name"]: break
+            if player.lower() == pleier["name"].lower(): 
+                player = pleier["name"]
+                break
         else:
             await ctx.send(f'Error, Player "{player}" not found')
             raise Exception(f'Player "{player}" not found')
         if player in assigned_players:
             for tihm in team_list:
-                if player in tihm['players']:
+                if player.lower() in [pleher.lower() for pleher in tihm['players']]:
                     tihm['players'].remove(player)
         for tihm in team_list:
             if tihm["name"] == team:

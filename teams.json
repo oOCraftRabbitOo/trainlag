@@ -1,1 +1,84 @@
-[{"name": "alpha", "players": ["Aur\u00c3\u00a8le", "Roshi", "Philipp"], "channel": {"name": "alpha", "id": 1180847279922487297}}, {"name": "bravo", "players": ["Moritz", "Ciril"], "channel": {"name": "bravo", "id": 1180847351695417454}}, {"name": "charlie", "players": ["Lucy", "Simon", "Nelio"], "channel": {"name": "charlie", "id": 1180847395920166953}}, {"name": "delta", "players": ["Christopher", "Noah", "Martin"], "channel": {"name": "delta", "id": 1180847448894218360}}, {"name": "echo", "players": ["Leandro", "Dennis"], "channel": {"name": "echo", "id": 1180847556096426054}}, {"name": "foxtrot", "players": ["Luis", "Beni", "Julian"], "channel": {"name": "foxtrot", "id": 1180847598039470180}}, {"name": "guete abig", "players": ["Marin", "Lea", "Timo"], "channel": {"name": "guete-abig", "id": 1180847663596445736}}, {"name": "h0i", "players": ["Mina", "Wiki", "Anna"], "channel": {"name": "h0i", "id": 1180847700875431998}}]
+[
+  {
+    "name": "alpha",
+    "players": [
+      "Beni",
+      "Luis"
+    ],
+    "channel": {
+      "name": "alpha",
+      "id": 1180847279922487300
+    }
+  },
+  {
+    "name": "bravo",
+    "players": [
+      "Adriana",
+      "Anna",
+      "Wiki"
+    ],
+    "channel": {
+      "name": "bravo",
+      "id": 1180847351695417300
+    }
+  },
+  {
+    "name": "delta",
+    "players": [
+      "Simon",
+      "Frederic",
+      "Noah"
+    ],
+    "channel": {
+      "name": "delta",
+      "id": 1180847448894218200
+    }
+  },
+  {
+    "name": "echo",
+    "players": [
+      "Orell",
+      "Philipp",
+      "Moritz"
+    ],
+    "channel": {
+      "name": "echo",
+      "id": 1180847556096426000
+    }
+  },
+  {
+    "name": "foxtrot",
+    "players": [
+      "Julian",
+      "Lea",
+      "Maria"
+    ],
+    "channel": {
+      "name": "foxtrot",
+      "id": 1180847598039470000
+    }
+  },
+  {
+    "name": "guete abig",
+    "players": [
+      "Timo",
+      "Elric"
+    ],
+    "channel": {
+      "name": "guete-abig",
+      "id": 1180847663596445700
+    }
+  },
+  {
+    "name": "h0i",
+    "players": [
+      "Nelio",
+      "Christopher",
+      "Ciril"
+    ],
+    "channel": {
+      "name": "h0i",
+      "id": 1180847700875432000
+    }
+  }
+]
