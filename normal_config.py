@@ -26,5 +26,5 @@ EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:
 NUM_CATCHERS = 2
 
 # times
-UNSPECIFIC_TIME = datetime.time(hour=16, minute=00)
+UNSPECIFIC_TIME = datetime.time(hour=15, minute=20)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
