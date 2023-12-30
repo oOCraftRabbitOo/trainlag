@@ -13,14 +13,19 @@ setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
 catcher_role = None  # Run setup to fill
-
+shops_nonig_aktualisiert = True
 
 async def setup_check(ctx: commands.Context) -> None:
+    global shops_nonig_aktualisiert
+    global global_shops
     if not setup_complete:
         await ctx.send('Setup not yet complete. Run `!setup` to setup.')
         raise Exception('Setup incomplete, du Globi!')
-
-
+    if datetime.datetime.now().time() > UNSPECIFIC_TIME and shops_nonig_aktualisiert:
+        shops_nonig_aktualisiert = False
+        globi_shops = random.sample(inside_shops, 3)
+        global_shops = [shop.dediscounted() for shop in globi_shops]
+        
 def author_is_catcher(ctx: commands.Context) -> bool:
     global teams
 
@@ -286,8 +291,11 @@ async def buy(ctx: commands.Context, shop: str):
             team = t
             break
     else:
-        await ctx.send("Das isch kein team channel")
+        await ctx.send("Das isch kein Team-Channel")
         return
+
+    if not shops_nonig_aktualisiert:
+        team.shop = None
     
     for i in global_shops:
         if i.name.strip().lower() == shop.strip().lower():
