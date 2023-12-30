@@ -22,6 +22,8 @@ class Shop:
         return f'Shop **{self.name}**: *{self.prize}p* pro Trophäe{appendix}'
 
     def __eq__(self, other) -> bool:
+        if self is None or other is None:
+            return False
         return self.name == other.name and self.prize == other.prize
 
     def disdiscounted(self):
