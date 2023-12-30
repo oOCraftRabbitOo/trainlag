@@ -6,7 +6,7 @@ from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
 from config import *
 import json
-from load_challenges import global_shops
+from load_challenges import global_shops, inside_shops
 
 intents = discord.Intents.all()
 
