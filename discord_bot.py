@@ -417,13 +417,13 @@ async def finish(ctx: commands.Context) -> None:
     # Generate the output string
     print('Generating rankings')
     out = f"""# Das isch s Podescht:
-{EMOJI[1]} **{winners[0]}** mit *{winners[0].points} Pünkt*
-{EMOJI[2]} **{winners[1]}** mit *{winners[1].points} Pünkt*
-{EMOJI[3]} **{winners[2]}** mit *{winners[2].points} Pünkt*\n"""
+{EMOJI[1]} **{winners[0]}** mit *{winners[0].trophies} Trophäe*
+{EMOJI[2]} **{winners[1]}** mit *{winners[1].trophies} Trophäe*
+{EMOJI[3]} **{winners[2]}** mit *{winners[2].trophies} Trophäe*\n"""
 
     for n, team in enumerate(winners[3:-1]):
-        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit *{winners[3+n].points} Pünkt*\n"
-    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit *{winners[len(teams)-1].points} Pünkt*"
+        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit *{winners[3+n].trophies} Trophäe*\n"
+    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit *{winners[len(teams)-1].trophies} Trophäe*"
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(out)

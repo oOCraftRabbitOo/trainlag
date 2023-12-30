@@ -65,7 +65,9 @@ class Team:
         return strink
 
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
-        return self.points > other.points
+        if self.trophies == other.trophies:
+            return self.points > other.points
+        return self.trophies > other.trophies
 
     def generate_specific_challenge(self) -> Challenge:
         place = random.randint(0, specific_challenges_amount - 1)
