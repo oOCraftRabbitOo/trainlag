@@ -315,7 +315,7 @@ async def buy(ctx: commands.Context, shop: str):
 
     global_shops_string = global_shops[0]
     for shop in global_shops:
-        global_shops_string += ", " + shop
+        global_shops_string += f", {shop}"
     await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops_string} und {team.shop}")
 
 
@@ -389,7 +389,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 catcher_team.generate_shop()
                 global_shops_string = global_shops[0]
                 for shop in global_shops:
-                    global_shops_string += ", " + shop
+                    global_shops_string += f", {shop}"
                 await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
         else:
             # The channel is not in the list of channels
@@ -584,7 +584,7 @@ async def shops(ctx: commands.Context) -> None:
 
     global_shops_string = global_shops[0]
     for shop in global_shops:
-        global_shops_string += ", " + shop
+        global_shops_string += f", {shop}"
     await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
 
 # Load the token from the .token file
