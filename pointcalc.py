@@ -64,7 +64,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: 
     points += pointcalc_zone(zone) if zone is not None else 0
     points += reps * ppr
     points += challenge_points
-    points += 200 if zoneable_and_zoned else 0
+    points += ZONEABLE_AND_ZONED_BONUS if zoneable_and_zoned else 0
     points *= bias
     points = int(points)
     points = points if fixed else randomly_adjust(points)
