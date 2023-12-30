@@ -127,7 +127,6 @@ global_shops.append(Shop(START_LOCATION, START_LOCATION_PRIZE, 0))
 
 # get and add kaff challenges
 for i in range(len(da_new_kaff_sheet)):
-    print(i)
     row = da_new_kaff_sheet.loc[i]
     place = row['Ort']
     challenge = row['Challenge']
