@@ -26,13 +26,14 @@ class Team:
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
+        self.last_challenge_generation = 0
         self.generate_challenges()
         self.backup()
         self.trophies = 0
         self.last_shop = None
         self.shop = None
         self.generate_shop()
-
+        
     def buy(self, shop: Shop) -> None:
         pass
 
@@ -107,7 +108,8 @@ class Team:
 
     def generate_challenges(self) -> None:
         time = datetime.datetime.now().time()
-
+        self.last_challenge_generation = time
+        
         if (time < self.normal_mode_time):
             self.open_challenges = [self.generate_specific_challenge()]
             for _ in range(2):
@@ -134,6 +136,14 @@ class Team:
                 while challenge in self.open_challenges:
                     challenge = self.generate_unspecific_challenge()
                 self.open_challenges.append(challenge)
+
+    def reroll_challenges(self) -> None:
+        if datetime.datetime.now().time() < UNSPECIFIC_TIME:
+            print("Cant reroll challenges, too early")
+        elif self.last_challenge_generation > UNSPECIFIC_TIME:
+            print("Cant reroll challenges, this team already exclusively has unspecific challenges")
+        else:
+            self.generate_challenges()
 
     def complete_challenge(self, index: int) -> None:
         # Index should be 1, 2 or 3
