@@ -22,11 +22,6 @@ EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:
 # number of catchers
 NUM_CATCHERS = 3
 
-# bounty system
-BOUNTY_BASE_POINTS = 100
-BOUNTY_START_POINTS = 250
-BOUNTY_PERCENTAGE = 0.25
-
 # times
 UNSPECIFIC_TIME = datetime.time(hour=20, minute=29)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=1)

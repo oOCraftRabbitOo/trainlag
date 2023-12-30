@@ -326,13 +326,11 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                     caught_names += player.name + ' '
                 catcher_names = catcher_names[:-1]
                 caught_names = caught_names[:-1]
-                await general_channel.send(f'S Team **{catcher_team.name}** *({catcher_names})* hät s Team **{caught_team.name}** *({caught_names})* gfangä und defür **{caught_team.bounty} Pünkt** Chopfgeld kassiert!')
+                await general_channel.send(f'S Team **{catcher_team.name}** *({catcher_names})* hät s Team **{caught_team.name}** *({caught_names})* gfangä und defür **{caught_team.points} Pünkt** Chopfgeld kassiert!')
 
-                # Grant bounty
-                catcher_team.points += caught_team.bounty
-                received_bounty = caught_team.bounty
-                caught_team.bounty = BOUNTY_BASE_POINTS
-                catcher_team.bounty = BOUNTY_BASE_POINTS
+                # Steal points
+                catcher_team.points += caught_team.points
+                caught_team.points = 0
 
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel.id)
@@ -438,8 +436,6 @@ async def switch(ctx: commands.Context) -> None:
         state = 'Fänger'
     else:
         state = 'Devoränner'
-
-    team.bounty = BOUNTY_BASE_POINTS
     
     await ctx.send(f"S'Team {team.name} isch jetzt {state}.")
     if not team.is_catcher:
@@ -461,19 +457,6 @@ async def sync(ctx: commands.Context) -> None:
                 await member.edit(roles=[role for role in member.roles if role != catcher_role])
             elif not catcher_role in member.roles and team.is_catcher:
                 await member.edit(roles=member.roles + [catcher_role])
-
-@bot.command(aliases=['chopfgeld', 'kopfgeld', 'chopfgäld', 'wievilfängerhaniamhals', 'kopfgäld'])
-async def bounty(ctx: commands.Context) -> None:
-    await setup_check(ctx)
-
-    output = "So stahts mit de Chopfgelder:"
-    bounties = {team.name: team.bounty for team in teams if not team.is_catcher}
-    sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
-    for team, bounty in reversed(sorted_teams_by_bounty):
-        output += f"\nS Team **{team}** hät es Chopfgeld vo **{bounty}** uf sich"
-
-    general_channel = bot.get_channel(GENERAL_CHANNEL)
-    await general_channel.send(output)
 
 @bot.command(aliases=['punkte', 'ranking', 'rangliste', 'pünkt', 'ranglischte'])
 async def points(ctx: commands.Context) -> None:

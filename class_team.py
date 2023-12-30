@@ -49,7 +49,7 @@ class Team:
         names = ""
         for player in self.players:
             names += player.name + " "
-        strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel.name}, {self.channel.id}, \npoints: {self.points}, \ncompCChals: {self.completed_unspecific_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nbounty: {self.bounty}, \nmembers: ({names[:-1]})'
+        strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel.name}, {self.channel.id}, \npoints: {self.points}, \ntrophies: {self.trophies} \ncompCChals: {self.completed_unspecific_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nmembers: ({names[:-1]})'
         if self.is_catcher:
             strink += '\n[Fänger]'
         return strink
@@ -158,7 +158,6 @@ class Team:
 
     def grant_points(self, points: int) -> None:
         self.points += points
-        self.bounty += int(points * BOUNTY_PERCENTAGE)
 
     def deduct_points(self, points) -> None:
         self.grant_points(-points)
@@ -205,7 +204,6 @@ class Team:
         self.name = loaded_team.name
         self.is_catcher = loaded_team.is_catcher
         self.points = loaded_team.points
-        self.bounty = loaded_team.bounty
         self.completed_unspecific_challenges = loaded_team.completed_unspecific_challenges
         self.places_visited = loaded_team.places_visited
         self.completed_challenges = loaded_team.completed_challenges
@@ -224,7 +222,6 @@ class Team:
         out = f"# Eui Challenges:\n"
         for num, challenge in enumerate(self.open_challenges):
             out += f"### {num + 1}: {challenge}\n"
-        out += f'\n\n-=[ **Aktuells Chopfgeld**: {self.bounty} Pünkt ]=-\n'
         return out
 
 
