@@ -6,7 +6,7 @@ PLAYER_FILE = 'test_players.json'
 GENERAL_CHANNEL = 1113388616845107262 
 
 # point calculation
-RELATIVE_STANDARD_DEVIATION = 0.1
+RELATIVE_STANDARD_DEVIATION = 0.05
 POINTS_PER_KAFFNESS = 90
 POINTS_PER_GRADE = 20
 
@@ -20,8 +20,14 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 3
+NUM_CATCHERS = 2
 
 # times
-UNSPECIFIC_TIME = datetime.time(hour=20, minute=29)
-SPECIFIC_PERIOD = datetime.timedelta(minutes=1)
+UNSPECIFIC_TIME = datetime.time(hour=15, minute=0)
+SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
+
+START_LOCATION = "Zürich Flughafen"
+GLOBAL_SHOPS = ["Rapperswil SG", "Bülach"]
+START_LOCATION_PRIZE = 500
+GLOBAL_SHOP_PRIZE = 400
+FINAL_SHOPS_PRIZE = 300

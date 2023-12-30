@@ -1,4 +1,4 @@
-import normal_config as config
+import test_config as config
 
 # team compositions and channels
 TEAM_FILE = config.TEAM_FILE
@@ -25,3 +25,10 @@ NUM_CATCHERS = config.NUM_CATCHERS
 # times
 UNSPECIFIC_TIME = config.UNSPECIFIC_TIME
 SPECIFIC_PERIOD = config.SPECIFIC_PERIOD
+
+# shops
+START_LOCATION = config.START_LOCATION
+GLOBAL_SHOPS = config.GLOBAL_SHOPS
+START_LOCATION_PRIZE = config.START_LOCATION_PRIZE
+GLOBAL_SHOP_PRIZE = config.GLOBAL_SHOP_PRIZE
+FINAL_SHOPS_PRIZE = config.FINAL_SHOPS_PRIZE

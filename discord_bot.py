@@ -4,6 +4,7 @@ from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
 from config import *
 import json
+from load_challenges import global_shops
 
 intents = discord.Intents.all()
 
@@ -281,16 +282,37 @@ async def buy(ctx: commands.Context, shop: str):
     else:
         await ctx.send("Das isch kein team channel")
         return
+    
+    for i in global_shops:
+        if i.name.strip().lower() == shop.strip().lower():
+            kashiert = i.buy(team.points)
+            if kashiert is None:
+                await ctx.send("Ihr chönd eu no kei Trophäe leiste :(")
+                return
 
-    kashiert = team.shop.buy(team.points)
-    if kashiert is None:
-        await ctx.send("Ihr chönd eu no kei Trophäe leiste :(")
+            trophies, rest = kashiert
+
+            team.trophies += trophies
+            team.points = rest
+
+            return
+        
+    if shop.strip().lower() == team.shop.name.strip().lower():
+        kashiert = team.shop.buy(team.points)
+        if kashiert is None:
+            await ctx.send("Ihr chönd eu no kei Trophäe leiste :(")
+            return
+
+        trophies, rest = kashiert
+
+        team.trophies += trophies
+        team.points = rest
+
+        team.generate_shop()
+        
         return
 
-    trophies, rest = kashiert
-
-    team.trophies += trophies
-    team.points = rest
+    await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops} und {team.shop}")
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])

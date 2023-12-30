@@ -5,6 +5,7 @@ from class_shop import Shop
 from pointcalc import pointcalc
 from class_challenge import Challenge
 from numpy import isnan
+from config import *
 
 print('Loading challenges. This may take a while')
 
@@ -20,6 +21,7 @@ specific_challenges = []
 unspecific_challenges = []
 outside_shops = []
 inside_shops = []
+global_shops = []
 
 # Generate zone lists
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
@@ -114,9 +116,14 @@ for i in range(len(da_new_kaff_sheet)):
     discount = int(round(discount/50)*50)
 
     if zone == 110:
-        inside_shops.append(Shop(place, 300, discount))
+        inside_shops.append(Shop(place, FINAL_SHOPS_PRIZE, discount))
     else:
-        outside_shops.append(Shop(place, 400, discount))
+        outside_shops.append(Shop(place, GLOBAL_SHOP_PRIZE, discount))
+
+# get and add global shops
+for shop in GLOBAL_SHOPS:
+    global_shops.append(Shop(shop, GLOBAL_SHOP_PRIZE, 0))
+global_shops.append(Shop(START_LOCATION, START_LOCATION_PRIZE, 0))
 
 # get and add kaff challenges
 for i in range(len(da_new_kaff_sheet)):
