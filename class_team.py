@@ -3,6 +3,7 @@ from class_player import Player
 from config import *
 from class_channel import Channel
 from class_challenge import Challenge
+from class_shop import Shop
 import random
 import pickle
 import datetime
@@ -19,7 +20,6 @@ class Team:
         self.name = name
         self.is_catcher = is_catcher
         self.points = 0
-        self.bounty = BOUNTY_START_POINTS
         self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
@@ -27,7 +27,14 @@ class Team:
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.generate_challenges()
         self.backup()
+        self.trophies = 0
 
+    def buy(self, shop: Shop) -> None:
+        pass
+
+    def generate_shop(self) -> None:
+        self.shop = Shop()
+        
     def deb_str(self) -> str:
         names = ""
         for player in self.players:

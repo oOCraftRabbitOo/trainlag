@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 from datetime import date
+from class_shop import Shop
 from pointcalc import pointcalc
 from class_challenge import Challenge
 from numpy import isnan
@@ -17,6 +18,8 @@ zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vS
 # Make empty lists for specific and non-specific challenges
 specific_challenges = []
 unspecific_challenges = []
+outside_shops = []
+inside_shops = []
 
 # Generate zone lists
 zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 164, 111, 121, 122, 170, 171, 154, 110, 173, 172, 135, 131, 155, 150, 156, 151, 152, 153, 181, 180, 133, 143, 142, 141, 140, 130, 132, 134]
@@ -82,10 +85,42 @@ class RawChallenge:
         
         return Challenge(self. title, description, points, id, specific)
 
-print('Generating challenges')
+print('Generating challenges (and shops)')
+
+# get and add shops
+for i in range(len(da_new_kaff_sheet)):
+    row = da_new_kaff_sheet.loc[i]
+    place = row['Ort']
+    kaffness = row['Kaffskala']
+    grade = row['ÖV Güteklasse']
+    zone = row['Zone']
+    bias_sat = row['Bias Sat']
+    bias_sun = row['Bias Sun']
+
+
+    # refine data
+    if date.today().weekday() == 6:
+        bias = bias_sun
+    else:
+        bias = bias_sat
+    kaffness = int(kaffness)
+    if kaffness != 3:
+        continue
+    grade = (int(grade) if isinstance(grade, int) else kaffness)  # Ignores empty cells, '-' and '?'
+    zone = int(zone)
+    bias = float(bias)
+
+    discount = pointcalc(kaffness, grade, 0, 0, 0, zone, bias, False, False)
+    discount = int(round(discount/50)*50)
+
+    if zone == 110:
+        inside_shops.append(Shop(place, 300, discount))
+    else:
+        outside_shops.append(Shop(place, 400, discount))
 
 # get and add kaff challenges
 for i in range(len(da_new_kaff_sheet)):
+    print(i)
     row = da_new_kaff_sheet.loc[i]
     place = row['Ort']
     challenge = row['Challenge']
@@ -222,3 +257,9 @@ if __name__ == '__main__':
     print(*unspecific_challenges, sep='\n')
     print('\n\n====\nspez\n====\n')
     print(*specific_challenges, sep='\n')
+    print('\n\n====\ninsi\n====\n')
+    print(*inside_shops, sep='\n')
+    print('\n\n====\nouts\n====\n')
+    print(*outside_shops, sep='\n')
+    print('\n\n====\nfina\n====\n')
+    print(*[shop.disdiscounted() for shop in inside_shops], sep='\n')

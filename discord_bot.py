@@ -265,6 +265,10 @@ async def setup(ctx: commands.Context) -> None:
     await ctx.send('Setup fertig. Vill Spass!')
 
 
+@bot.command(aliases=['profit', "deposit", "bigmoney", "kaufen", "trophy", "trophäe"])
+async def buy(ctx: commands.Context)
+
+
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
 async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
     global teams
