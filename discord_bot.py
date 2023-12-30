@@ -585,7 +585,7 @@ async def shops(ctx: commands.Context) -> None:
     global_shops_string = ""
     for shop in global_shops:
         global_shops_string += f"\n{shop}"
-    await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+    await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
 
 # Load the token from the .token file
 token = ''
