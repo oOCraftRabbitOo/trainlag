@@ -108,7 +108,15 @@ class Team:
     def generate_challenges(self) -> None:
         time = datetime.datetime.now().time()
 
-        if (time < UNSPECIFIC_TIME):
+        if (time < self.normal_mode_time):
+            self.open_challenges = [self.generate_specific_challenge()]
+            for _ in range(2):
+                challenge = self.generate_specific_challenge()
+                while challenge in self.open_challenges:
+                    challenge = self.generate_specific_challenge()
+                self.open_challenges.append(challenge)
+
+        elif (time < UNSPECIFIC_TIME):
             self.open_challenges = [self.generate_specific_challenge(), None, self.generate_unspecific_challenge()]
     
             # Randomly select a specific challenge that's neither completed nor active
@@ -118,14 +126,6 @@ class Team:
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
-
-        elif (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge()]
-            for _ in range(2):
-                challenge = self.generate_specific_challenge()
-                while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge()
-                self.open_challenges.append(challenge)
 
         else:
             self.open_challenges = [self.generate_unspecific_challenge()]
