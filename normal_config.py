@@ -9,7 +9,7 @@ PLAYER_FILE = 'players.json'
 GENERAL_CHANNEL = 1180846828309200976 # channel for game info
 
 # point calculation
-RELATIVE_STANDARD_DEVIATION = 0.1
+RELATIVE_STANDARD_DEVIATION = 0.05
 POINTS_PER_KAFFNESS = 90
 POINTS_PER_GRADE = 20
 
@@ -23,7 +23,7 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 3
+NUM_CATCHERS = 2
 
 # bounty system
 BOUNTY_BASE_POINTS = 100
@@ -31,5 +31,5 @@ BOUNTY_START_POINTS = 250
 BOUNTY_PERCENTAGE = 0.25
 
 # times
-UNSPECIFIC_TIME = datetime.time(hour=16, minute=30)
+UNSPECIFIC_TIME = datetime.time(hour=16, minute=00)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
