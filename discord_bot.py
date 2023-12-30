@@ -382,6 +382,9 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel.id)
                 await team_channel.send(f'\n{catcher_team.return_challenges()}')
+
+                catcher_team.generate_shop()
+                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops} und {team.shop}.")
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
@@ -562,7 +565,7 @@ async def reroll(ctx: commands.Context) -> None:
     else:
         await channel.send(team.return_challenges())
 
-@bot.command(aliases=["lade", "läde", "shop", "trophyshops", "wherebuy"]
+@bot.command(aliases=["lade", "läde", "shop", "trophyshops", "wherebuy"])
 async def shops(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
