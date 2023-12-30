@@ -309,6 +309,7 @@ async def buy(ctx: commands.Context, shop: str):
         team.points = rest
 
         team.generate_shop()
+        await shops(ctx)
         
         return
 
