@@ -260,6 +260,12 @@ async def setup(ctx: commands.Context) -> None:
         team_channel = bot.get_channel(team.channel.id)
         await team_channel.send(team.return_challenges())
 
+        global_shops_string = ""
+        for shop in global_shops:
+            global_shops_string += f"\n{shop}"
+        await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+
+
     setup_complete = True
     setup_in_progress = False
     print("Setup completed. Have fun!")
@@ -299,7 +305,7 @@ async def buy(ctx: commands.Context, shop: str):
             global_shops_string = ""
             for shop in global_shops:
                 global_shops_string += f"\n{shop}"
-            await team_channel.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+            await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
 
             return
         
@@ -318,7 +324,7 @@ async def buy(ctx: commands.Context, shop: str):
         global_shops_string = ""
         for shop in global_shops:
             global_shops_string += f"\n{shop}"
-        await team_channel.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+        await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
         
         return
 
