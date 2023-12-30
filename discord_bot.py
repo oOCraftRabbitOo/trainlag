@@ -266,7 +266,31 @@ async def setup(ctx: commands.Context) -> None:
 
 
 @bot.command(aliases=['profit', "deposit", "bigmoney", "kaufen", "trophy", "trophäe"])
-async def buy(ctx: commands.Context)
+async def buy(ctx: commands.Context, shop: str):
+    global teams
+    await setup_check(ctx)
+    if author_is_catcher(ctx):
+        await ctx.send("Bro, du bisch fänger")
+        return
+    
+    channel = ctx.message.channel.id
+    for t in teams:
+        if t.channel.id == channel:
+            team = t
+            break
+    else:
+        await ctx.send("Das isch kein team channel")
+        return
+
+    kashiert = team.shop.buy(team.points)
+    if kashiert is None:
+        await ctx.send("Ihr chönd eu no kei Trophäe leiste :(")
+        return
+
+    trophies, rest = kashiert
+
+    team.trophies += trophies
+    team.points = rest
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
@@ -356,6 +380,9 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
         if t.channel.id == channel:
             team = t
             break
+    else:
+        await ctx.send("Das isch kein team channel")
+        return
     try:
         # Complete challenge
         completed_challenge =team.open_challenges[int(challenge_id)-1]
