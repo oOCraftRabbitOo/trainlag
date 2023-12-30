@@ -1,5 +1,6 @@
 import asyncio
 import discord
+import datetime
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
 from config import *
