@@ -303,8 +303,8 @@ async def buy(ctx: commands.Context, shop: str):
 
             team.generate_shop()
             global_shops_string = ""
-            for shop in global_shops:
-                global_shops_string += f"\n{shop}"
+            for gshop in global_shops:
+                global_shops_string += f"\n{gshop}"
             await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
 
             return
@@ -322,8 +322,8 @@ async def buy(ctx: commands.Context, shop: str):
 
         team.generate_shop()
         global_shops_string = ""
-        for shop in global_shops:
-            global_shops_string += f"\n{shop}"
+        for gshop in global_shops:
+            global_shops_string += f"\n{gshop}"
         await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
         
         return
