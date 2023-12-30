@@ -295,6 +295,12 @@ async def buy(ctx: commands.Context, shop: str):
             team.trophies += trophies
             team.points = rest
 
+            team.generate_shop()
+            global_shops_string = ""
+            for shop in global_shops:
+                global_shops_string += f"\n{shop}"
+            await team_channel.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+
             return
         
     if shop.strip().lower() == team.shop.name.strip().lower():
@@ -309,7 +315,10 @@ async def buy(ctx: commands.Context, shop: str):
         team.points = rest
 
         team.generate_shop()
-        await shops(ctx)
+        global_shops_string = ""
+        for shop in global_shops:
+            global_shops_string += f"\n{shop}"
+        await team_channel.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
         
         return
 
