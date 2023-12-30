@@ -313,7 +313,10 @@ async def buy(ctx: commands.Context, shop: str):
         
         return
 
-    await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops} und {team.shop}")
+    global_shops_string = global_shops[0]
+    for shop in global_shops:
+        global_shops_string += ", " + shop
+    await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops_string} und {team.shop}")
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
@@ -384,7 +387,10 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await team_channel.send(f'\n{catcher_team.return_challenges()}')
 
                 catcher_team.generate_shop()
-                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops} und {team.shop}.")
+                global_shops_string = global_shops[0]
+                for shop in global_shops:
+                    global_shops_string += ", " + shop
+                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
@@ -575,8 +581,11 @@ async def shops(ctx: commands.Context) -> None:
         if t.channel.id == channel:
             team = t
             break
-    
-    await ctx.send(f"Eui verfüegbare Shops sind {global_shops} und {team.shop}.")
+
+    global_shops_string = global_shops[0]
+    for shop in global_shops:
+        global_shops_string += ", " + shop
+    await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
 
 # Load the token from the .token file
 token = ''
