@@ -331,7 +331,7 @@ async def buy(ctx: commands.Context, shop: str):
     global_shops_string = ""
     for gshop in global_shops:
         global_shops_string += f"\n{gshop}"
-    await ctx.send(f"Chan de {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops_string} und \n{team.shop}")
+    await ctx.send(f"Chan de Shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare Shops sind {global_shops_string} und \n{team.shop}")
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
