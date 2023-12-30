@@ -8,7 +8,7 @@ from load_challenges import global_shops
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenleki o ', 'ß', '#', 'use any prefix ', '&', '?', '§', '%', '/', '+', '.', ',', '¿'), intents=intents)
+bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenleki o ', 'ß', '#', 'use any prefix ', '&', '?', '§', '%', '/', '+', '.', ',', '¿', 'decirilischdoof'), intents=intents)
 setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
@@ -515,7 +515,7 @@ async def sync(ctx: commands.Context) -> None:
 async def points(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
-    output = "Das isch d Ranglischte bis jetzt:"
+    output = "Das sind d Kontene momentan:"
     pointses = {team.name: team.points for team in teams}
     sorted_teams_by_points = sorted(pointses.items(), key=lambda x:x[1])
     for team, points in reversed(sorted_teams_by_points):
