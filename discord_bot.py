@@ -544,6 +544,36 @@ async def names(ctx: commands.Context) -> None:
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)
 
+@bot.command(aliases=['remake', 'regenerate', 'regen', 'gibmirneuichallengeswillichshitüberchohan'])
+async def reroll(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
+    # get channel's team
+    channel = ctx.message.channel.id
+    for t in teams:
+        if t.channel.id == channel:
+            team = t
+            break
+
+    message = team.reroll_challenges()
+    if message != "wowzers":
+        await channel.send(message)
+    else:
+        await channel.send(team.return_challenges())
+
+@bot.command(aliases=["lade", "läde", "shop", "trophyshops", "wherebuy"]
+async def shops(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
+    # get channel's team
+    channel = ctx.message.channel.id
+    for t in teams:
+        if t.channel.id == channel:
+            team = t
+            break
+            
+    await channel.send(f"Eui verfüegbare Shops sind {global_shops} und {team.shop}.")
+
 # Load the token from the .token file
 token = ''
 with open('.token', 'r') as f:
