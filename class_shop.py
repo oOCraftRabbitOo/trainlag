@@ -21,6 +21,9 @@ class Shop:
             appendix = ''
         return f'Shop **{self.name}**: *{self.prize}p* pro Trophäe{appendix}'
 
+    def __eq__(self, other) -> bool:
+        return self.name == other.name and self.prize == other.prize
+
     def disdiscounted(self):
         returnal = copy.deepcopy(self)
         returnal.first_prize = None

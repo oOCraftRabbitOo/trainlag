@@ -1,9 +1,10 @@
-from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount
+from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount, inside_shops, outside_shops
 from class_player import Player
 from config import *
 from class_channel import Channel
 from class_challenge import Challenge
 from class_shop import Shop
+import copy
 import random
 import pickle
 import datetime
@@ -28,12 +29,21 @@ class Team:
         self.generate_challenges()
         self.backup()
         self.trophies = 0
+        self.last_shop = None
+        self.shop = None
+        self.generate_shop()
 
     def buy(self, shop: Shop) -> None:
         pass
 
     def generate_shop(self) -> None:
-        self.shop = Shop()
+        while True:
+            shop = copy.deepcopy(random.choice(outside_shops))
+            if shop != self.shop and shop != self.last_shop:
+                break
+
+        self.last_shop = self.shop
+        self.shop = shop
         
     def deb_str(self) -> str:
         names = ""
