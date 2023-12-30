@@ -26,7 +26,7 @@ async def setup_check(ctx: commands.Context) -> None:
     if datetime.datetime.now().time() > UNSPECIFIC_TIME and shops_nonig_aktualisiert:
         shops_nonig_aktualisiert = False
         globi_shops = random.sample(inside_shops, 3)
-        global_shops = [shop.dediscounted() for shop in globi_shops]
+        global_shops = [shop.disdiscounted() for shop in globi_shops]
         
 def author_is_catcher(ctx: commands.Context) -> bool:
     global teams
