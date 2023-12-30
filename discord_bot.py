@@ -313,10 +313,10 @@ async def buy(ctx: commands.Context, shop: str):
         
         return
 
-    global_shops_string = f"{global_shops[0]}"
+    global_shops_string = ""
     for shop in global_shops:
-        global_shops_string += f", {shop}"
-    await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops_string} und {team.shop}")
+        global_shops_string += f"\n{shop}"
+    await ctx.send(f"Chan de shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare shops sind {global_shops_string} und \n{team.shop}")
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
@@ -387,10 +387,10 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await team_channel.send(f'\n{catcher_team.return_challenges()}')
 
                 catcher_team.generate_shop()
-                global_shops_string = f"{global_shops[0]}"
+                global_shops_string = ""
                 for shop in global_shops:
-                    global_shops_string += f", {shop}"
-                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
+                    global_shops_string += f"\n{shop}"
+                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
@@ -582,10 +582,10 @@ async def shops(ctx: commands.Context) -> None:
             team = t
             break
 
-    global_shops_string = f"{global_shops[0]}"
+    global_shops_string = ""
     for shop in global_shops:
-        global_shops_string += f", {shop}"
-    await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und {team.shop}.")
+        global_shops_string += f"\n{shop}"
+    await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
 
 # Load the token from the .token file
 token = ''
