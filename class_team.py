@@ -139,13 +139,16 @@ class Team:
                     challenge = self.generate_unspecific_challenge()
                 self.open_challenges.append(challenge)
 
-    def reroll_challenges(self) -> None:
+    def reroll_challenges(self) -> str:
         if datetime.datetime.now().time() < UNSPECIFIC_TIME:
             print("Cant reroll challenges, too early")
+            return "Cant reroll challenges, too early"
         elif self.last_challenge_generation > UNSPECIFIC_TIME:
             print("Cant reroll challenges, this team already exclusively has unspecific challenges")
+            return "Cant reroll challenges, this team already exclusively has unspecific challenges"
         else:
             self.generate_challenges()
+            return "wowzers"
 
     def complete_challenge(self, index: int) -> None:
         # Index should be 1, 2 or 3
