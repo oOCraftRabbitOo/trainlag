@@ -296,6 +296,7 @@ async def buy(ctx: commands.Context, shop: str):
         await ctx.send("Das isch kein Team-Channel")
         return
 
+    global shops_nonig_aktualisiert
     if not shops_nonig_aktualisiert:
         team.shop = None
     
@@ -310,12 +311,16 @@ async def buy(ctx: commands.Context, shop: str):
 
             team.trophies += trophies
             team.points = rest
-
-            team.generate_shop()
+            
+            if shops_nonig_aktualisiert:
+                team.generate_shop()
             global_shops_string = ""
             for gshop in global_shops:
                 global_shops_string += f"\n{gshop}"
-            await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+            if shops_nonig_aktualisiert:
+                await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+            else:
+                await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string}.")
 
             return
         
@@ -330,18 +335,25 @@ async def buy(ctx: commands.Context, shop: str):
         team.trophies += trophies
         team.points = rest
 
-        team.generate_shop()
+        if shops_nonig_aktualisiert:
+            team.generate_shop()
         global_shops_string = ""
         for gshop in global_shops:
             global_shops_string += f"\n{gshop}"
-        await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+        if shops_nonig_aktualisiert:
+            await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+        else:
+            await ctx.send(f"Ihr händ eu {trophies} Trophäe kauft und händ no {rest} Pünkt übrig.\nEui verfüegbare Shops sind {global_shops_string}.")
         
         return
 
     global_shops_string = ""
     for gshop in global_shops:
         global_shops_string += f"\n{gshop}"
-    await ctx.send(f"Chan de Shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare Shops sind {global_shops_string} und \n{team.shop}")
+    if shops_nonig_aktualisiert:
+        await ctx.send(f"Chan de Shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+    else:
+        await ctx.send(f"Chan de Shop {shop} nöd finde, sinder sicher dass ihr en richtig gschriebe händ?\nDi verfüegbare Shops sind {global_shops_string}.")
 
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
@@ -411,11 +423,18 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 team_channel = bot.get_channel(catcher_team.channel.id)
                 await team_channel.send(f'\n{catcher_team.return_challenges()}')
 
-                catcher_team.generate_shop()
+                global shops_nonig_aktualisiert
+
+                if shops_nonig_aktualisiert:
+                    catcher_team.generate_shop()
                 global_shops_string = ""
                 for shop in global_shops:
                     global_shops_string += f"\n{shop}"
-                await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+                if shops_nonig_aktualisiert:
+                    await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+                else:
+                    await team_channel.send(f"Eui verfüegbare Shops sind {global_shops_string}.")
+
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
@@ -607,10 +626,14 @@ async def shops(ctx: commands.Context) -> None:
             team = t
             break
 
+    global shops_nonig_aktualisiert
     global_shops_string = ""
     for shop in global_shops:
         global_shops_string += f"\n{shop}"
-    await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+    if shops_nonig_aktualisiert:
+        await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string} und \n{team.shop}.")
+    else:
+        await ctx.send(f"Eui verfüegbare Shops sind {global_shops_string}.")
 
 # Load the token from the .token file
 token = ''
