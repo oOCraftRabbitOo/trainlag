@@ -146,6 +146,17 @@ class Team:
     def deduct_points(self, points) -> None:
         self.grant_points(-points)
 
+    def reroll_challenges(self) -> str:
+        if datetime.datetime.now().time() < UNSPECIFIC_TIME:
+            print("Cant reroll challenges, too early")
+            return "Ihr chönd no kein reroll mache, es isch nonig Ziit."
+        elif self.last_challenge_generation > UNSPECIFIC_TIME:
+            print("Cant reroll challenges, this team already exclusively has unspecific challenges")
+            return "Ihr chönd nöd rerolle, ihr händ scho nur unspezifischi"
+        else:
+            self.generate_challenges()
+            return "wowzers"
+
     def uncomplete_challenge(self, index) -> None:
         # Get challenge to uncomplete and remove it from completed challenges
         uncompleted_challenge = self.completed_challenges.pop(index)
