@@ -27,6 +27,8 @@ class RawChallenge:
                  title: str, 
                  description: str, 
                  points: int, 
+                 walking_minutes: int,
+                 stationary_minutes: int,
                  kaffness: int = 0, 
                  grade: int = 0, 
                  zone: int | None = None, 
@@ -40,6 +42,8 @@ class RawChallenge:
         self.title = title
         self.description = description
         self.points = points
+        self.walking_minutes = walking_minutes
+        self.stationary_minutes = stationary_minutes
         self.kaffness = kaffness
         self.grade = grade
         self.zone = zone
@@ -73,7 +77,7 @@ class RawChallenge:
             if self.description.find('%s'):
                 zone = random.choice(s_bahn_zones)
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed, current_zone, self.zoneable and zoned)
+        points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, fixed, current_zone, self.zoneable and zoned)
 
         description = self.description
         description = description.replace('%r', str(reps))
@@ -101,10 +105,12 @@ for i in range(len(da_new_kaff_sheet)):
     bias_sat = row['Bias Sat']
     bias_sun = row['Bias Sun']
     title_override = row['Title Override']
-    challenge_points = row['Points']
+    challenge_points = row['Additional Points']
     min_reps = row['Min']
     max_reps = row['Max']
     ppr = row['Points per Repetition']
+    walking_minutes = row['Walking Time']
+    stationary_minutes = row['Stationary Time']
 
 
     # refine data
@@ -128,9 +134,11 @@ for i in range(len(da_new_kaff_sheet)):
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
+    stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
+    walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
 
     # Return challenge
-    specific_challenges.append(RawChallenge(title, raw_description, challenge_points, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
+    specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
 
 # get and add ortsspezifische challenges
 for i in range(len(ortsspezifisch_sheet)):
@@ -143,6 +151,8 @@ for i in range(len(ortsspezifisch_sheet)):
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
     zone = row['Zone']
+    walking_minutes = row['Walking Time']
+    stationary_minutes = row['Stationary Time']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
@@ -153,11 +163,13 @@ for i in range(len(ortsspezifisch_sheet)):
         zone = int(zone) if not isnan(zone) else None
     except TypeError:
         zone = None
+    stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
+    walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
     
     # Return challenge
-    specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
-# get and add creative specific challenges
+# get and add region specific challenges
 for i in range(len(regionsspezifisch_sheet)):
     row = regionsspezifisch_sheet.loc[i]
     title = row['title']
@@ -175,7 +187,7 @@ for i in range(len(regionsspezifisch_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # get and add zoneable challenges
 for i in range(len(zoneable_sheet)):
@@ -195,11 +207,11 @@ for i in range(len(zoneable_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
+    raw_challenge_to_append = RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
     specific_challenges.append(raw_challenge_to_append)
     unspecific_challenges.append(raw_challenge_to_append)
 
-# get and add creative unspecific challenges
+# get and add unspecific challenges
 for i in range(len(unspecific_sheet)):
     row = unspecific_sheet.loc[i]
     title = row['title']
@@ -217,7 +229,7 @@ for i in range(len(unspecific_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # For both lists generate their lengths = amount of different challenges
 specific_challenges_amount = len(specific_challenges)
