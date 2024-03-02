@@ -6,6 +6,7 @@ print('Generating data for point calculation')
 
 # Load CSV for Zonic Kaffness
 zonic_kaffness_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1336941165&single=true&output=csv")
+distance_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=381450010&single=true&output=csv")
 
 def calculate_zonic_kaffness(row):
     connected_zones = int(row['num conn zones'])
@@ -19,7 +20,17 @@ def calculate_zonic_kaffness(row):
 
 # Create an empty dictionary to store the results
 zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row) for index, row in zonic_kaffness_sheet.iterrows()}
+distance_dict = {}
 
+for index, row in distance_sheet.iterrows():
+    zone_a = int(row['Zone A'])
+    zone_b = int(row['Zone B'])
+    travel_time = int(row['Travel Time'])
+
+    if zone_a not in distance_dict.keys():
+        distance_dict[zone_a] = {}
+
+    distance_dict[zone_a][zone_b] = travel_time
 
 def randomly_adjust(value: int) -> int:
     """
@@ -57,7 +68,7 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int | None, bias: float, fixed: bool, zoneable_and_zoned: bool) -> int:
+def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: int, zone: int | None, bias: float, fixed: bool, current_zone: int, zoneable_and_zoned: bool) -> int:
     points = 0
     points += POINTS_PER_KAFFNESS * kaffness
     points += POINTS_PER_GRADE * grade
@@ -65,6 +76,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, ppr: int, reps: 
     points += reps * ppr
     points += challenge_points
     points += 200 if zoneable_and_zoned else 0
+    points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
     points *= bias
     points = int(points)
     points = points if fixed else randomly_adjust(points)

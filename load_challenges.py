@@ -54,7 +54,7 @@ class RawChallenge:
     def __str__(self):
         return f'r {self.title}, {self.description}, p{self.points}k{self.kaffness}g{self.grade}z{self.zone}, zoneable = {self.zoneable}'
 
-    def challenge(self, zoned: bool, id: int, specific: bool):
+    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int):
         zone = self.zone
 
         reps = random.randint(self.min_reps, self.max_reps)
@@ -67,20 +67,26 @@ class RawChallenge:
         else:
             bias = self.bias_sat
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed, self.zoneable and zoned)
-
         if not (self.zoneable and zoned):
-            zone = random.choice(zones)
+            if self.description.find('%z'):
+                zone = random.choice(zones)
+            if self.description.find('%s'):
+                zone = random.choice(s_bahn_zones)
+
+        points = pointcalc(self.kaffness, self.grade, self.points, self.ppr, reps, zone, bias, fixed, current_zone, self.zoneable and zoned)
 
         description = self.description
         description = description.replace('%r', str(reps))
         description = description.replace('%z', str(zone))
-        description = description.replace('%s', str(random.choice(s_bahn_zones)))
+        description = description.replace('%s', str(zone))
         if zoned and self.zoneable:
             description += f' Damit ihr Pünkt überchömed, mached das I de Zone {zone}.'
         description = description + f' *{points} Pünkt*'
+
+        if zone is None:
+            zone = current_zone
         
-        return Challenge(self. title, description, points, id, specific)
+        return Challenge(self. title, description, points, id, specific, zone)
 
 print('Generating challenges')
 
@@ -136,12 +142,14 @@ for i in range(len(ortsspezifisch_sheet)):
     max_reps = row['max']
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+    zone = row['Zone']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
+    zone = int(zone) if not isnan(zone) else None
     
     # Return challenge
     specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
@@ -212,11 +220,11 @@ for i in range(len(unspecific_sheet)):
 specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
 
-def generate_specific_challenge(index):
-    return specific_challenges[index].challenge(zoned=True, id=index, specific=True)
+def generate_specific_challenge(index, current_zone):
+    return specific_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone)
 
-def generate_unspecific_challenge(index):
-    return unspecific_challenges[index].challenge(zoned=False, id=index, specific=False)
+def generate_unspecific_challenge(index, current_zone):
+    return unspecific_challenges[index].challenge(zoned=False, id=index, specific=False, current_zone=current_zone)
 
 if __name__ == '__main__':
     print(*unspecific_challenges, sep='\n')

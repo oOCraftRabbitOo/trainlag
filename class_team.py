@@ -49,33 +49,33 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_specific_challenge(self) -> Challenge:
+    def generate_specific_challenge(self, zone: int) -> Challenge:
         place = random.randint(0, specific_challenges_amount - 1)
         while place in self.places_visited:
             place = random.randint(0, specific_challenges_amount - 1)
     
-        return generate_specific_challenge(place)
+        return generate_specific_challenge(place, zone)
         
-    def generate_unspecific_challenge(self) -> Challenge:
+    def generate_unspecific_challenge(self, zone: int) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, unspecific_challenges_amount - 1)
         while index in self.completed_unspecific_challenges:
             index = random.randint(0, unspecific_challenges_amount - 1)
 
         # Generate challenge and return it
-        return generate_unspecific_challenge(index)
+        return generate_unspecific_challenge(index, zone)
 
-    def generate_place_challenge(self) -> Challenge:
-        # Randomly select unvisited place (int)
-        place = random.randint(0, specific_challenges_amount - 1)
-        if len(self.places_visited) == specific_challenges_amount:
-            self.places_visited = []
-            print(f'Oh shit, ran out of places, aww man, team {self}')
-        while place in self.places_visited:
-            place = random.randint(0, specific_challenges_amount - 1)
-
-        # Generate challenge and return it
-        return generate_specific_challenge(place)
+#    def generate_place_challenge(self, zone: int) -> Challenge:
+#        # Randomly select unvisited place (int)
+#        place = random.randint(0, specific_challenges_amount - 1)
+#        if len(self.places_visited) == specific_challenges_amount:
+#            self.places_visited = []
+#            print(f'Oh shit, ran out of places, aww man, team {self}')
+#        while place in self.places_visited:
+#            place = random.randint(0, specific_challenges_amount - 1)
+#
+#        # Generate challenge and return it
+#        return generate_specific_challenge(place, zone)
 
     '''
     def generate_creative_challenge(self) -> Challenge:
@@ -88,34 +88,34 @@ class Team:
         return generate_creative_challenge(index)
     '''
 
-    def generate_challenges(self) -> None:
+    def generate_challenges(self, zone: int) -> None:
         time = datetime.datetime.now().time()
 
         if (time < UNSPECIFIC_TIME):
-            self.open_challenges = [self.generate_specific_challenge(), None, self.generate_unspecific_challenge()]
+            self.open_challenges = [self.generate_specific_challenge(zone), None, self.generate_unspecific_challenge(zone)]
     
             # Randomly select a specific challenge that's neither completed nor active
-            challenge = self.generate_specific_challenge()
+            challenge = self.generate_specific_challenge(zone)
             while challenge == self.open_challenges[0]:
-                challenge = self.generate_specific_challenge()
+                challenge = self.generate_specific_challenge(zone)
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
 
         elif (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge()]
+            self.open_challenges = [self.generate_specific_challenge(zone)]
             for _ in range(2):
-                challenge = self.generate_specific_challenge()
+                challenge = self.generate_specific_challenge(zone)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge()
+                    challenge = self.generate_specific_challenge(zone)
                 self.open_challenges.append(challenge)
 
         else:
-            self.open_challenges = [self.generate_unspecific_challenge()]
+            self.open_challenges = [self.generate_unspecific_challenge(zone)]
             for _ in range(2):
-                challenge = self.generate_unspecific_challenge()
+                challenge = self.generate_unspecific_challenge(zone)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge()
+                    challenge = self.generate_unspecific_challenge(zone)
                 self.open_challenges.append(challenge)
 
     def complete_challenge(self, index: int) -> None:
@@ -134,7 +134,7 @@ class Team:
         self.grant_points(completed_challenge.points)
 
         # Generate new challenges
-        self.generate_challenges()
+        self.generate_challenges(completed_challenge.zone)
 
         # Backup
         self.backup()  # TODO: Does this work?
