@@ -90,6 +90,7 @@ class Team:
 
     def generate_challenges(self, zone: int) -> None:
         time = datetime.datetime.now().time()
+        self.last_challenge_generation = time
 
         if (time < UNSPECIFIC_TIME):
             self.open_challenges = [self.generate_specific_challenge(zone), None, self.generate_unspecific_challenge(zone)]
