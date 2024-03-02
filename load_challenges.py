@@ -149,7 +149,10 @@ for i in range(len(ortsspezifisch_sheet)):
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
-    zone = int(zone) if not isnan(zone) else None
+    try:
+        zone = int(zone) if not isnan(zone) else None
+    except TypeError:
+        zone = None
     
     # Return challenge
     specific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
