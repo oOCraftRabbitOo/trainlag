@@ -72,9 +72,9 @@ class RawChallenge:
             bias = self.bias_sat
 
         if not (self.zoneable and zoned):
-            if self.description.find('%z'):
+            if '%z' in self.description:
                 zone = random.choice(zones)
-            if self.description.find('%s'):
+            if '%s' in self.description:
                 zone = random.choice(s_bahn_zones)
 
         points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, fixed, current_zone, self.zoneable and zoned)
