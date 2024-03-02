@@ -25,7 +25,7 @@ class Team:
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
-        self.generate_challenges()
+        self.generate_challenges(START_ZONE)
         self.backup()
 
     def deb_str(self) -> str:
