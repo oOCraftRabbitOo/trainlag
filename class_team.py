@@ -142,7 +142,7 @@ class Team:
     def reroll_challenges(self) -> str:
         if datetime.datetime.now().time() < UNSPECIFIC_TIME:
             print("Cant reroll challenges, too early")
-            return "Cant reroll challenges, too early"
+            return "Ihr chönd no kein reroll mache, es isch nonig Ziit."
         elif self.last_challenge_generation > UNSPECIFIC_TIME:
             print("Cant reroll challenges, this team already exclusively has unspecific challenges")
             return "Cant reroll challenges, this team already exclusively has unspecific challenges"
