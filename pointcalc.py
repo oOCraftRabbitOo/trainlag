@@ -11,8 +11,8 @@ distance_sheet = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS
 def calculate_zonic_kaffness(row):
     connected_zones = int(row['num conn zones'])
     connections = int(row['num connections'])
-    train_through = True if row['train through'] == "TRUE" else False
-    mongus = True if row['Mongus'] == "TRUE" else False
+    train_through = row['train through']
+    mongus = row['Mongus']
     
     zonic_kaffness = (6 - connected_zones) * POINTS_PER_CONNECTED_ZONE_LESS_THAN_6 + (6 - connections ** 0.5) * POINTS_PER_BAD_CONNECTIVITY_INDEX + (0 if train_through else POINTS_FOR_NO_TRAIN) + (POINTS_FOR_MONGUS if mongus else 0)
     
@@ -83,3 +83,6 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
     points = int(points)
     points = points if fixed else randomly_adjust(points)
     return points
+
+if __name__ == "__main__":
+    print(*zonic_kaffness_dict.values(), sep='\n')

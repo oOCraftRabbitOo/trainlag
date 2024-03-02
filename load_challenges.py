@@ -128,7 +128,6 @@ for i in range(len(da_new_kaff_sheet)):
     else:
         raw_description = f'Gönd nach {place}.'
     kaffness = int(kaffness)
-    print(type(grade))
     grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     zone = int(zone)
     bias = float(bias)
