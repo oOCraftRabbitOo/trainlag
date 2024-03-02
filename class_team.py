@@ -197,7 +197,7 @@ class Team:
     def switch_roles(self) -> None:
         if self.is_catcher:
             self.is_catcher = False
-            self.generate_challenges()
+            self.generate_challenges(START_ZONE) # TODO: Shitlösig
         else:
             self.is_catcher = True
             self.open_challenges = []

@@ -77,7 +77,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
     points += pointcalc_zone(zone) if zone is not None else 0
     points += reps * ppr
     points += challenge_points
-    points += 200 if zoneable_and_zoned else 0
+    points += 100 if zoneable_and_zoned else 0
     points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
     points *= bias
     points = int(points)
