@@ -4,6 +4,7 @@ from datetime import date
 from pointcalc import pointcalc
 from class_challenge import Challenge
 from numpy import isnan
+import numpy
 
 print('Loading challenges. This may take a while')
 
@@ -56,7 +57,7 @@ class RawChallenge:
         self.fixed = fixed
 
     def __str__(self):
-        return f'r {self.title}, {self.description}, p{self.points}k{self.kaffness}g{self.grade}z{self.zone}, zoneable = {self.zoneable}'
+        return f'r {self.title}, {self.description}, p{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}'
 
     def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int):
         zone = self.zone
@@ -127,7 +128,8 @@ for i in range(len(da_new_kaff_sheet)):
     else:
         raw_description = f'Gönd nach {place}.'
     kaffness = int(kaffness)
-    grade = (int(grade) if isinstance(grade, int) else kaffness)  # Ignores empty cells, '-' and '?'
+    print(type(grade))
+    grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     zone = int(zone)
     bias = float(bias)
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
