@@ -41,7 +41,7 @@ def author_is_catcher(ctx: commands.Context) -> bool:
     raise Exception(f'Could not find Player {author} with ID {authorID} in any team.')
 
 # same as team.switch_roles, but also changes roles on discord server
-async def discord_switch_roles(team: Team, ctx: commands.Context) -> None:
+async def discord_switch_roles(team: Team, ctx: commands.Context, zone: int | None = None) -> None:
     global catcher_role
     print(f'changing the role of {team.name}')
 
@@ -62,7 +62,7 @@ async def discord_switch_roles(team: Team, ctx: commands.Context) -> None:
             await member.edit(roles = [role for role in member.roles if role != catcher_role])
             print(f'made {member} a runner')
     
-    team.switch_roles()
+    team.switch_roles(zone)
     print()
 
 
@@ -311,7 +311,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
                 # Switch the roles of the caught and catcher teams
                 await discord_switch_roles(caught_team, ctx)
-                await discord_switch_roles(catcher_team, ctx)
+                await discord_switch_roles(catcher_team, ctx, caught_team.last_zone)
 
                 general_channel = bot.get_channel(GENERAL_CHANNEL)
                 catcher_names = ""

@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 from datetime import date
-from pointcalc import pointcalc
+from pointcalc import pointcalc, distance_dict
 from class_challenge import Challenge
 from numpy import isnan
 import numpy
@@ -28,11 +28,11 @@ class RawChallenge:
                  title: str, 
                  description: str, 
                  points: int, 
-                 walking_minutes: int,
-                 stationary_minutes: int,
+                 walking_minutes: int = 0,
+                 stationary_minutes: int = 0,
                  kaffness: int = 0, 
                  grade: int = 0, 
-                 zone: int | None = None, 
+                 zone: int | None | list[int] | str = None, 
                  bias_sat: float = 1.0, 
                  bias_sun: float = 1.0, 
                  min_reps: int = 0, 
@@ -57,7 +57,7 @@ class RawChallenge:
         self.fixed = fixed
 
     def __str__(self):
-        return f'r {self.title}, {self.description}, p{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}'
+        return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}, fixed = {self.fixed}'
 
     def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int):
         zone = self.zone
@@ -72,11 +72,18 @@ class RawChallenge:
         else:
             bias = self.bias_sat
 
-        if not (self.zoneable and zoned):
+        if not (self.zoneable and zoned) or zone == '%z' or zone == '%s':
             if '%z' in self.description:
                 zone = random.choice(zones)
             if '%s' in self.description:
                 zone = random.choice(s_bahn_zones)
+
+        if type(zone) == list:
+            best = None
+            for z in zone:
+                if best is None or distance_dict[current_zone][z] < distance_dict[current_zone][best]:
+                    best = z 
+            zone = best
 
         points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, fixed, current_zone, self.zoneable and zoned)
 
@@ -91,7 +98,7 @@ class RawChallenge:
         if zone is None:
             zone = current_zone
         
-        return Challenge(self. title, description, points, id, specific, zone)
+        return Challenge(self.title, description, points, id, specific, zone)
 
 print('Generating challenges')
 
@@ -141,7 +148,7 @@ for i in range(len(da_new_kaff_sheet)):
     # Return challenge
     specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
 
-# get and add ortsspezifische challenges
+# get and add specific challenges
 for i in range(len(ortsspezifisch_sheet)):
     row = ortsspezifisch_sheet.loc[i]
     title = row['title']
@@ -154,21 +161,37 @@ for i in range(len(ortsspezifisch_sheet)):
     zone = row['Zone']
     walking_minutes = row['Walking Time']
     stationary_minutes = row['Stationary Time']
+    kaffness = row['Kaffskala']
+    grade = row['ÖV Güteklasse']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
+    # try:
+    #     zone = int(zone) if not isnan(zone) else None
+    # except TypeError:
+    #     zone = None
     try:
-        zone = int(zone) if not isnan(zone) else None
-    except TypeError:
-        zone = None
+        zone = int(zone)
+    except ValueError:
+        try:
+            zone = list(zone)
+        except ValueError:
+            try:
+                zone = str(zone)
+                if zone != '%z' and zone != '%s':
+                    zone = None
+            except ValueError:
+                zone = None
     stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
     walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
+    kaffness = int(kaffness)
+    grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     
     # Return challenge
-    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # get and add region specific challenges
 for i in range(len(regionsspezifisch_sheet)):
@@ -188,7 +211,7 @@ for i in range(len(regionsspezifisch_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # get and add zoneable challenges
 for i in range(len(zoneable_sheet)):
@@ -208,7 +231,7 @@ for i in range(len(zoneable_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    raw_challenge_to_append = RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
+    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
     specific_challenges.append(raw_challenge_to_append)
     unspecific_challenges.append(raw_challenge_to_append)
 
@@ -230,7 +253,7 @@ for i in range(len(unspecific_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, 0, 0, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # For both lists generate their lengths = amount of different challenges
 specific_challenges_amount = len(specific_challenges)

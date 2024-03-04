@@ -25,6 +25,7 @@ class Team:
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
+        self.last_zone = START_ZONE
         self.generate_challenges(START_ZONE)
         self.backup()
 
@@ -137,6 +138,8 @@ class Team:
         # Generate new challenges
         self.generate_challenges(completed_challenge.zone)
 
+        self.last_zone = completed_challenge.zone
+
         # Backup
         self.backup()  # TODO: Does this work?
 
@@ -155,7 +158,7 @@ class Team:
             print("Cant reroll challenges, this team already exclusively has unspecific challenges")
             return "Ihr chönd nöd rerolle, ihr händ scho nur unspezifischi"
         else:
-            self.generate_challenges()
+            self.generate_challenges(self.last_zone)
             return "wowzers"
 
     def uncomplete_challenge(self, index) -> None:
@@ -206,10 +209,10 @@ class Team:
         self.completed_challenges = loaded_team.completed_challenges
         self.open_challenges = loaded_team.open_challenges
 
-    def switch_roles(self) -> None:
+    def switch_roles(self, zone: int | None = None) -> None:
         if self.is_catcher:
             self.is_catcher = False
-            self.generate_challenges(START_ZONE) # TODO: Shitlösig
+            self.generate_challenges(START_ZONE if zone is None else zone)
         else:
             self.is_catcher = True
             self.open_challenges = []
