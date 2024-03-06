@@ -1,11 +1,13 @@
 class Challenge:
-    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int):
-        self.title = title
-        self.description = description
-        self.points = points
-        self.id = id
-        self.specific = specific
-        self.zone = zone
+    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int, kaff: int, in_perim: bool):
+        self.title: str = title
+        self.description: str = description
+        self.points: int = points
+        self.id: int = id
+        self.specific: bool = specific
+        self.zone: int = zone
+        self.kaff: int = kaff
+        self.in_perim: bool = in_perim
 
     def __str__(self):
         return f"**{self.title}** \n{self.description}"

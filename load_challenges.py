@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 from datetime import date
-from pointcalc import pointcalc, distance_dict
+from pointcalc import pointcalc, distance_dict, perim
 from class_challenge import Challenge
 from numpy import isnan
 import numpy
@@ -59,7 +59,7 @@ class RawChallenge:
     def __str__(self):
         return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}, fixed = {self.fixed}'
 
-    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int):
+    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int) -> Challenge:
         zone = self.zone
 
         reps = random.randint(self.min_reps, self.max_reps)
@@ -98,7 +98,7 @@ class RawChallenge:
         if zone is None:
             zone = current_zone
         
-        return Challenge(self.title, description, points, id, specific, zone)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim)
 
 print('Generating challenges')
 
@@ -259,7 +259,7 @@ for i in range(len(unspecific_sheet)):
 specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
 
-def generate_specific_challenge(index, current_zone, delta: int):
+def generate_specific_challenge(index, current_zone, delta: int) -> Challenge:
     return specific_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta: int)
 
 def generate_unspecific_challenge(index, current_zone, delta: int):

@@ -51,20 +51,30 @@ class Team:
         return self.points > other.points
 
     def generate_specific_challenge(self, zone: int, delta: int) -> Challenge:
-        place = random.randint(0, specific_challenges_amount - 1)
-        while place in self.places_visited:
-            place = random.randint(0, specific_challenges_amount - 1)
-    
-        return generate_specific_challenge(place, zone, delta)
-        
-    def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
+        time = datetime.datetime.now().time()
+
         # Randomly select incomplete challenge (int)
-        index = random.randint(0, unspecific_challenges_amount - 1)
-        while index in self.completed_unspecific_challenges:
-            index = random.randint(0, unspecific_challenges_amount - 1)
+        place = random.randint(0, specific_challenges_amount - 1)
+        challenge = generate_specific_challenge(place, zone, delta)
+        while place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+            place = random.randint(0, specific_challenges_amount - 1)
+            challenge = generate_specific_challenge(place, zone, delta)
 
         # Generate challenge and return it
-        return generate_unspecific_challenge(index, zone, delta)
+        return challenge
+        
+    def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
+        time = datetime.datetime.now().time()
+
+        # Randomly select incomplete challenge (int)
+        index = random.randint(0, unspecific_challenges_amount - 1)
+        challenge = generate_unspecific_challenge(index, zone, delta)
+        while index in self.completed_unspecific_challenges or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+            index = random.randint(0, unspecific_challenges_amount - 1)
+            challenge = generate_unspecific_challenge(index, zone, delta)
+
+        # Generate challenge and return it
+        return challenge
 
 #    def generate_place_challenge(self, zone: int) -> Challenge:
 #        # Randomly select unvisited place (int)

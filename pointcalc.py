@@ -20,7 +20,7 @@ def calculate_zonic_kaffness(row):
 
 # Create an empty dictionary to store the results
 zonic_kaffness_dict = {int(row['Zone']): calculate_zonic_kaffness(row) for index, row in zonic_kaffness_sheet.iterrows()}
-distance_dict = {}
+distance_dict: dict[int, dict[int, int]] = {}
 
 for index, row in distance_sheet.iterrows():
     zone_a = int(row['Zone A'])
@@ -31,6 +31,12 @@ for index, row in distance_sheet.iterrows():
         distance_dict[zone_a] = {}
 
     distance_dict[zone_a][zone_b] = travel_time
+
+perim = []
+
+for k in distance_dict[110].keys():
+    if distance_dict[110][k] < 30:
+        perim.append(k)
 
 def randomly_adjust(value: int) -> int:
     """
