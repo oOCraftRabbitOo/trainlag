@@ -344,22 +344,35 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 @bot.command(aliases=['abschlüsse', 'done', 'challenge', 'abschliessen'])
 async def complete(ctx: commands.Context, challenge_id: int) -> None:
     await setup_check(ctx)
+
     # Only runnable by runners
     if author_is_catcher(ctx):
         await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
         return
+
     # Get channel's team
     channel = ctx.message.channel.id
     for t in teams:
         if t.channel.id == channel:
             team = t
             break
+    else:
+        await ctx.send(f'Das isch nöd de channel vo eme Team :/')
+        return
+
+    # calculate delta
+    hightest = teams[0].points
+    for t in teams:
+        if t.points > hightest:
+            hightest = t.points
+    delta = hightest - team.points
+
     try:
         # Complete challenge
         completed_challenge =team.open_challenges[int(challenge_id)-1]
         challenge_name = completed_challenge.title
         challenge_reward = completed_challenge.points
-        team.complete_challenge(int(challenge_id)-1)
+        team.complete_challenge(int(challenge_id)-1, delta)
         await ctx.send(f'Nice, d Challenge "{challenge_name}" hät eu {challenge_reward} Pünkt gäh. '
                        f'Das heisst, ihr händ jetzt {team.points} Pünkt!\n'
                        f'--------------------------------------------')

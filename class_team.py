@@ -26,7 +26,7 @@ class Team:
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.last_zone = START_ZONE
-        self.generate_challenges(START_ZONE)
+        self.generate_challenges(START_ZONE, 0)
         self.backup()
 
     def deb_str(self) -> str:
@@ -50,21 +50,21 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_specific_challenge(self, zone: int) -> Challenge:
+    def generate_specific_challenge(self, zone: int, delta: int) -> Challenge:
         place = random.randint(0, specific_challenges_amount - 1)
         while place in self.places_visited:
             place = random.randint(0, specific_challenges_amount - 1)
     
-        return generate_specific_challenge(place, zone)
+        return generate_specific_challenge(place, zone, delta)
         
-    def generate_unspecific_challenge(self, zone: int) -> Challenge:
+    def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, unspecific_challenges_amount - 1)
         while index in self.completed_unspecific_challenges:
             index = random.randint(0, unspecific_challenges_amount - 1)
 
         # Generate challenge and return it
-        return generate_unspecific_challenge(index, zone)
+        return generate_unspecific_challenge(index, zone, delta)
 
 #    def generate_place_challenge(self, zone: int) -> Challenge:
 #        # Randomly select unvisited place (int)
@@ -89,38 +89,38 @@ class Team:
         return generate_creative_challenge(index)
     '''
 
-    def generate_challenges(self, zone: int) -> None:
+    def generate_challenges(self, zone: int, delta: int) -> None:
         time = datetime.datetime.now().time()
         self.last_challenge_generation = time
 
         if (time < UNSPECIFIC_TIME):
-            self.open_challenges = [self.generate_specific_challenge(zone), None, self.generate_unspecific_challenge(zone)]
+            self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
     
             # Randomly select a specific challenge that's neither completed nor active
-            challenge = self.generate_specific_challenge(zone)
+            challenge = self.generate_specific_challenge(zone, delta)
             while challenge == self.open_challenges[0]:
-                challenge = self.generate_specific_challenge(zone)
+                challenge = self.generate_specific_challenge(zone, delta)
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
 
         elif (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge(zone)]
+            self.open_challenges = [self.generate_specific_challenge(zone, delta)]
             for _ in range(2):
-                challenge = self.generate_specific_challenge(zone)
+                challenge = self.generate_specific_challenge(zone, delta)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge(zone)
+                    challenge = self.generate_specific_challenge(zone, delta)
                 self.open_challenges.append(challenge)
 
         else:
-            self.open_challenges = [self.generate_unspecific_challenge(zone)]
+            self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
             for _ in range(2):
-                challenge = self.generate_unspecific_challenge(zone)
+                challenge = self.generate_unspecific_challenge(zone, delta)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge(zone)
+                    challenge = self.generate_unspecific_challenge(zone, delta)
                 self.open_challenges.append(challenge)
 
-    def complete_challenge(self, index: int) -> None:
+    def complete_challenge(self, index: int, delta: int) -> None:
         # Index should be 1, 2 or 3
         completed_challenge = self.open_challenges[index]
 
@@ -135,8 +135,10 @@ class Team:
         # Grant points
         self.grant_points(completed_challenge.points)
 
+        delta = delta - completed_challenge.points
+
         # Generate new challenges
-        self.generate_challenges(completed_challenge.zone)
+        self.generate_challenges(completed_challenge.zone, delta)
 
         self.last_zone = completed_challenge.zone
 

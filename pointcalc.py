@@ -68,7 +68,7 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes: int, stationary_minutes: int, ppr: int, reps: int, zone: int | None, bias: float, fixed: bool, current_zone: int, zoneable_and_zoned: bool) -> int:
+def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes: int, stationary_minutes: int, ppr: int, reps: int, zone: int | None, bias: float, fixed: bool, current_zone: int, delta: int, zoneable_and_zoned: bool) -> int:
     points = 0
     points += POINTS_PER_KAFFNESS * kaffness
     points += POINTS_PER_GRADE * grade
@@ -79,6 +79,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
     points += challenge_points
     points += 100 if zoneable_and_zoned else 0
     points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
+    points += (points * (delta - UNDERDOG_STARTING_DIFFERENCE) * UNDERDOG_MULTIPLYER_PER_1000 * 0.001) if delta > UNDERDOG_STARTING_DIFFERENCE else 0
     points *= bias
     points = int(points)
     points = points if fixed else randomly_adjust(points)
