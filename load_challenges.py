@@ -194,7 +194,7 @@ for i in range(len(ortsspezifisch_sheet)):
     grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     
     # Return challenge
-    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, zone=zone, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
 # get and add region specific challenges
 for i in range(len(regionsspezifisch_sheet)):
