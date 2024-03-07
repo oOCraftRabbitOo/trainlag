@@ -1,10 +1,7 @@
 [
   {
     "name": "alpha",
-    "players": [
-      "Beni",
-      "Luis"
-    ],
+    "players": ["Beni", "Luis"],
     "channel": {
       "name": "alpha",
       "id": 1180847279922487300
@@ -12,11 +9,7 @@
   },
   {
     "name": "bravo",
-    "players": [
-      "Adriana",
-      "Anna",
-      "Wiki"
-    ],
+    "players": ["Adriana", "Anna", "Wiki"],
     "channel": {
       "name": "bravo",
       "id": 1180847351695417300
@@ -24,11 +17,7 @@
   },
   {
     "name": "delta",
-    "players": [
-      "Simon",
-      "Frederic",
-      "Noah"
-    ],
+    "players": ["Simon", "Frederic", "Noah"],
     "channel": {
       "name": "delta",
       "id": 1180847448894218200
@@ -36,11 +25,7 @@
   },
   {
     "name": "echo",
-    "players": [
-      "Orell",
-      "Philipp",
-      "Moritz"
-    ],
+    "players": ["Orell", "Philipp", "Moritz"],
     "channel": {
       "name": "echo",
       "id": 1180847556096426000
@@ -48,11 +33,7 @@
   },
   {
     "name": "foxtrot",
-    "players": [
-      "Julian",
-      "Lea",
-      "Maria"
-    ],
+    "players": ["Julian", "Lea", "Maria"],
     "channel": {
       "name": "foxtrot",
       "id": 1180847598039470000
@@ -60,10 +41,7 @@
   },
   {
     "name": "guete abig",
-    "players": [
-      "Timo",
-      "Elric"
-    ],
+    "players": ["Timo", "Elric"],
     "channel": {
       "name": "guete-abig",
       "id": 1180847663596445700
@@ -71,11 +49,7 @@
   },
   {
     "name": "h0i",
-    "players": [
-      "Nelio",
-      "Christopher",
-      "Ciril"
-    ],
+    "players": ["Nelio", "Christopher", "Ciril"],
     "channel": {
       "name": "h0i",
       "id": 1180847700875432000
