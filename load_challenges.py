@@ -187,7 +187,7 @@ for i in range(len(ortsspezifisch_sheet)):
                 zone = None
     stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
     walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
-    kaffness = int(kaffness)
+    kaffness = int(kaffness) if not isnan(kaffness) else 0
     grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     
     # Return challenge
