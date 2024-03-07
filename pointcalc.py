@@ -85,7 +85,8 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
     points += challenge_points
     points += 100 if zoneable_and_zoned else 0
     points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
-    points += (points * (delta - UNDERDOG_STARTING_DIFFERENCE) * UNDERDOG_MULTIPLYER_PER_1000 * 0.001) if delta > UNDERDOG_STARTING_DIFFERENCE else 0
+    if not fixed:
+        points += (points * (delta - UNDERDOG_STARTING_DIFFERENCE) * UNDERDOG_MULTIPLYER_PER_1000 * 0.001) if delta > UNDERDOG_STARTING_DIFFERENCE else 0
     points *= bias
     points = int(points)
     points = points if fixed else randomly_adjust(points)

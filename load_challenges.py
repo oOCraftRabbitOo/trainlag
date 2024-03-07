@@ -173,6 +173,7 @@ for i in range(len(ortsspezifisch_sheet)):
     #     zone = int(zone) if not isnan(zone) else None
     # except TypeError:
     #     zone = None
+    print(zone)
     try:
         zone = int(zone)
     except ValueError:
