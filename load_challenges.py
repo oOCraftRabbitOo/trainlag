@@ -174,11 +174,13 @@ for i in range(len(ortsspezifisch_sheet)):
     # except TypeError:
     #     zone = None
     print(zone)
+    print(type(zone))
     try:
         zone = int(zone)
-    except ValueError:
+    except ValueError as err:
+        print(err)
         try:
-            zone = list(zone)
+            zone = list(map(int, zone.split(',')))
         except ValueError:
             try:
                 zone = str(zone)
