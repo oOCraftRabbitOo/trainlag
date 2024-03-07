@@ -41,7 +41,7 @@ def author_is_catcher(ctx: commands.Context) -> bool:
     raise Exception(f'Could not find Player {author} with ID {authorID} in any team.')
 
 # same as team.switch_roles, but also changes roles on discord server
-async def discord_switch_roles(team: Team, ctx: commands.Context, zone: int | None = None) -> None:
+async def discord_switch_roles(team: Team, ctx: commands.Context, zone: int | None = None, delta: int = 0) -> None:
     global catcher_role
     print(f'changing the role of {team.name}')
 
@@ -62,7 +62,7 @@ async def discord_switch_roles(team: Team, ctx: commands.Context, zone: int | No
             await member.edit(roles = [role for role in member.roles if role != catcher_role])
             print(f'made {member} a runner')
     
-    team.switch_roles(zone)
+    team.switch_roles(delta, zone)
     print()
 
 
@@ -309,9 +309,16 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                     await ctx.send('error, catcher team not found')
                     raise Exception("couldn't find the catcher in any team even though he has to be there because that's how we know he's a catcher, fix ya code!")
 
+                # calculate delta
+                hightest = teams[0].points
+                for t in teams:
+                    if t.points > hightest:
+                        hightest = t.points
+                delta = hightest - team.points
+
                 # Switch the roles of the caught and catcher teams
                 await discord_switch_roles(caught_team, ctx)
-                await discord_switch_roles(catcher_team, ctx, caught_team.last_zone)
+                await discord_switch_roles(catcher_team, ctx, caught_team.last_zone, delta)
 
                 general_channel = bot.get_channel(GENERAL_CHANNEL)
                 catcher_names = ""
@@ -439,6 +446,9 @@ async def switch(ctx: commands.Context) -> None:
         if t.channel.id == channel:
             team = t
             break
+    else:
+        ctx.send("Das isch nöd de Kanal vo eme Team :/")
+        return
     
     # change the role of the team
     await discord_switch_roles(team, ctx)
@@ -509,6 +519,33 @@ async def catchers(ctx: commands.Context) -> None:
         
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)
+
+@bot.command(aliases=['remake', 'regenerate', 'regen', 'gibmirneuichallengeswillichshitüberchohan'])
+async def reroll(ctx: commands.Context) -> None:
+    await setup_check(ctx)
+
+    # get channel's team
+    channel = ctx.message.channel.id
+    for t in teams:
+        if t.channel.id == channel:
+            team = t
+            break
+    else:
+        ctx.send("Das isch nöd de Kanal vo eme Team :/")
+        return
+
+    # calculate delta
+    hightest = teams[0].points
+    for t in teams:
+        if t.points > hightest:
+            hightest = t.points
+    delta = hightest - team.points
+
+    message = team.reroll_challenges(delta)
+    if message != "wowzers":
+        await ctx.send(message)
+    else:
+        await ctx.send(team.return_challenges())
 
 @bot.command(aliases=['mitspieler', 'spieler', 'players', 'namen', 'namelist', 'allplayers'])
 async def names(ctx: commands.Context) -> None:

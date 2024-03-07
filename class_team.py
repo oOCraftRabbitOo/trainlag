@@ -221,10 +221,10 @@ class Team:
         self.completed_challenges = loaded_team.completed_challenges
         self.open_challenges = loaded_team.open_challenges
 
-    def switch_roles(self, zone: int | None = None) -> None:
+    def switch_roles(self, delta: int, zone: int | None = None) -> None:
         if self.is_catcher:
             self.is_catcher = False
-            self.generate_challenges(START_ZONE if zone is None else zone)
+            self.generate_challenges(START_ZONE if zone is None else zone, delta)
         else:
             self.is_catcher = True
             self.open_challenges = []
