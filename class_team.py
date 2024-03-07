@@ -151,6 +151,7 @@ class Team:
         self.generate_challenges(completed_challenge.zone, delta)
 
         self.last_zone = completed_challenge.zone
+        print(f'd zone vom team {self.name} isch jetzt {self.last_zone}')
 
         # Backup
         self.backup()  # TODO: Does this work?
