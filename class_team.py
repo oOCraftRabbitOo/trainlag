@@ -103,7 +103,15 @@ class Team:
         time = datetime.datetime.now().time()
         self.last_challenge_generation = time
 
-        if (time < UNSPECIFIC_TIME):
+        if (time < self.normal_mode_time):
+            self.open_challenges = [self.generate_specific_challenge(zone, delta)]
+            for _ in range(2):
+                challenge = self.generate_specific_challenge(zone, delta)
+                while challenge in self.open_challenges:
+                    challenge = self.generate_specific_challenge(zone, delta)
+                self.open_challenges.append(challenge)
+
+        elif (time < UNSPECIFIC_TIME):
             self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
     
             # Randomly select a specific challenge that's neither completed nor active
@@ -113,14 +121,6 @@ class Team:
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
-
-        elif (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge(zone, delta)]
-            for _ in range(2):
-                challenge = self.generate_specific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
 
         else:
             self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
@@ -162,7 +162,7 @@ class Team:
     def deduct_points(self, points) -> None:
         self.grant_points(-points)
 
-    def reroll_challenges(self) -> str:
+    def reroll_challenges(self, delta: int) -> str:
         if datetime.datetime.now().time() < UNSPECIFIC_TIME:
             print("Cant reroll challenges, too early")
             return "Ihr chönd no kein reroll mache, es isch nonig Ziit."
@@ -170,7 +170,7 @@ class Team:
             print("Cant reroll challenges, this team already exclusively has unspecific challenges")
             return "Ihr chönd nöd rerolle, ihr händ scho nur unspezifischi"
         else:
-            self.generate_challenges(self.last_zone)
+            self.generate_challenges(self.last_zone, delta)
             return "wowzers"
 
     def uncomplete_challenge(self, index) -> None:
