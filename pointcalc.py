@@ -39,6 +39,7 @@ for k in distance_dict[110].keys():
         perim.append(k)
 
 def randomly_adjust(value: int) -> int:
+    print("chello")
     """
     Takes in a value and adds/subtracts some amount of points randomly to hopefully prevent ties
     """
@@ -89,6 +90,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
         points += (points * (delta - UNDERDOG_STARTING_DIFFERENCE) * UNDERDOG_MULTIPLYER_PER_1000 * 0.001) if delta > UNDERDOG_STARTING_DIFFERENCE else 0
     points *= bias
     points = int(points)
+    print(fixed)
     points = points if fixed else randomly_adjust(points)
     return points
 
