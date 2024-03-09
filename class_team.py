@@ -26,6 +26,7 @@ class Team:
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.last_zone = START_ZONE
+        self.last_challenge_generation = 0
         self.generate_challenges(START_ZONE, 0)
         self.backup()
 

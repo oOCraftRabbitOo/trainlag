@@ -41,4 +41,4 @@ PERIM_MAX_KAFF = 4
 # times
 UNSPECIFIC_TIME = datetime.time(hour=20, minute=29)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=1)
-PERIMETER_TIME = datetime.time(hour=6, minute=9)
+PERIMETER_TIME = datetime.time(hour=10, minute=15)
