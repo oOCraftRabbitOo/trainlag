@@ -97,6 +97,8 @@ class RawChallenge:
 
         if zone is None:
             zone = current_zone
+
+        print(zone in perim)
         
         return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim)
 
@@ -173,12 +175,9 @@ for i in range(len(ortsspezifisch_sheet)):
     #     zone = int(zone) if not isnan(zone) else None
     # except TypeError:
     #     zone = None
-    print(zone)
-    print(type(zone))
     try:
         zone = int(zone)
     except ValueError as err:
-        print(err)
         try:
             zone = list(map(int, zone.split(',')))
         except ValueError:
