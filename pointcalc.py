@@ -90,7 +90,7 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
         points += (points * (delta - UNDERDOG_STARTING_DIFFERENCE) * UNDERDOG_MULTIPLYER_PER_1000 * 0.001) if delta > UNDERDOG_STARTING_DIFFERENCE else 0
     points *= bias
     points = int(points)
-    print(fixed)
+    print("ficksed", fixed)
     points = points if fixed else randomly_adjust(points)
     return points
 
