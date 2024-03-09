@@ -1,58 +1,66 @@
 [
   {
-    "name": "alpha",
-    "players": ["Beni", "Luis"],
+    "name": "Die Zauberhafte Vier Vagabunde",
+    "players": [],
     "channel": {
-      "name": "alpha",
-      "id": 1180847279922487300
+      "name": "die-zauberhafte-vier-vagabunde",
+      "id": 1215970309170135160
     }
   },
   {
-    "name": "bravo",
-    "players": ["Adriana", "Anna", "Wiki"],
+    "name": "Not Quite S:steam_locomotive:gers",
+    "players": [],
     "channel": {
-      "name": "bravo",
-      "id": 1180847351695417300
+      "name": "not-quite-s-train-gers",
+      "id": 1215970411574202368
     }
   },
   {
-    "name": "delta",
-    "players": ["Simon", "Frederic", "Noah"],
+    "name": "D Zugliebhaber und s Schöfli",
+    "players": [],
     "channel": {
-      "name": "delta",
-      "id": 1180847448894218200
+      "name": "d-zugliebhaber-und-s-schöfli",
+      "id": 1215970536874840164
     }
   },
   {
-    "name": "echo",
-    "players": ["Orell", "Philipp", "Moritz"],
+    "name": "Original Gangsters",
+    "players": [],
     "channel": {
-      "name": "echo",
-      "id": 1180847556096426000
+      "name": "original-gangsters",
+      "id": 1215970665912467496
     }
   },
   {
-    "name": "foxtrot",
-    "players": ["Julian", "Lea", "Maria"],
+    "name": "NFL :football:",
+    "players": [],
     "channel": {
-      "name": "foxtrot",
-      "id": 1180847598039470000
+      "name": "nfl",
+      "id": 1215970737874014228
     }
   },
   {
-    "name": "guete abig",
-    "players": ["Timo", "Elric"],
+    "name": "Tschu Tschuuu :steam_locomotive:",
+    "players": [],
     "channel": {
-      "name": "guete-abig",
-      "id": 1180847663596445700
+      "name": "tschu-tschuuu",
+      "id": 1215970866874155119
     }
   },
   {
-    "name": "h0i",
-    "players": ["Nelio", "Christopher", "Ciril"],
+    "name": "Die Tramtastischen Drei",
+    "players": [],
     "channel": {
-      "name": "h0i",
-      "id": 1180847700875432000
+      "name": "die-tramtastischen-drei",
+      "id": 1215971034264633415
+    }
+  },
+  {
+    "name": "The Scholars",
+    "players": [],
+    "channel": {
+      "name": "the-scholars",
+      "id": 1215971212568563712
     }
   }
 ]
