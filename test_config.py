@@ -37,6 +37,7 @@ BOUNTY_PERCENTAGE = 0.25
 
 # perimeter system
 PERIM_MAX_KAFF = 4
+PERIM_MAX_TRAVEL_MINUTES = 30
 
 # times
 UNSPECIFIC_TIME = datetime.time(hour=10, minute=52)
