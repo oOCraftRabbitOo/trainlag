@@ -248,6 +248,8 @@ for i in range(len(unspecific_sheet)):
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
 
+    print(row['fixed'], type(row['fixed'], row['fixed'] == 1))
+
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
