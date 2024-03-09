@@ -85,7 +85,7 @@ class RawChallenge:
                     best = z 
             zone = best
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, fixed, current_zone, delta, self.zoneable and zoned)
+        points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, self.fixed, current_zone, delta, self.zoneable and zoned)
 
         description = self.description
         description = description.replace('%r', str(reps))
@@ -247,8 +247,6 @@ for i in range(len(unspecific_sheet)):
     max_reps = row['max']
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
-
-    print(row['fixed'], type(row['fixed']), row['fixed'] == 1)
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
