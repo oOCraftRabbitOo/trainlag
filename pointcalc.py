@@ -38,6 +38,8 @@ for k in distance_dict[110].keys():
     if distance_dict[110][k] < PERIM_MAX_TRAVEL_MINUTES:
         perim.append(k)
 
+print(perim)
+
 def randomly_adjust(value: int) -> int:
     """
     Takes in a value and adds/subtracts some amount of points randomly to hopefully prevent ties
