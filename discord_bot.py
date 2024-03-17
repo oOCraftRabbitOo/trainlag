@@ -114,7 +114,7 @@ async def assign(ctx: commands.Context, *args):
                 if player.lower() in [pleher.lower() for pleher in tihm['players']]:
                     tihm['players'].remove(player)
         for tihm in team_list:
-            if tihm["name"] == team:
+            if tihm["name"].lower() == team.lower():
                 tihm['players'].append(player)
 
     with open(TEAM_FILE, 'w') as f:

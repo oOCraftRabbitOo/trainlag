@@ -60,6 +60,7 @@ class RawChallenge:
         return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}, fixed = {self.fixed}'
 
     def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int) -> Challenge:
+        self.description = str(self.description)
         zone = self.zone
 
         reps = random.randint(self.min_reps, self.max_reps)
