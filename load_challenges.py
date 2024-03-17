@@ -99,7 +99,7 @@ class RawChallenge:
         if zone is None:
             zone = current_zone
 
-        print(zone in perim)
+        print(zone in perim, zone, perim)
         
         return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim)
 
