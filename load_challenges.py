@@ -262,10 +262,10 @@ for i in range(len(unspecific_sheet)):
 specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
 
-def generate_specific_challenge(index, current_zone, delta: int) -> Challenge:
+def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
     return specific_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta)
 
-def generate_unspecific_challenge(index, current_zone, delta: int):
+def unspecific_challenge_generate(index, current_zone, delta: int):
     return unspecific_challenges[index].challenge(zoned=False, id=index, specific=False, current_zone=current_zone, delta=delta)
 
 if __name__ == '__main__':

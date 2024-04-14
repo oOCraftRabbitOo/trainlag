@@ -1,4 +1,4 @@
-from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount
+from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount
 from class_player import Player
 from config import *
 from class_channel import Channel
@@ -56,10 +56,15 @@ class Team:
 
         # Randomly select incomplete challenge (int)
         place = random.randint(0, specific_challenges_amount - 1)
-        challenge = generate_specific_challenge(place, zone, delta)
-        while place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
-            place = random.randint(0, specific_challenges_amount - 1)
-            challenge = generate_specific_challenge(place, zone, delta)
+        challenge = specific_challenge_generate(place, zone, delta)
+        for _ in range(2000):
+            if place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+                place = random.randint(0, specific_challenges_amount - 1)
+                challenge = specific_challenge_generate(place, zone, delta)
+        else:
+            print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
+            index = random.randint(0, unspecific_challenges_amount - 1)
+            challenge = unspecific_challenge_generate(index, zone, delta)
 
         # Generate challenge and return it
         return challenge
@@ -69,10 +74,16 @@ class Team:
 
         # Randomly select incomplete challenge (int)
         index = random.randint(0, unspecific_challenges_amount - 1)
-        challenge = generate_unspecific_challenge(index, zone, delta)
-        while index in self.completed_unspecific_challenges or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+        challenge = unspecific_challenge_generate(index, zone, delta)
+        for _ in range(2000):
+            if index in self.completed_unspecific_challenges or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+                index = random.randint(0, unspecific_challenges_amount - 1)
+                challenge = unspecific_challenge_generate(index, zone, delta)
+                break
+        else:
+            print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
             index = random.randint(0, unspecific_challenges_amount - 1)
-            challenge = generate_unspecific_challenge(index, zone, delta)
+            challenge = unspecific_challenge_generate(index, zone, delta)
 
         # Generate challenge and return it
         return challenge
