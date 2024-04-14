@@ -55,10 +55,12 @@ class Team:
         time = datetime.datetime.now().time()
 
         # Randomly select incomplete challenge (int)
+        print("spec ", end="")
         place = random.randint(0, specific_challenges_amount - 1)
         challenge = specific_challenge_generate(place, zone, delta)
         for _ in range(2000):
             if place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+                print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
                 challenge = specific_challenge_generate(place, zone, delta)
             else:
@@ -75,11 +77,12 @@ class Team:
         time = datetime.datetime.now().time()
 
         # Randomly select incomplete challenge (int)
+        print("unsp ", end="")
         index = random.randint(0, unspecific_challenges_amount - 1)
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
-            if index in self.completed_unspecific_challenges or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
-                print("x", end="")
+            if index in self.completed_unspecific_challenges:
+                print("unsp ", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
             else:

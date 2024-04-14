@@ -42,4 +42,4 @@ PERIM_MAX_TRAVEL_MINUTES = 30
 # times
 UNSPECIFIC_TIME = datetime.time(hour=22, minute=52)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=0, seconds=1)
-PERIMETER_TIME = datetime.time(hour=20, minute=13)
+PERIMETER_TIME = datetime.time(hour=20, minute=39)
