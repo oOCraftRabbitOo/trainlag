@@ -61,6 +61,8 @@ class Team:
             if place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
                 place = random.randint(0, specific_challenges_amount - 1)
                 challenge = specific_challenge_generate(place, zone, delta)
+            else:
+                break
         else:
             print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
             index = random.randint(0, unspecific_challenges_amount - 1)
@@ -80,6 +82,7 @@ class Team:
                 print("x", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
+            else:
                 break
         else:
             print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
