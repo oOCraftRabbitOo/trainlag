@@ -77,6 +77,7 @@ class Team:
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
             if index in self.completed_unspecific_challenges or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+                print("x", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
                 break
