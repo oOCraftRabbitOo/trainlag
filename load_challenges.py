@@ -93,7 +93,7 @@ class RawChallenge:
         description = description.replace('%z', str(zone))
         description = description.replace('%s', str(zone))
         if zoned and self.zoneable:
-            description += f' Damit ihr Pünkt überchömed, mached das I de Zone {zone}.'
+            description += f' Damit ihr Pünkt überchömed, mached das i de Zone {zone}.'
         description = description + f' *{points} Pünkt*'
 
         if zone is None:
