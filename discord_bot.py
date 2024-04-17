@@ -124,6 +124,32 @@ async def assign(ctx: commands.Context, *args):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
+async def add_player(ctx: commands.Context, d_name: str, name: str):
+    if setup_complete:
+        await ctx.send('the game cannot be running for this command')
+        raise Exception('game running')
+    with open(PLAYER_FILE, 'r') as f:
+        player_list = json.load(f)
+    player_ids = [player['id'] for player in player_list]
+    
+    guild_player = ctx.guild.get_member_named(d_name)
+    if guild_player is None:
+        await ctx.send(f'Error: No accont named "{d_name}" found :(')
+        raise Exception(f'Discord user {d_name} not found :(')
+
+    if guild_player.id in player_ids:
+        for i, player in enumerate(player_list):
+            if player['id'] == guild_player.id:
+                player_list[i] = {'name': name, 'id': guild_player.id}
+                break
+        else:
+            print("ou ou öppis isch falsch gloffe bananebrot")
+    else:
+        player_list.append({'name': name, 'id': guild_player.id})
+    
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
 async def add_players(ctx: commands.Context, *players):
     if setup_complete:
         await ctx.send('the game cannot be running for this command')
@@ -137,7 +163,7 @@ async def add_players(ctx: commands.Context, *players):
         guild_player = ctx.guild.get_member_named(player)
         if guild_player is None:
             await ctx.send(f'Error: Player "{player}" not found :(')
-            raise Exception(f'Player "{player}" not found')
+            continue
         guild_players.append((player, guild_player))
 
     for player in guild_players:
