@@ -81,6 +81,50 @@ async def decirilischdoof(ctx: commands.Context):
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
+async def add_team(ctx: commands.Context, name: str):
+    if setup_complete:
+        await ctx.send('the game cannot be running for this command')
+        raise Exception('game running')
+    elif ctx.channel.id == GENERAL_CHANNEL:
+        await ctx.send("Can't, no team can own the game channel. It belong to the ppl")
+        print("can't team general oof")
+        return
+    with open(TEAM_FILE, 'r') as f:
+        team_list = json.load(f)
+
+    for i, tihm in enumerate(team_list):
+        if name.lower() == tihm["name"].lower():
+            await ctx.send("Team with same name already exists, changing channel")            
+            team_list[i]['channel'] = {'name': ctx.channel.name, 'id': ctx.channel.id}
+            break
+        if ctx.channel.id == tihm['channel']['id']:
+            await ctx.send(f"This channel already belongs to team {tihm['name']}, changing name")
+            team_list[i]['name'] = name
+            break
+    else:
+        team_list.append({'name': name, 'players': [], 'channel': {'name': ctx.channel.name, 'id': ctx.channel.id}})
+
+    with open(TEAM_FILE, 'w') as f:
+        json.dump(team_list, f)
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def remove_team(ctx: commands.Context, name: str):
+    if setup_complete:
+        await ctx.send('the game cannot be running for this command')
+        raise Exception('game running')
+    with open(TEAM_FILE, 'r') as f:
+        team_list = json.load(f)
+
+    for i, team in enumerate(team_list):
+        if name.lower() == team["name"].lower():
+            team_list.pop(i)
+
+    with open(TEAM_FILE, 'w') as f:
+        json.dump(team_list, f)
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
 async def assign(ctx: commands.Context, *args):
     if setup_complete:
         await ctx.send('the game cannot be running for this command')
@@ -147,7 +191,6 @@ async def add_player(ctx: commands.Context, d_name: str, name: str):
     else:
         player_list.append({'name': name, 'id': guild_player.id})
     
-
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def add_players(ctx: commands.Context, *players):
@@ -290,7 +333,6 @@ async def setup(ctx: commands.Context) -> None:
     print("Setup completed. Have fun!")
     await ctx.send('Setup fertig. Vill Spass!')
 
-
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
 async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
     global teams
@@ -372,7 +414,6 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
     else:
         # The author does not have the "Fänger" role
         await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
-
 
 @bot.command(aliases=['abschlüsse', 'done', 'challenge', 'abschliessen'])
 async def complete(ctx: commands.Context, challenge_id: int) -> None:
