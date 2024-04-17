@@ -100,6 +100,7 @@ async def add_team(ctx: commands.Context, name: str):
         if ctx.channel.id == tihm['channel']['id']:
             await ctx.send(f"This channel already belongs to team {tihm['name']}, changing name")
             team_list[i]['name'] = name
+            team_list[i]['channel'] = {'name': ctx.channel.name, 'id': ctx.channel.id}
             break
     else:
         team_list.append({'name': name, 'players': [], 'channel': {'name': ctx.channel.name, 'id': ctx.channel.id}})
