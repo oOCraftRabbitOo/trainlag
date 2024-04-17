@@ -190,7 +190,7 @@ async def add_player(ctx: commands.Context, d_name: str, name: str):
             print("ou ou öppis isch falsch gloffe bananebrot")
     else:
         player_list.append({'name': name, 'id': guild_player.id})
-    
+
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def add_players(ctx: commands.Context, *players):
@@ -217,6 +217,16 @@ async def add_players(ctx: commands.Context, *players):
         json.dump(player_list, f)
 
     await ctx.send('Spieler wurden hinzugefügt.')
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def dump_teams(ctx: commands.Context):
+    with open(PLAYER_FILE, 'r') as f:
+        players = f.read()
+    with open(TEAM_FILE, 'r') as f:
+        teams = f.read()
+
+    await ctx.send('# Players:', *players, 'Teams:', *teams, sep='\n')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
