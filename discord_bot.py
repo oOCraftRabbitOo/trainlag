@@ -192,6 +192,9 @@ async def add_player(ctx: commands.Context, d_name: str, name: str):
     else:
         player_list.append({'name': name, 'id': guild_player.id})
 
+    with open(PLAYER_FILE, 'w') as f:
+        json.dump(player_list, f)
+
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def add_players(ctx: commands.Context, *players):
