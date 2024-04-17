@@ -222,14 +222,15 @@ async def add_players(ctx: commands.Context, *players):
 @commands.has_permissions(manage_guild=True)
 async def dump_teams(ctx: commands.Context):
     with open(PLAYER_FILE, 'r') as f:
-        players = f.read()
+        players = json.load(f)
     with open(TEAM_FILE, 'r') as f:
-        teams = f.read()
+        teams = json.load(f)
 
     print('Players:', *players, '\nTeams:', *teams, sep='\n')
 
     await ctx.send('# Players:')
     for player in players:
+
         await ctx.send(player)
     await ctx.send('# Teams:')
     for team in teams:
