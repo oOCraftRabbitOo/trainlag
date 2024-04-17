@@ -226,10 +226,14 @@ async def dump_teams(ctx: commands.Context):
     with open(TEAM_FILE, 'r') as f:
         teams = f.read()
 
-    players = "\n".join(players)
-    teams = "\n".join(teams)
+    print('Players:', *players, '\nTeams:', *teams, sep='\n')
 
-    await ctx.send(f'# Players:{players}# Teams:{teams}')
+    await ctx.send('# Players:')
+    for player in players:
+        await ctx.send(player)
+    await ctx.send('# Teams:')
+    for team in teams:
+        await ctx.send(team)
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
