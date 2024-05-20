@@ -6,7 +6,7 @@ import datetime
 # team compositions and channels
 TEAM_FILE = 'teams.json'
 PLAYER_FILE = 'players.json'
-GENERAL_CHANNEL = 1215949887301226556 # channel for game info
+GENERAL_CHANNEL = 1241631009171050546 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.05
@@ -31,7 +31,7 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 3
+NUM_CATCHERS = 2
 
 # bounty system
 BOUNTY_BASE_POINTS = 100
@@ -43,6 +43,6 @@ PERIM_MAX_KAFF = 4
 PERIM_MAX_TRAVEL_MINUTES = 30
 
 # times
-UNSPECIFIC_TIME = datetime.time(hour=15, minute=30)
+UNSPECIFIC_TIME = datetime.time(hour=16, minute=30)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
 PERIMETER_TIME = datetime.time(hour=14, minute=30)
