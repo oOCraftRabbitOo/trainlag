@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   sodipodi:docname="challenge periods.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.2662031"
+     inkscape:cx="480.17573"
+     inkscape:cy="912.17594"
+     inkscape:window-width="2560"
+     inkscape:window-height="1412"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient13"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ef8b8b;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+      <stop
+         style="stop-color:#e89dff;stop-opacity:1;"
+         offset="1"
+         id="stop13" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient8"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#eaef8b;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+      <stop
+         style="stop-color:#ffc69d;stop-opacity:1;"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8"
+       id="linearGradient9"
+       x1="105"
+       y1="150.86099"
+       x2="105"
+       y2="211.83954"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient13"
+       id="linearGradient10"
+       gradientUnits="userSpaceOnUse"
+       x1="105"
+       y1="150.86099"
+       x2="105"
+       y2="211.83954"
+       gradientTransform="matrix(1,0,0,0.72586023,-1.6027184e-6,104.7803)" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;stroke-width:0.332716"
+       id="rect2"
+       width="189.66989"
+       height="281.57101"
+       x="10.16505"
+       y="8.9585447"
+       ry="7.2930641" />
+    <rect
+       style="fill:#f0dfcf;stroke-width:0.544875"
+       id="rect1"
+       width="189.66991"
+       height="22.948191"
+       x="10.16505"
+       y="8.9585447"
+       ry="2.3911355" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="21.631203"
+       id="text1"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="21.631203"
+         id="tspan4">Specific Period</tspan></text>
+    <rect
+       style="fill:#ccffaa;stroke-width:1.21358"
+       id="rect1-6"
+       width="189.66991"
+       height="113.83887"
+       x="10.16505"
+       y="34.464432"
+       ry="11.861683" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.517723"
+       y="92.574493"
+       id="text1-7"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.517723"
+         y="92.574493"
+         id="tspan5">Normal Period</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#f0dfcf;stroke-width:0.264583"
+       x="162.39113"
+       y="33.928806"
+       id="text3"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="stroke-width:0.264583"
+         x="162.39113"
+         y="33.928806" /></text>
+    <rect
+       style="fill:url(#linearGradient9);stroke-width:0.888201;fill-opacity:1"
+       id="rect1-3"
+       width="189.66991"
+       height="60.978554"
+       x="10.165047"
+       y="150.86099"
+       ry="6.3537898" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="182.1837"
+       id="text1-9"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="182.1837"
+         id="tspan4-4">Perimeter Period xxx + max xxx min walking time</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="160.61157"
+       id="text1-9-9"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="160.61157"
+         id="tspan7">45 min, kaffskala max 6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="181.82953"
+       y="34.319736"
+       id="text1-9-9-3"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="181.82953"
+         y="34.319736"
+         id="tspan7-8">15 min nach</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="179.40065"
+       y="150.82924"
+       id="text1-9-9-3-1"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="179.40065"
+         y="150.82924"
+         id="tspan7-8-5">3h 30 min vor</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="179.40065"
+       y="214.25255"
+       id="text1-9-9-3-1-8"
+       inkscape:label="text1"><tspan
+         style="fill:#000000;stroke-width:0.264583"
+         x="179.40065"
+         y="214.25255"
+         id="tspan9"
+         sodipodi:role="line">1h 30 min vor</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="184.00441"
+       y="260.88617"
+       id="text1-9-9-3-1-8-3"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="184.00441"
+         y="260.88617"
+         id="tspan14">30 min vor</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="203.6828"
+       id="text1-9-9-8"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="203.6828"
+         id="tspan7-5">20 min, kaffskala max 3</tspan></text>
+    <rect
+       style="fill:url(#linearGradient10);fill-opacity:1;stroke-width:0.756724"
+       id="rect1-3-4"
+       width="189.66991"
+       height="44.261906"
+       x="10.165044"
+       y="214.2843"
+       ry="4.6119633" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="237.60588"
+       id="text1-9-7"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="237.60588"
+         id="tspan11">all of the above + specific xxx liniennetzplan tsüri + kei regionsspezifisch</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565359"
+       y="224.03488"
+       id="text1-9-9-31"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565359"
+         y="224.03488"
+         id="tspan7-7">30%</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.52726"
+       y="251.10385"
+       id="text1-9-9-8-5"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.52726"
+         y="251.10385"
+         id="tspan7-5-9">100%</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#ccffaa;stroke-width:0.264583"
+       x="152.95728"
+       y="259.94382"
+       id="text6"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         style="stroke-width:0.264583"
+         x="152.95728"
+         y="259.94382" /></text>
+    <rect
+       style="fill:#aea2f8;fill-opacity:1;stroke-width:0.618183"
+       id="rect1-3-5"
+       width="189.66991"
+       height="29.538559"
+       x="10.165044"
+       y="260.99097"
+       ry="3.0778327" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;fill:#000000;stroke-width:0.264583"
+       x="17.565353"
+       y="276.95087"
+       id="text1-9-74"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         style="fill:#000000;stroke-width:0.264583"
+         x="17.565353"
+         y="276.95087"
+         id="tspan4-4-1">All of the above + 2 unspezifisch</tspan></text>
+  </g>
+</svg>
