@@ -4,7 +4,6 @@ from datetime import date
 from pointcalc import pointcalc, distance_dict, perim
 from class_challenge import Challenge
 from numpy import isnan
-import numpy
 
 print('Loading challenges. This may take a while')
 
@@ -102,7 +101,7 @@ class RawChallenge:
             zone = current_zone
 
         print(zone, zone in perim, self.kaffness, self.title)
-        
+
         return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim, no_disembark=self.no_disembark)
 
 print('Generating challenges')
@@ -174,6 +173,7 @@ for i in range(len(ortsspezifisch_sheet)):
     stationary_minutes = row['Stationary Time']
     kaffness = row['Kaffskala']
     grade = row['ÖV Güteklasse']
+    no_disembark = row['No Disembark']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
@@ -200,7 +200,12 @@ for i in range(len(ortsspezifisch_sheet)):
     walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
     kaffness = int(kaffness) if not isnan(kaffness) else 0
     grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
-    
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
+
     # Return challenge
     specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, zone=zone, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
@@ -214,13 +219,19 @@ for i in range(len(regionsspezifisch_sheet)):
     max_reps = row['max']
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+    no_disembark = row['No Disembark']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
-    
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
+
     # Return challenge
     unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
@@ -234,13 +245,19 @@ for i in range(len(zoneable_sheet)):
     max_reps = row['max']
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+    no_disembark = row['No Disembark']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
-    
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
+
     # Return challenge
     raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
     specific_challenges.append(raw_challenge_to_append)
@@ -256,13 +273,19 @@ for i in range(len(unspecific_sheet)):
     max_reps = row['max']
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
+    no_disembark = row['No Disembark']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
     ppr = int(ppr) if not isnan(ppr) else 0
-    
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
+
     # Return challenge
     unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
 
