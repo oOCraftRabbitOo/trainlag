@@ -76,7 +76,7 @@ async def on_ready() -> None:
 
 @bot.command()
 async def decirilischdoof(ctx: commands.Context):
-    embed = discord.Embed(color=3, title="Korrekt", description="on god fr fr", author=discord.EmbedAuthor(name="En gschiide Maa hät mal gseit:"), footer=discord.EmbedFooter(text="decirilischdoof"))
+    embed = discord.Embed(color=3, title="Korrekt", description="on god fr fr")
     await ctx.send(embed=embed)
 
 @bot.command()
