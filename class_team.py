@@ -1,4 +1,5 @@
 from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount
+import discord
 from class_player import Player
 from config import *
 from class_channel import Channel
@@ -250,11 +251,14 @@ class Team:
             self.open_challenges = []
         self.backup()
 
-    def return_challenges(self) -> str:
-        out = f"# Eui Challenges:\n"
+    def return_challenges(self) -> list[discord.Embed]:
+        out = []
         for num, challenge in enumerate(self.open_challenges):
-            out += f"### {num + 1}: {challenge}\n"
-        out += f'\n\n-=[ **Aktuells Chopfgeld**: {self.bounty} Pünkt ]=-\n'
+            embed = discord.Embed(title=challenge.title, description=challenge.description)
+            embed.set_footer(text=f"{challenge.points} Pünkt")
+            embed.set_author(name=f"Challenge {num+1}")
+            out.append(embed)
+        out.append(discord.Embed(title=f"Aktuells Chopfgeld: {self.bounty}", colour=15823957))
         return out
 
 

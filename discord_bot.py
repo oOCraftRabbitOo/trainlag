@@ -475,7 +475,7 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
                        f'Das heisst, ihr händ jetzt {team.points} Pünkt!\n'
                        f'--------------------------------------------')
         # Send challenges to the team
-        await ctx.send(team.return_challenges())
+        await ctx.send(embeds=team.return_challenges())
     except ValueError:
         await ctx.send(f'{challenge_id} isch kei Zahl. Gänd bitte 1, 2 oder 3 ii.')
     except IndexError:
