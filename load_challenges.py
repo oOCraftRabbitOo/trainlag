@@ -181,7 +181,7 @@ for i in range(len(ortsspezifisch_sheet)):
     except ValueError as err:
         try:
             zone = list(map(int, zone.split(',')))
-        except ValueError:
+        except (ValueError, AttributeError):
             try:
                 zone = str(zone)
                 if zone != '%z' and zone != '%s':
