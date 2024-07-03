@@ -350,7 +350,7 @@ async def setup(ctx: commands.Context) -> None:
     non_catchers = [team for team in teams if not team.is_catcher]
     for team in non_catchers:
         team_channel = bot.get_channel(team.channel.id)
-        await team_channel.send(team.return_challenges())
+        await team_channel.send(embeds=team.return_challenges())
 
     setup_complete = True
     setup_in_progress = False
@@ -431,7 +431,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
                 # Send challenges to the new runner team
                 team_channel = bot.get_channel(catcher_team.channel.id)
-                await team_channel.send(f'\n{catcher_team.return_challenges()}')
+                await team_channel.send(embeds=catcher_team.return_challenges())
         else:
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
@@ -553,7 +553,7 @@ async def switch(ctx: commands.Context) -> None:
     
     await ctx.send(f"S'Team {team.name} isch jetzt {state}.")
     if not team.is_catcher:
-        await ctx.send(team.return_challenges())
+        await ctx.send(embeds=team.return_challenges())
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(f"S'Team {team.name} isch jetzt {state}.")
@@ -636,7 +636,7 @@ async def reroll(ctx: commands.Context) -> None:
     if message != "wowzers":
         await ctx.send(message)
     else:
-        await ctx.send(team.return_challenges())
+        await ctx.send(embeds=team.return_challenges())
 
 # Load the token from the .token file
 token = ''
