@@ -24,21 +24,22 @@ zones = [116, 115, 161, 162, 113, 114, 124, 160, 163, 118, 117, 112, 123, 120, 1
 s_bahn_zones = [132, 110, 151, 180, 120, 181, 155, 133, 156, 117, 121, 141, 142, 134, 112, 154]
 
 class RawChallenge:
-    def __init__(self, 
-                 title: str, 
-                 description: str, 
-                 points: int, 
+    def __init__(self,
+                 title: str,
+                 description: str,
+                 points: int,
                  walking_minutes: int = 0,
                  stationary_minutes: int = 0,
-                 kaffness: int = 0, 
-                 grade: int = 0, 
-                 zone: int | None | list[int] | str = None, 
-                 bias_sat: float = 1.0, 
-                 bias_sun: float = 1.0, 
-                 min_reps: int = 0, 
-                 max_reps: int = 0, 
-                 ppr: int = 0, 
-                 zoneable: bool = False, 
+                 kaffness: int = 0,
+                 grade: int = 0,
+                 zone: int | None | list[int] | str = None,
+                 bias_sat: float = 1.0,
+                 bias_sun: float = 1.0,
+                 min_reps: int = 0,
+                 max_reps: int = 0,
+                 ppr: int = 0,
+                 zoneable: bool = False,
+                 no_disembark: bool = False,
                  fixed: bool = False):
         self.title = title
         self.description = description
@@ -54,6 +55,7 @@ class RawChallenge:
         self.max_reps = max_reps
         self.ppr = ppr
         self.zoneable = zoneable
+        self.no_disembark = no_disembark
         self.fixed = fixed
 
     def __str__(self):
@@ -101,7 +103,7 @@ class RawChallenge:
 
         print(zone, zone in perim, self.kaffness, self.title)
         
-        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim, no_disembark=self.no_disembark)
 
 print('Generating challenges')
 
@@ -122,6 +124,7 @@ for i in range(len(da_new_kaff_sheet)):
     ppr = row['Points per Repetition']
     walking_minutes = row['Walking Time']
     stationary_minutes = row['Stationary Time']
+    no_disembark = row['No Disembark']
 
 
     # refine data
@@ -147,6 +150,11 @@ for i in range(len(da_new_kaff_sheet)):
     ppr = int(ppr) if not isnan(ppr) else 0
     stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
     walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
 
     # Return challenge
     specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
