@@ -254,7 +254,7 @@ class Team:
     def return_challenges(self) -> list[discord.Embed]:
         out = []
         for num, challenge in enumerate(self.open_challenges):
-            embed = discord.Embed(title=f"{"🛤️" if challenge.no_disembark else ''} {challenge.title}", description=challenge.description)
+            embed = discord.Embed(title=f"{"\ufe0f" if challenge.no_disembark else ''} {challenge.title}", description=challenge.description)
             embed.set_footer(text=f"{challenge.points} Pünkt")
             embed.set_author(name=f"Challenge {num+1}")
             out.append(embed)
