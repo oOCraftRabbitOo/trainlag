@@ -156,7 +156,7 @@ for i in range(len(da_new_kaff_sheet)):
         print("no No Disembark :(")
 
     # Return challenge
-    specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr))
+    specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr, no_disembark=no_disembark))
 
 # get and add specific challenges
 for i in range(len(ortsspezifisch_sheet)):
@@ -208,7 +208,7 @@ for i in range(len(ortsspezifisch_sheet)):
         print("no No Disembark :(")
 
     # Return challenge
-    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, zone=zone, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    specific_challenges.append(RawChallenge(title, description, challenge_points, walking_minutes, stationary_minutes, zone=zone, kaffness = kaffness, grade = grade, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, no_disembark=no_disembark))
 
 # get and add region specific challenges
 for i in range(len(regionsspezifisch_sheet)):
@@ -234,7 +234,7 @@ for i in range(len(regionsspezifisch_sheet)):
         print("no No Disembark :(")
 
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, no_disembark=no_disembark))
 
 # get and add zoneable challenges
 for i in range(len(zoneable_sheet)):
@@ -260,7 +260,7 @@ for i in range(len(zoneable_sheet)):
         print("no No Disembark :(")
 
     # Return challenge
-    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True)
+    raw_challenge_to_append = RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, zoneable = True, no_disembark=no_disembark)
     specific_challenges.append(raw_challenge_to_append)
     unspecific_challenges.append(raw_challenge_to_append)
 
@@ -288,7 +288,7 @@ for i in range(len(unspecific_sheet)):
         print("no No Disembark :(")
 
     # Return challenge
-    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed))
+    unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, no_disembark=no_disembark))
 
 # For both lists generate their lengths = amount of different challenges
 specific_challenges_amount = len(specific_challenges)
