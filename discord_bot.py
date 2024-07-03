@@ -1,4 +1,3 @@
-import asyncio
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
@@ -77,7 +76,8 @@ async def on_ready() -> None:
 
 @bot.command()
 async def decirilischdoof(ctx: commands.Context):
-    await ctx.send('Korrekt')
+    embed = discord.Embed(color=3, title="Korrekt", description="on god fr fr", author=discord.EmbedAuthor(name="En gschiide Maa hät mal gseit:"), footer=discord.EmbedFooter(text="decirilischdoof"))
+    await ctx.send(embed=embed)
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -635,17 +635,6 @@ async def reroll(ctx: commands.Context) -> None:
         await ctx.send(message)
     else:
         await ctx.send(team.return_challenges())
-
-@bot.command(aliases=['mitspieler', 'spieler', 'players', 'namen', 'namelist', 'allplayers'])
-async def names(ctx: commands.Context) -> None:
-    output = "Das sind dini Mitspieler: \n"
-    playernames = [player.name for team in teams for player in team.players]
-    for name in playernames[:-1]:
-        output += f"{name}, "
-    output = f"{output[:-2]} und {names[-1]}."
-
-    general_channel = bot.get_channel(GENERAL_CHANNEL)
-    await general_channel.send(output)
 
 # Load the token from the .token file
 token = ''

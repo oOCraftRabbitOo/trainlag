@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      inkscape:zoom="1.2662031"
      inkscape:cx="480.17573"
-     inkscape:cy="912.17594"
+     inkscape:cy="449.37499"
      inkscape:window-width="2560"
      inkscape:window-height="1412"
      inkscape:window-x="0"
@@ -90,7 +90,10 @@
        height="281.57101"
        x="10.16505"
        y="8.9585447"
-       ry="7.2930641" />
+       ry="7.2930641"
+       inkscape:export-filename="challenge periods.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
     <rect
        style="fill:#f0dfcf;stroke-width:0.544875"
        id="rect1"
