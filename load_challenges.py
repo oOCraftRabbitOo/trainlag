@@ -94,7 +94,7 @@ class RawChallenge:
         description = description.replace('%s', str(zone))
         if zoned and self.zoneable:
             description += f' Damit ihr Pünkt überchömed, mached das i de Zone {zone}.'
-        description = description + f' *{points} Pünkt*'
+        # description = description + f' *{points} Pünkt*'
 
         if zone is None:
             zone = current_zone
