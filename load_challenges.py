@@ -202,6 +202,7 @@ for i in range(len(ortsspezifisch_sheet)):
     grade = (int(grade) if not isnan(grade) else kaffness)  # Ignores empty cells, '-' and '?'
     try:
         no_disembark = bool(no_disembark)
+        print("no disembark is", no_disembark)
     except:
         no_disembark = False
         print("no No Disembark :(")
