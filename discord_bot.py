@@ -138,36 +138,58 @@ async def assign(ctx: commands.Context, *args):
     with open(PLAYER_FILE, 'r') as f:
         player_list = json.load(f)
 
-    team = args[0]
-    players = args[1:]
+    team_given_by_cmd = args[0]
+    players_given_by_cmd = args[1:]
 
-    for tihm in team_list:
-        if team.lower() == tihm["name"].lower(): break
+    # Get Discord role for the team
+    roles = ctx.guild.roles
+    try:
+        team_role = discord.utils.get(roles, name=team_given_by_cmd)
+        team_role_success = True
+    except:
+        team_role_success = False
+        await ctx.send(f'R-Ohr: D Rolle "{team_given_by_cmd}" hani nöd gfunde. ._.')
+        raise Exception('Role not found')
+
+    for team in team_list:
+        if team_given_by_cmd.lower() == team["name"].lower(): break
     else:
         await ctx.send('Error: Team not found :(')
         raise Exception('Team not found')
 
-    assigned_players = [player for tihm in team_list for player in tihm['players']]
-    for player in players:
-        for pleier in player_list:
-            if player.lower() == pleier["name"].lower(): 
-                player = pleier["name"]
+    assigned_players = [player for team in team_list for player in team['players']]
+    for player_given_by_cmd in players_given_by_cmd:
+        for player in player_list:
+            if player_given_by_cmd.lower() == player["name"].lower():
+                player_given_by_cmd = player["name"]
                 break
         else:
-            await ctx.send(f'Error, Player "{player}" not found')
-            raise Exception(f'Player "{player}" not found')
-        if player in assigned_players:
-            for tihm in team_list:
-                if player.lower() in [pleher.lower() for pleher in tihm['players']]:
-                    tihm['players'].remove(player)
-        for tihm in team_list:
-            if tihm["name"].lower() == team.lower():
-                tihm['players'].append(player)
+            await ctx.send(f'Error, Player "{player_given_by_cmd}" not found')
+            raise Exception(f'Player "{player_given_by_cmd}" not found')
+
+        # Remove newly assigned player from any current team
+        if player_given_by_cmd in assigned_players:
+            for team in team_list:
+                if player_given_by_cmd.lower() in [player.lower() for player in team['players']]:
+                    team['players'].remove(player_given_by_cmd)
+        # Append player to given team
+        for team in team_list:
+            if team["name"].lower() == team_given_by_cmd.lower():
+                team['players'].append(player_given_by_cmd)
+        # assign Discord Role to player whenever possible
+        if team_role_success:
+            member = await ctx.guild.fetch_member(player_given_by_cmd.id)
+            try:
+                if not team_role in member.roles:
+                    await member.edit(roles=member.roles + [team_role])
+            except discord.Forbidden:
+                await ctx.send(f"couldn't give team role to player {player_given_by_cmd.name}")
+                print(f"couldn't give team catcher role to player {player_given_by_cmd.name}")
 
     with open(TEAM_FILE, 'w') as f:
         json.dump(team_list, f)
 
-    await ctx.send(f'added players {players} to team {team} without issue')
+    await ctx.send(f'added players {players_given_by_cmd} to team {team_given_by_cmd} without issue')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
