@@ -1,4 +1,5 @@
 import datetime
+from add_datetime import *
 
 # team compositions and channels
 TEAM_FILE = 'test_teams.json'
@@ -40,19 +41,26 @@ PERIM_MAX_KAFF = 4
 PERIM_MAX_TRAVEL_MINUTES = 30
 
 # times
+
+
 # Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
+GAME_START_TIME = datetime.time(hour=9, minute=0)
 GAME_OVER_TIME = datetime.time(hour=17, minute=0)
 
 END_GAME_PERIOD = datetime.timedelta(minutes=30)
-END_GAME_START_TIME = GAME_OVER_TIME - END_GAME_PERIOD
+END_GAME_START_TIME = subtract_datetimes(GAME_OVER_TIME, END_GAME_PERIOD)  # GAME_OVER_TIME - END_GAME_PERIOD
 
 ZURICH_PERIOD = datetime.timedelta(hours=1)
-ZURICH_START_TIME = END_GAME_START_TIME - ZURICH_PERIOD
+ZURICH_START_TIME = subtract_datetimes(END_GAME_START_TIME, ZURICH_PERIOD)
 
 PERIMETER_PERIOD = datetime.timedelta(hours=2)
-PERIMETER_START_TIME = ZURICH_START_TIME - PERIMETER_PERIOD
+PERIMETER_START_TIME = subtract_datetimes(ZURICH_START_TIME, PERIMETER_PERIOD)
 
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15, seconds=0)
+
+UNSPECIFIC_START_TIME = add_datetimes(GAME_START_TIME, SPECIFIC_PERIOD)
+
+TIME_INACCURACY = 3  # +- how many minutes the time reading may be off
 
 # Old Times
 UNSPECIFIC_TIME = datetime.time(hour=22, minute=52)
