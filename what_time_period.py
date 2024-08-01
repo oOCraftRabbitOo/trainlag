@@ -21,8 +21,8 @@ def what_time_period(time: datetime.time = None, enable_random = True):
         return "Zurich Period"
     elif time >= PERIMETER_START_TIME:
         return "Perimeter Period"
-    elif time >= UNSPECIFIC_START_TIME:
-        return "Unspecific Period"
+    elif time >= NORMAL_START_TIME:
+        return "Normal Period"
     elif time >= GAME_START_TIME:
         return "Specific Period"
     return "Pre Game"
