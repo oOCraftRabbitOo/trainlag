@@ -224,7 +224,7 @@ class Team:
         print(f'd zone vom team {self.name} isch jetzt {self.last_zone}')
 
         # Backup
-        self.backup()  # TODO: Does this work?
+        self.backup()  # TODO: Does this work? —— no
 
     def grant_points(self, points: int) -> None:
         self.points += points
