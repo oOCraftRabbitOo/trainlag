@@ -1,4 +1,6 @@
+from builtins import Exception
 from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount
+from what_time_period import what_time_period
 import discord
 from class_player import Player
 from config import *
@@ -10,6 +12,8 @@ import datetime
 import glob
 import os
 import json
+
+from what_time_period import what_time_period
 
 
 class Team:
@@ -120,35 +124,81 @@ class Team:
     '''
 
     def generate_challenges(self, zone: int, delta: int) -> None:
-        time = datetime.datetime.now().time()
-        self.last_challenge_generation = time
+        period = what_time_period()
+        match period:
+            case "Post Game":
+                raise Exception("game over, can't generate challenge")
+            case "End Game Period":
+                self.generate_endgame_challenges(zone, delta)
+            case "Zurich Period":
+                self.generate_zurich_challenges(zone, delta)
+            case "Perimeter Period":
+                self.generate_perimeter_challenges(zone, delta)
+            case "Normal Period":
+                self.generate_normal_challenges(zone, delta)
+            case "Specific Period":
+                self.generate_specific_challenges(zone, delta)
+            case "Pre Game":
+                self.generate_specific_challenge(zone, delta)
+            case other:
+                raise Exception("oh oh noooo")
+        #time = datetime.datetime.now().time()
+        #self.last_challenge_generation = time
 
-        if (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge(zone, delta)]
-            for _ in range(2):
-                challenge = self.generate_specific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
+        #if (time < self.normal_mode_time):
+        #    self.open_challenges = [self.generate_specific_challenge(zone, delta)]
+        #    for _ in range(2):
+        #        challenge = self.generate_specific_challenge(zone, delta)
+        #        while challenge in self.open_challenges:
+        #            challenge = self.generate_specific_challenge(zone, delta)
+        #        self.open_challenges.append(challenge)
 
-        elif (time < UNSPECIFIC_TIME):
-            self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
+        #elif (time < UNSPECIFIC_TIME):
+        #    self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
     
-            # Randomly select a specific challenge that's neither completed nor active
+        #    # Randomly select a specific challenge that's neither completed nor active
+        #    challenge = self.generate_specific_challenge(zone, delta)
+        #    while challenge == self.open_challenges[0]:
+        #        challenge = self.generate_specific_challenge(zone, delta)
+    
+        #    # Append the challenge to the open challenges
+        #    self.open_challenges[1] = challenge
+
+        #else:
+        #    self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+        #    for _ in range(2):
+        #        challenge = self.generate_unspecific_challenge(zone, delta)
+        #        while challenge in self.open_challenges:
+        #            challenge = self.generate_unspecific_challenge(zone, delta)
+        #        self.open_challenges.append(challenge)
+    
+    def generate_specific_challenges(self, zone: int, delta: int):
+        self.open_challenges = [self.generate_specific_challenge(zone, delta)]
+        for _ in range(2):
             challenge = self.generate_specific_challenge(zone, delta)
-            while challenge == self.open_challenges[0]:
+            while challenge in self.open_challenges:
                 challenge = self.generate_specific_challenge(zone, delta)
-    
-            # Append the challenge to the open challenges
-            self.open_challenges[1] = challenge
+            self.open_challenges.append(challenge)
 
-        else:
-            self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
-            for _ in range(2):
-                challenge = self.generate_unspecific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
+    def generate_normal_challenges(self, zone: int, delta: int):
+        self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
+
+        # Randomly select a specific challenge that's neither completed nor active
+        challenge = self.generate_specific_challenge(zone, delta)
+        while challenge == self.open_challenges[0]:
+            challenge = self.generate_specific_challenge(zone, delta)
+
+        # Append the challenge to the open challenges
+        self.open_challenges[1] = challenge
+
+    def generate_perimeter_challenges(self, zone: int, delta: int):
+        pass
+
+    def generate_zurich_challenges(self, zone: int, delta: int):
+        pass
+
+    def generate_endgame_challenges(self, zone: int, delta: int):
+        pass
 
     def complete_challenge(self, index: int, delta: int) -> None:
         # Index should be 1, 2 or 3

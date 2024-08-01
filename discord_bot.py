@@ -162,6 +162,7 @@ async def assign(ctx: commands.Context, *args):
         for player in player_list:
             if player_given_by_cmd.lower() == player["name"].lower():
                 player_given_by_cmd = player["name"]
+                player_given_by_cmd_id = player["id"]
                 break
         else:
             await ctx.send(f'Error, Player "{player_given_by_cmd}" not found')
@@ -178,13 +179,13 @@ async def assign(ctx: commands.Context, *args):
                 team['players'].append(player_given_by_cmd)
         # assign Discord Role to player whenever possible
         if team_role_success:
-            member = await ctx.guild.fetch_member(player_given_by_cmd.id)
+            member = await ctx.guild.fetch_member(player_given_by_cmd_id)
             try:
                 if not team_role in member.roles:
                     await member.edit(roles=member.roles + [team_role])
             except discord.Forbidden:
                 await ctx.send(f"couldn't give team role to player {player_given_by_cmd.name}")
-                print(f"couldn't give team catcher role to player {player_given_by_cmd.name}")
+                print(f"couldn't give team catcher role to player {player_given_by_cmd.name}, no permission")
 
     with open(TEAM_FILE, 'w') as f:
         json.dump(team_list, f)
