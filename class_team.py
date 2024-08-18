@@ -4,6 +4,7 @@ from class_player import Player
 from config import *
 from class_channel import Channel
 from class_challenge import Challenge
+from what_time_period import *
 import random
 import pickle
 import datetime
@@ -25,7 +26,7 @@ class Team:
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
-        self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
+        #self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.last_zone = START_ZONE
         self.last_challenge_generation = datetime.time(hour=4, minute=20)
         self.generate_challenges(START_ZONE, 0)
@@ -52,7 +53,7 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_specific_challenge(self, zone: int, delta: int) -> Challenge:
+    def generate_specific_challenge(self, zone: int, delta: int) -> Challenge:  # TODO: Walking Distance
         time = datetime.datetime.now().time()
 
         # Randomly select incomplete challenge (int)
@@ -60,7 +61,7 @@ class Team:
         place = random.randint(0, specific_challenges_amount - 1)
         challenge = specific_challenge_generate(place, zone, delta)
         for _ in range(2000):
-            if place in self.places_visited or (time > PERIMETER_TIME and (not challenge.in_perim or challenge.kaff > PERIM_MAX_KAFF)):
+            if place in self.places_visited or (challenge.perimeter_distance > maximum_perimeter_distance(time)) or (challenge.kaff > maximum_kaffness(time)):
                 print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
                 challenge = specific_challenge_generate(place, zone, delta)
@@ -118,7 +119,7 @@ class Team:
         # Generate challenge and return it
         return generate_creative_challenge(index)
     '''
-
+    '''
     def generate_challenges(self, zone: int, delta: int) -> None:
         time = datetime.datetime.now().time()
         self.last_challenge_generation = time
@@ -149,6 +150,66 @@ class Team:
                 while challenge in self.open_challenges:
                     challenge = self.generate_unspecific_challenge(zone, delta)
                 self.open_challenges.append(challenge)
+    '''
+    def generate_challenges(self, zone: int, delta: int) -> None:
+        time_period = what_time_period()
+
+        match time_period:
+            case "Postgame":
+                print("Error: Can't generate challenges after the game ended.")
+            case "End Game Period":
+                self.generate_end_game_challenges(zone, delta)
+            case "Zurich Period":
+                self.generate_zurich_challenges(zone, delta)
+            case "Perimeter Period":
+                self.generate_perimeter_challenges(zone, delta)
+            case "Normal Period":
+                self.generate_normal_challenges(zone, delta)
+            case "Specific Period":
+                self.generate_specific_challenges(zone, delta)
+            case "Pre Game":
+                print(f"Game hasn't started yet, generating three specific challenges for team {self.name} and assuming the team is still in zone {START_ZONE}.")
+                self.generate_specific_challenges(START_ZONE, delta)
+            case _:
+                print("Wut? This is not a valid time period!")
+
+    def generate_specific_challenges(self, zone: int, delta: int):  # 3x Specific (no perim), 0x Unspecific
+        self.open_challenges = [self.generate_specific_challenge(zone, delta)]
+        for _ in range(2):
+            challenge = self.generate_specific_challenge(zone, delta)
+            while challenge in self.open_challenges:
+                challenge = self.generate_specific_challenge(zone, delta)
+            self.open_challenges.append(challenge)
+        self.shuffle_challenges()
+
+    def generate_normal_challenges(self, zone: int, delta: int):  # 2x Specific, 1x Unspecific
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+        for _ in range(2):
+            challenge = self.generate_specific_challenge(zone, delta)
+            while challenge in self.open_challenges:
+                challenge = self.generate_specific_challenge(zone, delta)
+            self.open_challenges.append(challenge)
+        self.shuffle_challenges()
+
+    def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific TODO
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+
+        self.shuffle_challenges()
+
+    def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or 110), 1x Unspecific (no regio) TODO
+        self.shuffle_challenges()
+
+    def generate_end_game_challenges(self, zone: int, delta: int):  # 0x Specific, 3x Unspecific
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+        for _ in range(2):
+            challenge = self.generate_unspecific_challenge(zone, delta)
+            while challenge in self.open_challenges:
+                challenge = self.generate_unspecific_challenge(zone, delta)
+            self.open_challenges.append(challenge)
+        self.shuffle_challenges()
+
+    def shuffle_challenges(self):  # TODO: test, reason to include: harder to read which period you're in
+        random.shuffle(self.open_challenges)
 
     def complete_challenge(self, index: int, delta: int) -> None:
         # Index should be 1, 2 or 3

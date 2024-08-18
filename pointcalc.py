@@ -32,13 +32,16 @@ for index, row in distance_sheet.iterrows():
 
     distance_dict[zone_a][zone_b] = travel_time
 
-perim = []
+perimeter_distances = {k: distance_dict[k][110] for k in list(set(distance_dict.keys()))}
+print(perimeter_distances)
+
+'''perim = []
 
 for k in distance_dict[110].keys():
-    if distance_dict[110][k] < PERIM_MAX_TRAVEL_MINUTES:
+    if perim.append(distance_dict[110][k] < PERIM_MAX_TRAVEL_MINUTES:
         perim.append(k)
 
-print(perim)
+print(perim)'''
 
 def randomly_adjust(value: int) -> int:
     """

@@ -22,10 +22,26 @@ def what_time_period(time: datetime.time = None, enable_random = True):
     elif time >= PERIMETER_START_TIME:
         return "Perimeter Period"
     elif time >= UNSPECIFIC_START_TIME:
-        return "Unspecific Period"
+        return "Normal Period"
     elif time >= GAME_START_TIME:
         return "Specific Period"
     return "Pre Game"
+
+
+def maximum_perimeter_distance(time: datetime.time):
+    if time < PERIMETER_START_TIME:
+        return 69420  # Big number
+    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 45, 20)
+
+
+def maximum_kaffness(time: datetime.time):
+    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 6.5, 3)
+
+
+def zurich_probability(time: datetime.time):
+    if time < ZURICH_START_TIME:
+        return 0
+    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 30, 110)
 
 
 if __name__ == "__main__":
@@ -40,7 +56,7 @@ if __name__ == "__main__":
         (datetime.time(15, 30), "Zurich Period"),
         (datetime.time(13, 31), "Perimeter Period"),
         (datetime.time(13, 30), "Perimeter Period"),
-        (datetime.time(13, 29), "Unspecific Period"),
+        (datetime.time(13, 29), "Normal Period"),
         (datetime.time(3, 30), "Pre Game"),
         (datetime.time(9, 10), "Specific Period")
     ]

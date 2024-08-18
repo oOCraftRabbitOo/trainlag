@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 from datetime import date
-from pointcalc import pointcalc, distance_dict, perim
+from pointcalc import pointcalc, distance_dict, perimeter_distances
 from class_challenge import Challenge
 from numpy import isnan
 
@@ -13,6 +13,8 @@ ortsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PA
 regionsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=94104575&single=true&output=csv')
 unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=633798816&single=true&output=csv')
 zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1768993571&single=true&output=csv')
+
+# TODO: Züri-Kaff-Challenges
 
 # Make empty lists for specific and non-specific challenges
 specific_challenges = []
@@ -100,9 +102,9 @@ class RawChallenge:
         if zone is None:
             zone = current_zone
 
-        print(zone, zone in perim, self.kaffness, self.title)
+        print(zone, perimeter_distances[zone], self.kaffness, self.title)
 
-        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, in_perim=zone in perim, no_disembark=self.no_disembark)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark)
 
 print('Generating challenges')
 
@@ -311,11 +313,14 @@ for i in range(len(unspecific_sheet)):
 specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
 
+
 def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
     return specific_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta)
 
+
 def unspecific_challenge_generate(index, current_zone, delta: int):
     return unspecific_challenges[index].challenge(zoned=False, id=index, specific=False, current_zone=current_zone, delta=delta)
+
 
 if __name__ == '__main__':
     print(*unspecific_challenges, sep='\n')
