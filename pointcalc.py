@@ -79,7 +79,23 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes: int, stationary_minutes: int, ppr: int, reps: int, zone: int | None, bias: float, fixed: bool, current_zone: int, delta: int, zoneable_and_zoned: bool) -> int:
+def pointcalc(kaffness: int,
+              grade: int,
+              challenge_points: int,
+              walking_minutes: int,
+              stationary_minutes: int,
+              ppr: int,
+              reps: int,
+              zone: int | None,
+              bias: float,
+              fixed: bool,
+              current_zone: int,
+              delta: int,
+              zoneable_and_zoned: bool,
+              dead_end: bool,
+              station_distance: int,
+              time_to_hb: int,
+              departures: int | None) -> int:
     points = 0
     points += POINTS_PER_KAFFNESS * kaffness
     points += POINTS_PER_GRADE * grade
@@ -95,6 +111,11 @@ def pointcalc(kaffness: int, grade: int, challenge_points: int, walking_minutes:
     points *= bias
     points = int(points)
     points = points if fixed else randomly_adjust(points)
+    points += 50 if dead_end else 0
+    points += int(station_distance/20)
+    points += time_to_hb * 5
+    if departures is not None:
+        points += int((7-departures**(1/3))*32)
     return points
 
 if __name__ == "__main__":

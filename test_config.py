@@ -58,11 +58,11 @@ PERIMETER_START_TIME = subtract_datetimes(ZURICH_START_TIME, PERIMETER_PERIOD)
 
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15, seconds=0)
 
-UNSPECIFIC_START_TIME = add_datetimes(GAME_START_TIME, SPECIFIC_PERIOD)
+NORMAL_START_TIME = add_datetimes(GAME_START_TIME, SPECIFIC_PERIOD)
 
 TIME_INACCURACY = 3  # +- how many minutes the time reading may be off
 
-# Old Times
+# Old Times (for the olden days)
 UNSPECIFIC_TIME = datetime.time(hour=22, minute=52)
 #SPECIFIC_PERIOD = datetime.timedelta(minutes=0, seconds=1)
 PERIMETER_TIME = datetime.time(hour=20, minute=46)

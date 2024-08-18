@@ -1,4 +1,5 @@
 import random
+from typing import override
 import pandas as pd
 from datetime import date
 from pointcalc import pointcalc, distance_dict, perimeter_distances
@@ -13,6 +14,7 @@ ortsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PA
 regionsspezifisch_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=94104575&single=true&output=csv')
 unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=633798816&single=true&output=csv')
 zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1768993571&single=true&output=csv')
+zkaff_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=839076986&single=true&output=csv')
 
 # TODO: Züri-Kaff-Challenges
 
@@ -41,7 +43,11 @@ class RawChallenge:
                  ppr: int = 0,
                  zoneable: bool = False,
                  no_disembark: bool = False,
-                 fixed: bool = False):
+                 fixed: bool = False,
+                 dead_end: bool = False,
+                 station_distance: int = 0,
+                 departures: int | None = None,
+                 time_to_hb: int = 0):
         self.title = title
         self.description = description
         self.points = points
@@ -58,9 +64,16 @@ class RawChallenge:
         self.zoneable = zoneable
         self.no_disembark = no_disembark
         self.fixed = fixed
+        self.dead_end = dead_end
+        self.station_distance = station_distance
+        self.departures = departures
+        self.time_to_hb = time_to_hb
 
+    @override
     def __str__(self):
-        return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s{self.stationary_minutes}, zoneable = {self.zoneable}, fixed = {self.fixed}'
+        return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s\
+        {self.stationary_minutes}sd{self.station_distance}d{self.departures}t{self.time_to_hb}, zoneable = {self.zoneable}, fixed \
+        = {self.fixed}, no_disembark = {self.no_disembark}, dead_end = {self.dead_end}'
 
     def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int) -> Challenge:
         self.description = str(self.description)
@@ -89,7 +102,7 @@ class RawChallenge:
                     best = z 
             zone = best
 
-        points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, self.fixed, current_zone, delta, self.zoneable and zoned)
+        points = pointcalc(self.kaffness, self.grade, self.points, self.walking_minutes, self.stationary_minutes, self.ppr, reps, zone, bias, self.fixed, current_zone, delta, self.zoneable and zoned, self.dead_end, self.station_distance, self.time_to_hb, self.departures)
 
         description = self.description
         description = description.replace('%r', str(reps))
@@ -162,6 +175,59 @@ for i in range(len(da_new_kaff_sheet)):
         specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr, no_disembark=no_disembark))
     else:
         print("Error: Empty cells in spreadsheet")
+
+for i in range(len(zkaff_sheet)):
+    row = da_new_kaff_sheet.loc[i]
+    place = row['Ort']
+    challenge = row['Challenge']
+    title_override = row['Title Override']
+    challenge_points = row['Additional Points']
+    min_reps = row['Min']
+    max_reps = row['Max']
+    ppr = row['Points per Repetition']
+    walking_minutes = row['Walking Time']
+    stationary_minutes = row['Stationary Time']
+    no_disembark = row['No Disembark']
+    dead_end = row['SG']
+    station_distance = row['Station Distance']
+    time_to_hb = row['Time to HB']
+    departures = row['Departures']
+
+    # refine data
+    if type(title_override) == str:
+        title = title_override
+    else:
+        title = f'Tsüridrift nach {place}'
+    if type(challenge) == str:
+        raw_description = challenge
+    else:
+        raw_description = f'Gönd a d Station "{place}" in Tsüri.'
+    challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
+    min_reps = int(min_reps) if not isnan(min_reps) else 0
+    max_reps = int(max_reps) if not isnan(max_reps) else 0
+    ppr = int(ppr) if not isnan(ppr) else 0
+    stationary_minutes = int(stationary_minutes) if not isnan(stationary_minutes) else 0
+    walking_minutes = int(walking_minutes) if not isnan(walking_minutes) else 0
+    try:
+        no_disembark = bool(no_disembark)
+    except:
+        no_disembark = False
+        print("no No Disembark :(")
+    try:
+        dead_end = bool(dead_end)
+    except:
+        dead_end = False
+        print("Dead end is dead (not big surprise) :(")
+    station_distance = int(station_distance) if not isnan(station_distance) else 0
+    time_to_hb = int(time_to_hb) if not isnan(time_to_hb) else 0
+    departures = int(departures) if not isnan(departures) else 0
+
+    # Return challenge
+    if not title.lower == "nan" or raw_description.lower == "nan":
+        specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr, no_disembark=no_disembark))
+    else:
+        print("Error: Empty cells in spreadsheet")
+
 # get and add specific challenges
 for i in range(len(ortsspezifisch_sheet)):
     row = ortsspezifisch_sheet.loc[i]
