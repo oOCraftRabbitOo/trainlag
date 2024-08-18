@@ -191,13 +191,11 @@ class Team:
             self.open_challenges.append(challenge)
         self.shuffle_challenges()
 
-    def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific TODO
-        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+    def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific
+        self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
-        self.shuffle_challenges()
-
-    def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or 110), 1x Unspecific (no regio) TODO
-        self.shuffle_challenges()
+    def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or in 110 itself), 1x Unspecific (no regio) TODO: Add Züri-Challenges to generation
+        self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
     def generate_end_game_challenges(self, zone: int, delta: int):  # 0x Specific, 3x Unspecific
         self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
