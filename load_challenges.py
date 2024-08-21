@@ -16,10 +16,9 @@ unspecific_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1
 zoneable_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=1768993571&single=true&output=csv')
 zkaff_sheet = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSEz-OcFSz13kGB2Z9iRzLmBkor8R2o7C-tzOSm91cQKt4foAG6iGynlT8PhO3I5Pt5iB_Mj7Bu0BeO/pub?gid=839076986&single=true&output=csv')
 
-# TODO: Züri-Kaff-Challenges
-
 # Make empty lists for specific and non-specific challenges
 specific_challenges = []
+zurich_challenges = []
 unspecific_challenges = []
 
 # Generate zone lists
@@ -201,7 +200,7 @@ for i in range(len(zkaff_sheet)):
     if type(challenge) == str:
         raw_description = challenge
     else:
-        raw_description = f'Gönd a d Station "{place}" in Tsüri.'
+        raw_description = f'Gönd ad Station "{place}" in Züri.'
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
     min_reps = int(min_reps) if not isnan(min_reps) else 0
     max_reps = int(max_reps) if not isnan(max_reps) else 0
@@ -224,7 +223,7 @@ for i in range(len(zkaff_sheet)):
 
     # Return challenge
     if not title.lower == "nan" or raw_description.lower == "nan":
-        specific_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr, no_disembark=no_disembark))
+        zurich_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, kaffness, grade, zone, bias_sat, bias_sun, min_reps, max_reps, ppr, no_disembark=no_disembark))
     else:
         print("Error: Empty cells in spreadsheet")
 
@@ -382,6 +381,10 @@ unspecific_challenges_amount = len(unspecific_challenges)
 
 def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
     return specific_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta)
+
+
+def zurich_challenge_generate(index, current_zone, delta: int) -> Challenge:
+    return zurich_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta)
 
 
 def unspecific_challenge_generate(index, current_zone, delta: int):

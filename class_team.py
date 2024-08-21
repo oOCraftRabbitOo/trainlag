@@ -1,4 +1,4 @@
-from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount
+from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, zurich_challenge_generate
 import discord
 from class_player import Player
 from config import *
@@ -53,7 +53,7 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_specific_challenge(self, zone: int, delta: int) -> Challenge:  # TODO: Walking Distance
+    def generate_specific_challenge(self, zone: int, delta: int, zurich_only: bool = False) -> Challenge:  # TODO: Walking Distance
         time = datetime.datetime.now().time()
 
         # Randomly select incomplete challenge (int)
@@ -64,7 +64,10 @@ class Team:
             if place in self.places_visited or (challenge.perimeter_distance > maximum_perimeter_distance(time)) or (challenge.kaff > maximum_kaffness(time)):
                 print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
-                challenge = specific_challenge_generate(place, zone, delta)
+                if zurich_only:
+                    challenge = zurich_challenge_generate(place, zone, delta) # TODO: Test
+                else:
+                    challenge = specific_challenge_generate(place, zone, delta)
             else:
                 break
         else:
@@ -74,7 +77,10 @@ class Team:
 
         # Generate challenge and return it
         return challenge
-        
+
+    def generate_zurich_challenge(self, zone: int, delta: int) -> Challenge:
+        self.generate_specific_challenge(zone, delta, zurich_only=True)
+
     def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
         time = datetime.datetime.now().time()
 
@@ -191,14 +197,30 @@ class Team:
             self.open_challenges.append(challenge)
         self.shuffle_challenges()
 
+    def generate_zurich_challenges(self, zone: int, delta: int):   # 2x Specific (with a growing chance to be in 110), 1x Unspecific
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+        for _ in range(2):
+            random_float = random.random() * 100
+            if zurich_probability() > random_float:
+                challenge = self.generate_zurich_challenge(zone, delta)
+                while challenge in self.open_challenges:
+                    challenge = self.generate_zurich_challenge(zone, delta)
+                self.open_challenges.append(challenge)
+            else:
+                challenge = self.generate_specific_challenge(zone, delta)
+                while challenge in self.open_challenges:
+                    challenge = self.generate_specific_challenge(zone, delta)
+                self.open_challenges.append(challenge)
+        self.shuffle_challenges()
+
     def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific
         self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
     def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or in 110 itself), 1x Unspecific (no regio) TODO: Add Züri-Challenges to generation
         self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
-    def generate_end_game_challenges(self, zone: int, delta: int):  # 0x Specific, 3x Unspecific
-        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+    def generate_end_game_challenges(self, zone: int, delta: int):  # 1x Specific in z110, 2x Unspecific
+        self.open_challenges = [self.generate_zurich_challenge(zone, delta)]
         for _ in range(2):
             challenge = self.generate_unspecific_challenge(zone, delta)
             while challenge in self.open_challenges:
