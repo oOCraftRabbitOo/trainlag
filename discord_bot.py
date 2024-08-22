@@ -638,6 +638,8 @@ async def catchers(ctx: commands.Context) -> None:
 async def reroll(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
+    await ctx.send("S neue Challenge-System sötti so funktioniere, dass d Reroll-Funktion nüme brucht wird. Deshalb hämmer sie au entfernt, sorry Brudi/Schwöschti/Geschwisti.")
+    '''
     # get channel's team
     channel = ctx.message.channel.id
     for t in teams:
@@ -645,7 +647,7 @@ async def reroll(ctx: commands.Context) -> None:
             team = t
             break
     else:
-        ctx.send("Das isch nöd de Kanal vo eme Team :/")
+        await ctx.send("Das isch nöd de Kanal vo eme Team :/")
         return
 
     # calculate delta
@@ -659,7 +661,7 @@ async def reroll(ctx: commands.Context) -> None:
     if message != "wowzers":
         await ctx.send(message)
     else:
-        await ctx.send(embeds=team.return_challenges())
+        await ctx.send(embeds=team.return_challenges()) '''
 
 # Load the token from the .token file
 token = ''

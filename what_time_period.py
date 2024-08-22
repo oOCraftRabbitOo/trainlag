@@ -3,11 +3,19 @@ from config import *
 from add_datetime import *
 import random
 
-# Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
+debug_time = False  # Replaces the check for the current time with a predefined time
 
-def what_time_period(time: datetime.time = None, enable_random = True):
+
+def time_now() -> datetime.time:
+    if debug_time:
+        return debug_time
+    return datetime.datetime.now().time()
+
+
+# Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
+def what_time_period(time: datetime.time = None, enable_random: bool = True):
     if time is None:
-        time = datetime.datetime.now().time()
+        time = time_now()
 
     if enable_random:
         random_seconds = random.randint(-60*TIME_INACCURACY, 60*TIME_INACCURACY)
@@ -40,11 +48,11 @@ def maximum_kaffness(time: datetime.time):
 
 def zurich_probability(time: datetime.time = None):  # Returns a %-Chance of a specific challenge being a Zurich challenge depending on time
     if time is None:
-        time = datetime.datetime.now().time()
+        time = time_now()
 
     if time < ZURICH_START_TIME:
         return 0
-    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 30, 110)
+    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 60, 120)
 
 
 if __name__ == "__main__":

@@ -54,7 +54,7 @@ class Team:
         return self.points > other.points
 
     def generate_specific_challenge(self, zone: int, delta: int, zurich_only: bool = False) -> Challenge:  # TODO: Walking Distance
-        time = datetime.datetime.now().time()
+        time = time_now()
 
         # Randomly select incomplete challenge (int)
         print("spec ", end="")
@@ -82,8 +82,7 @@ class Team:
         self.generate_specific_challenge(zone, delta, zurich_only=True)
 
     def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
-        time = datetime.datetime.now().time()
-
+        time = time_now()
         # Randomly select incomplete challenge (int)
         print("unsp ", end="")
         index = random.randint(0, unspecific_challenges_amount - 1)
@@ -264,8 +263,9 @@ class Team:
     def deduct_points(self, points) -> None:
         self.grant_points(-points)
 
-    def reroll_challenges(self, delta: int) -> str:
-        if datetime.datetime.now().time() < UNSPECIFIC_TIME:
+    '''
+    def reroll_challenges(self, delta: int) -> str:  # TODO: remove
+        if time_now() < UNSPECIFIC_TIME:
             print("Cant reroll challenges, too early")
             return "Ihr chönd no kein reroll mache, es isch nonig Ziit."
         elif self.last_challenge_generation > UNSPECIFIC_TIME:
@@ -274,6 +274,7 @@ class Team:
         else:
             self.generate_challenges(self.last_zone, delta)
             return "wowzers"
+    '''
 
     def uncomplete_challenge(self, index) -> None:
         # Get challenge to uncomplete and remove it from completed challenges
