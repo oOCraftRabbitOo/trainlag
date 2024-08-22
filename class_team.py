@@ -83,12 +83,13 @@ class Team:
 
     def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
         time = time_now()
+        time_period = what_time_period()
         # Randomly select incomplete challenge (int)
         print("unsp ", end="")
         index = random.randint(0, unspecific_challenges_amount - 1)
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
-            if index in self.completed_unspecific_challenges:
+            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or ((time_period == "Zurich Period" or time_period == "End Game Period") and challenge.regionspecific):
                 print("unsp ", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)

@@ -1,5 +1,5 @@
 class Challenge:
-    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int, kaff: int, perimeter_distance: int, no_disembark: bool):
+    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int, kaff: int, perimeter_distance: int, no_disembark: bool, regionspecific: bool = False, in_perim: bool = True):
         self.title: str = title
         self.description: str = description
         self.points: int = points
@@ -9,6 +9,8 @@ class Challenge:
         self.kaff: int = kaff
         self.perimeter_distance: int = perimeter_distance
         self.no_disembark: bool = no_disembark
+        self.regionspecific = regionspecific
+        self.in_perim = in_perim
 
     def __str__(self):
         return f"**{self.title}** \n{self.description}"

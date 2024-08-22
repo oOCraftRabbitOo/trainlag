@@ -46,7 +46,9 @@ class RawChallenge:
                  dead_end: bool = False,
                  station_distance: int = 0,
                  departures: int | None = None,
-                 time_to_hb: int = 0):
+                 time_to_hb: int = 0,
+                 regionspecific: bool = False,
+                 in_perim: bool = True):
         self.title = title
         self.description = description
         self.points = points
@@ -67,6 +69,8 @@ class RawChallenge:
         self.station_distance = station_distance
         self.departures = departures
         self.time_to_hb = time_to_hb
+        self.regionspecific = regionspecific
+        self.in_perim = in_perim
 
     @override
     def __str__(self):
@@ -116,7 +120,7 @@ class RawChallenge:
 
         print(zone, perimeter_distances[zone], self.kaffness, self.title)
 
-        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark, regionspecific=self.regionspecific, in_perim=self.in_perim)
 
 print('Generating challenges')
 
@@ -293,6 +297,7 @@ for i in range(len(regionsspezifisch_sheet)):
     ppr = row['ppr']
     fixed = (row['fixed'] == 1) # TODO: does this throw an error?
     no_disembark = row['No Disembark']
+    perimeter = row['Perimeter']
 
     # Refine data
     challenge_points = int(challenge_points) if not isnan(challenge_points) else 0
@@ -305,9 +310,15 @@ for i in range(len(regionsspezifisch_sheet)):
         no_disembark = False
         print("no No Disembark :(")
 
+    try:
+        in_perim = bool(perimeter)
+    except:
+        in_perim = False
+        print("no Perimeter :(")
+
     # Return challenge
     if not title.lower == "nan" or raw_description.lower == "nan":
-        unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, no_disembark=no_disembark))
+        unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps=min_reps, max_reps=max_reps, ppr=ppr, fixed=fixed, no_disembark=no_disembark, regionspecific=True, in_perim=in_perim))
     else:
         print("Error: Empty cells in spreadsheet")
 
@@ -370,7 +381,7 @@ for i in range(len(unspecific_sheet)):
 
     # Return challenge
     if not title.lower == "nan" or raw_description.lower == "nan":
-        unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps = min_reps, max_reps = max_reps, ppr = ppr, fixed = fixed, no_disembark=no_disembark))
+        unspecific_challenges.append(RawChallenge(title, description, challenge_points, min_reps=min_reps, max_reps=max_reps, ppr=ppr, fixed=fixed, no_disembark=no_disembark))
     else:
         print("Error: Empty cells in spreadsheet")
 

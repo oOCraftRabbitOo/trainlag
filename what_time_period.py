@@ -17,13 +17,16 @@ def what_time_period(time: datetime.time = None, enable_random: bool = True):
     if time is None:
         time = time_now()
 
+    if time >= GAME_OVER_TIME:
+        return "Post Game"
+    elif time <= GAME_START_TIME:
+        return "Pre Game"
+
     if enable_random:
         random_seconds = random.randint(-60*TIME_INACCURACY, 60*TIME_INACCURACY)
         time = add_datetimes(time, datetime.timedelta(seconds=random_seconds))
 
-    if time >= GAME_OVER_TIME:
-        return "Post Game"
-    elif time >= END_GAME_START_TIME:
+    if time >= END_GAME_START_TIME:
         return "End Game Period"
     elif time >= ZURICH_START_TIME:
         return "Zurich Period"
@@ -31,9 +34,8 @@ def what_time_period(time: datetime.time = None, enable_random: bool = True):
         return "Perimeter Period"
     elif time >= NORMAL_START_TIME:
         return "Normal Period"
-    elif time >= GAME_START_TIME:
-        return "Specific Period"
-    return "Pre Game"
+    return "Specific Period"
+
 
 
 def maximum_perimeter_distance(time: datetime.time):
