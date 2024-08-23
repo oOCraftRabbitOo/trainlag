@@ -179,7 +179,7 @@ for i in range(len(da_new_kaff_sheet)):
         print("Error: Empty cells in spreadsheet")
 
 for i in range(len(zkaff_sheet)):
-    row = da_new_kaff_sheet.loc[i]
+    row = zkaff_sheet.loc[i]
     place = row['Ort']
     challenge = row['Challenge']
     title_override = row['Title Override']
@@ -190,10 +190,10 @@ for i in range(len(zkaff_sheet)):
     walking_minutes = row['Walking Time']
     stationary_minutes = row['Stationary Time']
     no_disembark = row['No Disembark']
-    #dead_end = row['SG']
-    #station_distance = row['Station Distance']
-    #time_to_hb = row['Time to HB']
-    #departures = row['Departures']
+    dead_end = row['SG']
+    station_distance = row['Station Distance']
+    time_to_hb = row['Time to HB']
+    departures = row['Departures']
 
     # refine data
     if type(title_override) == str:
