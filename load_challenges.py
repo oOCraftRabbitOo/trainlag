@@ -1,5 +1,4 @@
 import random
-from typing import override
 import pandas as pd
 from datetime import date
 from pointcalc import pointcalc, distance_dict, perimeter_distances
@@ -72,7 +71,7 @@ class RawChallenge:
         self.regionspecific = regionspecific
         self.in_perim = in_perim
 
-    @override
+
     def __str__(self):
         return f'{self.title}\n{self.description}\np{self.points}k{self.kaffness}g{self.grade}z{self.zone}w{self.walking_minutes}s\
         {self.stationary_minutes}sd{self.station_distance}d{self.departures}t{self.time_to_hb}, zoneable = {self.zoneable}, fixed \
