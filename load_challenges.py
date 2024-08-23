@@ -191,9 +191,9 @@ for i in range(len(zkaff_sheet)):
     stationary_minutes = row['Stationary Time']
     no_disembark = row['No Disembark']
     #dead_end = row['SG']
-    station_distance = row['Station Distance']
-    time_to_hb = row['Time to HB']
-    departures = row['Departures']
+    #station_distance = row['Station Distance']
+    #time_to_hb = row['Time to HB']
+    #departures = row['Departures']
 
     # refine data
     if type(title_override) == str:
