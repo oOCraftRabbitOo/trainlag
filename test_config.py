@@ -50,10 +50,10 @@ GAME_OVER_TIME = datetime.time(hour=17, minute=0)
 END_GAME_PERIOD = datetime.timedelta(minutes=30)
 END_GAME_START_TIME = subtract_datetimes(GAME_OVER_TIME, END_GAME_PERIOD)  # GAME_OVER_TIME - END_GAME_PERIOD
 
-ZURICH_PERIOD = datetime.timedelta(hours=1)
+ZURICH_PERIOD = datetime.timedelta(hours=1, minutes=30)
 ZURICH_START_TIME = subtract_datetimes(END_GAME_START_TIME, ZURICH_PERIOD)
 
-PERIMETER_PERIOD = datetime.timedelta(hours=2)
+PERIMETER_PERIOD = datetime.timedelta(hours=1, minutes=30)
 PERIMETER_START_TIME = subtract_datetimes(ZURICH_START_TIME, PERIMETER_PERIOD)
 
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15, seconds=0)

@@ -52,7 +52,7 @@ def zurich_probability(time: datetime.time = None):  # Returns a %-Chance of a s
 
     if time < ZURICH_START_TIME:
         return 0
-    return map_datetime_to_value(time, ZURICH_START_TIME, END_GAME_START_TIME, 60, 120)
+    return map_datetime_to_value(time, ZURICH_START_TIME, END_GAME_START_TIME, 30, 120)
 
 
 if __name__ == "__main__":
