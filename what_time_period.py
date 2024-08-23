@@ -19,6 +19,8 @@ def what_time_period(time: datetime.time = None, enable_random: bool = True):
         return "Post Game"
     elif time <= GAME_START_TIME:
         return "Pre Game"
+    elif time <= NORMAL_START_TIME:
+        return "Specific Period"
 
     if enable_random:
         random_seconds = random.randint(-60*TIME_INACCURACY, 60*TIME_INACCURACY)
@@ -30,9 +32,7 @@ def what_time_period(time: datetime.time = None, enable_random: bool = True):
         return "Zurich Period"
     elif time >= PERIMETER_START_TIME:
         return "Perimeter Period"
-    elif time >= NORMAL_START_TIME:
-        return "Normal Period"
-    return "Specific Period"
+    return "Normal Period"
 
 
 
