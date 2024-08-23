@@ -14,7 +14,7 @@ def map_datetime_to_value(time: datetime.time, time_min: datetime.time, time_max
         return new_max
     elif time < time_min:
         return new_min
-    return new_min + (time_to_seconds(time) - time_to_seconds(time_min) * (new_max - new_min) / (time_to_seconds(time_max) - time_to_seconds(time_min))
+    return new_min + ((time_to_seconds(time) - time_to_seconds(time_min) * (new_max - new_min)) / (time_to_seconds(time_max) - time_to_seconds(time_min)))
 
 def time_to_seconds(time: datetime.time) -> int:
     return time.hour * 3600 + time.minute * 60 + time.second
