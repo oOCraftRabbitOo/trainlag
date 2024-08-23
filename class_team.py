@@ -212,7 +212,7 @@ class Team:
             random_float = random.random() * 100
             print("zufallsprozent: ", random_float)
             zurich_percentage = zurich_probability()
-            print("zurichsprozent: ", zurich_probability)
+            print("zurichsprozent: ", zurich_percentage)
             if zurich_percentage > random_float:
                 challenge = self.generate_zurich_challenge(zone, delta)
                 while challenge in self.open_challenges:
