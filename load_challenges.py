@@ -227,7 +227,7 @@ for i in range(len(zkaff_sheet)):
 
     # Return challenge
     if not title.lower == "nan" or raw_description.lower == "nan":
-        zurich_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, zone=zone, min_reps=min_reps, max_reps=max_reps, ppr=ppr, no_disembark=no_disembark))
+        zurich_challenges.append(RawChallenge(title, raw_description, challenge_points, walking_minutes, stationary_minutes, station_distance=station_distance, time_to_hb=time_to_hb, departures=departures, dead_end=dead_end, zone=zone, min_reps=min_reps, max_reps=max_reps, ppr=ppr, no_disembark=no_disembark))
     else:
         print("Error: Empty cells in spreadsheet")
 
