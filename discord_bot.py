@@ -1,3 +1,5 @@
+import datetime
+
 import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
@@ -11,6 +13,7 @@ setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
 catcher_role = None  # Run setup to fill
+debug_time = False # Replaces the check for the current time with a predefined time
 
 
 async def setup_check(ctx: commands.Context) -> None:
@@ -662,6 +665,15 @@ async def reroll(ctx: commands.Context) -> None:
         await ctx.send(message)
     else:
         await ctx.send(embeds=team.return_challenges()) '''
+
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def timeset(ctx: commands.Context, hour: int, minute: int) -> None:  # Replaces the check for the current time with a predefined time
+    global debug_time
+    debug_time = datetime.datetime.time(hour=hour, minute=minute)
+    await ctx.send(f"Set debug time to {debug_time}.")
+
+
 
 # Load the token from the .token file
 token = ''
