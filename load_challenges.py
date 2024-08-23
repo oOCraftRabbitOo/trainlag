@@ -77,7 +77,7 @@ class RawChallenge:
         {self.stationary_minutes}sd{self.station_distance}d{self.departures}t{self.time_to_hb}, zoneable = {self.zoneable}, fixed \
         = {self.fixed}, no_disembark = {self.no_disembark}, dead_end = {self.dead_end}'
 
-    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int) -> Challenge:
+    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int, zkaff: bool = False) -> Challenge:
         self.description = str(self.description)
         zone = self.zone
 
@@ -119,7 +119,7 @@ class RawChallenge:
 
         print(zone, perimeter_distances[zone], self.kaffness, self.title)
 
-        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark, regionspecific=self.regionspecific, in_perim=self.in_perim)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark, regionspecific=self.regionspecific, in_perim=self.in_perim, zkaff=zkaff)
 
 print('Generating challenges')
 
@@ -387,6 +387,7 @@ for i in range(len(unspecific_sheet)):
 # For both lists generate their lengths = amount of different challenges
 specific_challenges_amount = len(specific_challenges)
 unspecific_challenges_amount = len(unspecific_challenges)
+zurich_challenges_amount = len(zurich_challenges)
 
 
 def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
@@ -394,7 +395,7 @@ def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
 
 
 def zurich_challenge_generate(index, current_zone, delta: int) -> Challenge:
-    return zurich_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta)
+    return zurich_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta, zkaff=True)
 
 
 def unspecific_challenge_generate(index, current_zone, delta: int):

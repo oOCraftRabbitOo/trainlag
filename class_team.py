@@ -1,4 +1,4 @@
-from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, zurich_challenge_generate
+from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, zurich_challenge_generate, zurich_challenges_amount
 import discord
 from class_player import Player
 from config import *
@@ -24,6 +24,7 @@ class Team:
         self.bounty = BOUNTY_START_POINTS
         self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
+        self.zkaffs_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         #self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
@@ -79,7 +80,15 @@ class Team:
         return challenge
 
     def generate_zurich_challenge(self, zone: int, delta: int) -> Challenge:
-        self.generate_specific_challenge(zone, delta, zurich_only=True)
+        zkaff = random.randint(0, zurich_challenges_amount-1)
+        challenge = zurich_challenge_generate(zkaff, zone, delta)
+        if len(self.zkaffs_visited) == zurich_challenges_amount:
+            self.zkaffs_visited = []
+        while zkaff in self.zkaffs_visited:
+            zkaff = random.randint(0, zurich_challenges_amount-1)
+            challenge = zurich_challenge_generate(zkaff, zone, delta)
+
+        return challenge
 
     def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
         time = time_now()
@@ -216,8 +225,8 @@ class Team:
     def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific
         self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
-    def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or in 110 itself), 1x Unspecific (no regio) TODO: Add Züri-Challenges to generation
-        self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
+    # def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or in 110 itself), 1x Unspecific (no regio) TODO: Add Züri-Challenges to generation
+    #     self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
 
     def generate_end_game_challenges(self, zone: int, delta: int):  # 1x Specific in z110, 2x Unspecific
         self.open_challenges = [self.generate_zurich_challenge(zone, delta)]
@@ -238,10 +247,13 @@ class Team:
         # Save challenge completion
         self.completed_challenges.append(completed_challenge)
 
-        if not completed_challenge.specific:
-            self.completed_unspecific_challenges.append(completed_challenge.id)
-        elif completed_challenge.specific:
-            self.places_visited.append(completed_challenge.id)
+        if completed_challenge.zkaff:
+            self.zkaffs_visited.append(completed_challenge.id)
+        else:
+            if not completed_challenge.specific:
+                self.completed_unspecific_challenges.append(completed_challenge.id)
+            elif completed_challenge.specific:
+                self.places_visited.append(completed_challenge.id)
 
         # Grant points
         self.grant_points(completed_challenge.points)
