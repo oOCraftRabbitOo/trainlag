@@ -223,6 +223,7 @@ for i in range(len(zkaff_sheet)):
     station_distance = int(station_distance) if not isnan(station_distance) else 0
     time_to_hb = int(time_to_hb) if not isnan(time_to_hb) else 0
     departures = int(departures) if not isnan(departures) else 0
+    zone = 110 # was en carry
 
     # Return challenge
     if not title.lower == "nan" or raw_description.lower == "nan":
