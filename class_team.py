@@ -210,12 +210,17 @@ class Team:
         self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
         for _ in range(2):
             random_float = random.random() * 100
-            if zurich_probability() > random_float:
+            print("zufallsprozent: ", random_float)
+            zurich_probability = zurich_probability()
+            print("zurichsprozent: ", zurich_probability)
+            if zurich_probability > random_float:
+                print("tsürichallenge wird generiert")
                 challenge = self.generate_zurich_challenge(zone, delta)
                 while challenge in self.open_challenges:
                     challenge = self.generate_zurich_challenge(zone, delta)
                 self.open_challenges.append(challenge)
             else:
+                print("specific challenge wird generiert")
                 challenge = self.generate_specific_challenge(zone, delta)
                 while challenge in self.open_challenges:
                     challenge = self.generate_specific_challenge(zone, delta)
