@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 from class_team import generate_teams, print_teams, Team
 from config import *
+import what_time_period as wtp
 import json
 
 intents = discord.Intents.all()
@@ -669,10 +670,13 @@ async def reroll(ctx: commands.Context) -> None:
 @bot.command()
 @commands.has_permissions(manage_guild=True)
 async def timeset(ctx: commands.Context, hour: int, minute: int) -> None:  # Replaces the check for the current time with a predefined time
-    global debug_time
-    debug_time = datetime.time(hour=hour, minute=minute)
-    await ctx.send(f"Set debug time to {debug_time}.")
+    wtp.debug_time = datetime.time(hour=hour, minute=minute)
+    await ctx.send(f"Set debug time to {wtp.debug_time}.")
 
+@bot.command()
+@commands.has_permissions(manage_guild=True)
+async def period(ctx: commands.Context) -> None:
+    await ctx.send(wtp.what_time_period())
 
 
 # Load the token from the .token file
