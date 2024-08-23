@@ -13,7 +13,7 @@ setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
 catcher_role = None  # Run setup to fill
-debug_time = False # Replaces the check for the current time with a predefined time
+
 
 
 async def setup_check(ctx: commands.Context) -> None:
@@ -670,7 +670,7 @@ async def reroll(ctx: commands.Context) -> None:
 @commands.has_permissions(manage_guild=True)
 async def timeset(ctx: commands.Context, hour: int, minute: int) -> None:  # Replaces the check for the current time with a predefined time
     global debug_time
-    debug_time = datetime.datetime.time(hour=hour, minute=minute)
+    debug_time = datetime.time(hour=hour, minute=minute)
     await ctx.send(f"Set debug time to {debug_time}.")
 
 

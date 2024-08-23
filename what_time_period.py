@@ -2,9 +2,8 @@ import datetime
 from config import *
 from add_datetime import *
 import random
-from discord_bot import debug_time
 
-
+debug_time = False # Replaces the check for the current time with a predefined time
 def time_now() -> datetime.time:
     if debug_time:
         return debug_time
