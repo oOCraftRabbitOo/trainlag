@@ -10,6 +10,7 @@ import pickle
 import datetime
 import glob
 import os
+import discord
 import json
 
 
@@ -270,11 +271,19 @@ class Team:
             self.open_challenges = []
         self.backup()
 
-    def return_challenges(self) -> str:
-        out = f"# Eui Challenges:\n"
+    def return_challenges(self) -> list[discord.Embed]:
+        out = []
         for num, challenge in enumerate(self.open_challenges):
-            out += f"### {num + 1}: {challenge}\n"
+            embed = discord.Embed(title=f"{u'🛤️ ' if challenge.no_disembark else ''}{challenge.title}", description=challenge.description)
+            embed.set_footer(text=f"{challenge.points} Pünkt")
+            embed.set_author(name=f"Challenge {num+1}")
+            out.append(embed)
         return out
+    #def return_challenges(self) -> str:
+    #    out = f"# Eui Challenges:\n"
+    #    for num, challenge in enumerate(self.open_challenges):
+    #        out += f"### {num + 1}: {challenge}\n"
+    #    return out
 
 
 def get_teams_from_json() -> list:
