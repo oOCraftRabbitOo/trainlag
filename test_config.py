@@ -1,7 +1,5 @@
 import datetime
 
-from config import POINTS_PER_TRAVEL_MINUTE, START_ZONE
-
 # team compositions and channels
 TEAM_FILE = 'test_teams.json'
 PLAYER_FILE = 'test_players.json'
