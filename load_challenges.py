@@ -88,7 +88,7 @@ class RawChallenge:
         {self.stationary_minutes}sd{self.station_distance}d{self.departures}t{self.time_to_hb}, zoneable = {self.zoneable}, fixed \
         = {self.fixed}, no_disembark = {self.no_disembark}, dead_end = {self.dead_end}'
 
-    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int, zkaff: bool = False) -> Challenge:
+    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, zkaff: bool = False) -> Challenge:
         self.description = str(self.description)
         zone = self.zone
 
