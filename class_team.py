@@ -23,6 +23,7 @@ class Team:
         self.points = 0
         self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
+        self.zkaffs_visited = []
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.last_challenge_generation = datetime.time(hour=4, minute=20)
@@ -30,7 +31,6 @@ class Team:
         self.last_zone = START_ZONE
         self.trophies = 0
         self.last_shop = None
-        self.zkaffs_visited = []
         self.shop = Shop("dis mami", 69420, 420)
         self.generate_shop()
         
