@@ -1,4 +1,4 @@
-from load_challenges import generate_specific_challenge, specific_challenges_amount, generate_unspecific_challenge, unspecific_challenges_amount, inside_shops, outside_shops
+from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, inside_shops, outside_shops, zurich_challenge_generate, zurich_challenges_amount
 from class_player import Player
 from config import *
 from class_channel import Channel
@@ -26,12 +26,13 @@ class Team:
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
-        self.last_challenge_generation = 0
-        self.generate_challenges()
-        self.backup()
+        self.last_challenge_generation = datetime.time(hour=4, minute=20)
+        self.generate_challenges(START_ZONE)
+        self.last_zone = START_ZONE
         self.trophies = 0
         self.last_shop = None
-        self.shop = None
+        self.zkaffs_visited = []
+        self.shop = Shop("dis mami", 69420, 420)
         self.generate_shop()
         
     def buy(self, shop: Shop) -> None:
@@ -69,23 +70,23 @@ class Team:
             return self.points > other.points
         return self.trophies > other.trophies
 
-    def generate_specific_challenge(self) -> Challenge:
+    def generate_specific_challenge(self, zone: int) -> Challenge:
         place = random.randint(0, specific_challenges_amount - 1)
         while place in self.places_visited:
             place = random.randint(0, specific_challenges_amount - 1)
     
-        return generate_specific_challenge(place)
+        return specific_challenge_generate(place, zone)
         
-    def generate_unspecific_challenge(self) -> Challenge:
+    def generate_unspecific_challenge(self, zone: int) -> Challenge:
         # Randomly select incomplete challenge (int)
         index = random.randint(0, unspecific_challenges_amount - 1)
         while index in self.completed_unspecific_challenges:
             index = random.randint(0, unspecific_challenges_amount - 1)
 
         # Generate challenge and return it
-        return generate_unspecific_challenge(index)
+        return unspecific_challenge_generate(index, zone)
 
-    def generate_place_challenge(self) -> Challenge:
+    def generate_place_challenge(self, zone: int) -> Challenge:
         # Randomly select unvisited place (int)
         place = random.randint(0, specific_challenges_amount - 1)
         if len(self.places_visited) == specific_challenges_amount:
@@ -95,7 +96,7 @@ class Team:
             place = random.randint(0, specific_challenges_amount - 1)
 
         # Generate challenge and return it
-        return generate_specific_challenge(place)
+        return specific_challenge_generate(place, zone)
 
     '''
     def generate_creative_challenge(self) -> Challenge:
@@ -108,35 +109,54 @@ class Team:
         return generate_creative_challenge(index)
     '''
 
-    def generate_challenges(self) -> None:
+    def generate_zurich_challenge(self, zone: int) -> Challenge:
+        zkaff = random.randint(0, zurich_challenges_amount-1)
+        challenge = zurich_challenge_generate(zkaff, zone)
+        if len(self.zkaffs_visited) == zurich_challenges_amount:
+            self.zkaffs_visited = []
+        while zkaff in self.zkaffs_visited:
+            zkaff = random.randint(0, zurich_challenges_amount-1)
+            challenge = zurich_challenge_generate(zkaff, zone)
+
+        return challenge
+
+    def generate_challenges(self, zone: int) -> None:
         time = datetime.datetime.now().time()
         self.last_challenge_generation = time
         
         if (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge()]
+            self.open_challenges = [self.generate_specific_challenge(zone)]
             for _ in range(2):
-                challenge = self.generate_specific_challenge()
+                challenge = self.generate_specific_challenge(zone)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge()
+                    challenge = self.generate_specific_challenge(zone)
                 self.open_challenges.append(challenge)
 
-        elif (time < UNSPECIFIC_TIME):
-            self.open_challenges = [self.generate_specific_challenge(), None, self.generate_unspecific_challenge()]
+        elif (time < TSUERI_TIME):
+            self.open_challenges = [self.generate_specific_challenge(zone), None, self.generate_unspecific_challenge(zone)]
     
             # Randomly select a specific challenge that's neither completed nor active
-            challenge = self.generate_specific_challenge()
+            challenge = self.generate_specific_challenge(zone)
             while challenge == self.open_challenges[0]:
-                challenge = self.generate_specific_challenge()
+                challenge = self.generate_specific_challenge(zone)
     
             # Append the challenge to the open challenges
             self.open_challenges[1] = challenge
 
+        elif time < UNSPECIFIC_TIME:
+            self.open_challenges = [self.generate_zurich_challenge(zone), None, self.generate_unspecific_challenge(zone)]
+
+            # Randomly select a zurich challenge that's neither completed nor active
+            challenge = self.generate_zurich_challenge(zone)
+            while challenge == self.open_challenges[0]:
+                challenge = self.generate_zurich_challenge(zone)
+
         else:
-            self.open_challenges = [self.generate_unspecific_challenge()]
+            self.open_challenges = [self.generate_unspecific_challenge(zone)]
             for _ in range(2):
-                challenge = self.generate_unspecific_challenge()
+                challenge = self.generate_unspecific_challenge(zone)
                 while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge()
+                    challenge = self.generate_unspecific_challenge(zone)
                 self.open_challenges.append(challenge)
 
     def reroll_challenges(self) -> str:
@@ -147,7 +167,7 @@ class Team:
             print("Cant reroll challenges, this team already exclusively has unspecific challenges")
             return "Cant reroll challenges, this team already exclusively has unspecific challenges"
         else:
-            self.generate_challenges()
+            self.generate_challenges(self.last_zone)
             return "wowzers"
 
     def complete_challenge(self, index: int) -> None:
@@ -157,16 +177,22 @@ class Team:
         # Save challenge completion
         self.completed_challenges.append(completed_challenge)
 
-        if not completed_challenge.specific:
-            self.completed_unspecific_challenges.append(completed_challenge.id)
-        elif completed_challenge.specific:
-            self.places_visited.append(completed_challenge.id)
+        if completed_challenge.zkaff:
+            self.zkaffs_visited.append(completed_challenge.id)
+        else:
+            if not completed_challenge.specific:
+                self.completed_unspecific_challenges.append(completed_challenge.id)
+            elif completed_challenge.specific:
+                self.places_visited.append(completed_challenge.id)
 
         # Grant points
         self.grant_points(completed_challenge.points)
 
+        self.last_zone = completed_challenge.zone
+        print(f'd zone vom team {self.name} isch jetzt {self.last_zone}')
+
         # Generate new challenges
-        self.generate_challenges()
+        self.generate_challenges(completed_challenge.zone)
 
         # Backup
         self.backup()  # TODO: Does this work?
@@ -227,7 +253,7 @@ class Team:
     def switch_roles(self) -> None:
         if self.is_catcher:
             self.is_catcher = False
-            self.generate_challenges()
+            self.generate_challenges(self.last_zone)
         else:
             self.is_catcher = True
             self.open_challenges = []
