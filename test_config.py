@@ -30,6 +30,7 @@ NUM_CATCHERS = 2
 # times
 UNSPECIFIC_TIME = datetime.time(hour=15, minute=30)
 TSUERI_TIME = datetime.time(hour=14, minute=30)
+NORMAL_MODE_TIME = datetime.time(hour=10, minute=20)
 SPECIFIC_PERIOD = datetime.timedelta(minutes=15)
 
 GLOBAL_SHOPS = ["Wetzikon", "Horgen", "Winterthur HB"]

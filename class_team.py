@@ -1,4 +1,4 @@
-from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, inside_shops, outside_shops, zurich_challenge_generate, zurich_challenges_amount
+from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, inside_shops, outside_shops, zurich_challenge_generate, zurich_challenges_amount, forbidden_zones
 from class_player import Player
 from config import *
 from class_channel import Channel
@@ -25,7 +25,6 @@ class Team:
         self.places_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
-        self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
         self.last_challenge_generation = datetime.time(hour=4, minute=20)
         self.generate_challenges(START_ZONE)
         self.last_zone = START_ZONE
@@ -74,8 +73,14 @@ class Team:
         place = random.randint(0, specific_challenges_amount - 1)
         while place in self.places_visited:
             place = random.randint(0, specific_challenges_amount - 1)
+        challenge = specific_challenge_generate(place, zone)
+        while challenge.zone in forbidden_zones or challenge.kaff >= 5:
+            place = random.randint(0, specific_challenges_amount - 1)
+            while place in self.places_visited:
+                place = random.randint(0, specific_challenges_amount - 1)
+            challenge = specific_challenge_generate(place, zone)
     
-        return specific_challenge_generate(place, zone)
+        return challenge
         
     def generate_unspecific_challenge(self, zone: int) -> Challenge:
         # Randomly select incomplete challenge (int)
@@ -94,9 +99,19 @@ class Team:
             print(f'Oh shit, ran out of places, aww man, team {self}')
         while place in self.places_visited:
             place = random.randint(0, specific_challenges_amount - 1)
+        challenge = specific_challenge_generate(place, zone)
 
+        while challenge.zone in forbidden_zones or challenge.kaff >= 5:
+            place = random.randint(0, specific_challenges_amount - 1)
+            if len(self.places_visited) == specific_challenges_amount:
+                self.places_visited = []
+                print(f'Oh shit, ran out of places, aww man, team {self}')
+            while place in self.places_visited:
+                place = random.randint(0, specific_challenges_amount - 1)
+            challenge = specific_challenge_generate(place, zone)
+        
         # Generate challenge and return it
-        return specific_challenge_generate(place, zone)
+        return challenge
 
     '''
     def generate_creative_challenge(self) -> Challenge:
@@ -124,7 +139,7 @@ class Team:
         time = datetime.datetime.now().time()
         self.last_challenge_generation = time
         
-        if (time < self.normal_mode_time):
+        if (time < NORMAL_MODE_TIME):
             self.open_challenges = [self.generate_specific_challenge(zone)]
             for _ in range(2):
                 challenge = self.generate_specific_challenge(zone)
@@ -152,12 +167,11 @@ class Team:
                 challenge = self.generate_zurich_challenge(zone)
 
         else:
-            self.open_challenges = [self.generate_unspecific_challenge(zone)]
-            for _ in range(2):
+            self.open_challenges = [self.generate_zurich_challenge(zone), self.generate_unspecific_challenge(zone)]
+            challenge = self.generate_unspecific_challenge(zone)
+            while challenge in self.open_challenges:
                 challenge = self.generate_unspecific_challenge(zone)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge(zone)
-                self.open_challenges.append(challenge)
+            self.open_challenges.append(challenge)
 
     def reroll_challenges(self) -> str:
         if datetime.datetime.now().time() < UNSPECIFIC_TIME:
