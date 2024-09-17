@@ -208,9 +208,6 @@ class Team:
         # Generate new challenges
         self.generate_challenges(completed_challenge.zone)
 
-        # Backup
-        self.backup()  # TODO: Does this work?
-
     def grant_points(self, points: int) -> None:
         self.points += points
 
