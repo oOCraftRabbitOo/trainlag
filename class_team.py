@@ -85,12 +85,22 @@ class Team:
         
     def generate_unspecific_challenge(self, zone: int) -> Challenge:
         # Randomly select incomplete challenge (int)
+        time = datetime.datetime.now().time()
         index = random.randint(0, unspecific_challenges_amount - 1)
-        while index in self.completed_unspecific_challenges:
-            index = random.randint(0, unspecific_challenges_amount - 1)
+        challenge = unspecific_challenge_generate(index, zone)
 
-        # Generate challenge and return it
-        return unspecific_challenge_generate(index, zone)
+        for _ in range(2000):
+            if index in self.completed_unspecific_challenges or (time > TSUERI_TIME and challenge.regionspecific):
+                index = random.randint(0, unspecific_challenges_amount - 1)
+                challenge = unspecific_challenge_generate(index, zone)
+            else:
+                break
+        else:
+            print("Fuck, random bullshit go")
+            index = random.randint(0, unspecific_challenges_amount - 1)
+            challenge = unspecific_challenge_generate(index, zone)
+            
+        return challenge
 
     def generate_place_challenge(self, zone: int) -> Challenge:
         # Randomly select unvisited place (int)
