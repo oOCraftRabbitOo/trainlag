@@ -32,26 +32,31 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 3
+NUM_CATCHERS = 2
 
 # bounty system
-BOUNTY_BASE_POINTS = 100
-BOUNTY_START_POINTS = 250
-BOUNTY_PERCENTAGE = 0.25
+BOUNTY_BASE_POINTS = 0
+BOUNTY_START_POINTS = 250 # Now, catchers get this at the beginning
+BOUNTY_PERCENTAGE = 1/3
 
 # perimeter system
 PERIM_MAX_KAFF = 4
 PERIM_MAX_TRAVEL_MINUTES = 30
 
+# Challenge Choice
+NORMAL_PERIOD_NEAR = (0, 25)
+NORMAL_PERIOD_FAR = (40, 70)
+REGIO_RATIO = 0.3
+
 # times
 # Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
-GAME_START_TIME = datetime.time(hour=9, minute=0)
+GAME_START_TIME = datetime.time(hour=10, minute=0)
 GAME_OVER_TIME = datetime.time(hour=17, minute=0)
 
 END_GAME_PERIOD = datetime.timedelta(minutes=30)
 END_GAME_START_TIME = subtract_datetimes(GAME_OVER_TIME, END_GAME_PERIOD)  # GAME_OVER_TIME - END_GAME_PERIOD
 
-ZURICH_PERIOD = datetime.timedelta(hours=1, minutes=30)
+ZURICH_PERIOD = datetime.timedelta(hours=2, minutes=0)
 ZURICH_START_TIME = subtract_datetimes(END_GAME_START_TIME, ZURICH_PERIOD)
 
 PERIMETER_PERIOD = datetime.timedelta(hours=1, minutes=30)

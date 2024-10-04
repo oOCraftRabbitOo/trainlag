@@ -119,7 +119,7 @@ class RawChallenge:
 
         print(zone, perimeter_distances[zone], self.kaffness, self.title)
 
-        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark, regionspecific=self.regionspecific, in_perim=self.in_perim, zkaff=zkaff)
+        return Challenge(self.title, description, points, id, specific, zone, kaff=self.kaffness, perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark, regionspecific=self.regionspecific, in_perim=self.in_perim, zkaff=zkaff, zoneable=self.zoneable)
 
 print('Generating challenges')
 

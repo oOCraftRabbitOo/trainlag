@@ -39,7 +39,7 @@ def what_time_period(time: datetime.time = None, enable_random: bool = True):
 def maximum_perimeter_distance(time: datetime.time):
     if time < PERIMETER_START_TIME:
         return 69420  # Big number
-    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 45, 20)
+    return map_datetime_to_value(time, PERIMETER_START_TIME, ZURICH_START_TIME, 60, 20)
 
 
 def maximum_kaffness(time: datetime.time):
@@ -52,7 +52,7 @@ def zurich_probability(time: datetime.time = None):  # Returns a %-Chance of a s
 
     if time < ZURICH_START_TIME:
         return 0
-    return map_datetime_to_value(time, ZURICH_START_TIME, END_GAME_START_TIME, 30, 120)
+    return map_datetime_to_value(time, ZURICH_START_TIME, END_GAME_START_TIME, 0, 120)
 
 
 if __name__ == "__main__":

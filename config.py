@@ -39,6 +39,11 @@ BOUNTY_PERCENTAGE = config.BOUNTY_PERCENTAGE
 PERIM_MAX_KAFF = config.PERIM_MAX_KAFF
 PERIM_MAX_TRAVEL_MINUTES = config.PERIM_MAX_TRAVEL_MINUTES
 
+# Challenge Choice
+NORMAL_PERIOD_NEAR = config.NORMAL_PERIOD_NEAR
+NORMAL_PERIOD_FAR = config.NORMAL_PERIOD_FAR
+REGIO_RATIO = config.REGIO_RATIO
+
 # times
 # Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
 GAME_START_TIME = config.GAME_START_TIME

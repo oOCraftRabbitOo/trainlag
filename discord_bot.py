@@ -363,6 +363,7 @@ async def setup(ctx: commands.Context) -> None:
     print('adding catcher roles')
     for team in teams:
         if team.is_catcher:
+            team.points = BOUNTY_START_POINTS
             for player in team.players:
                 # Get the member object for the user
                 member = await ctx.guild.fetch_member(player.id)

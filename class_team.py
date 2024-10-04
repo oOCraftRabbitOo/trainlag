@@ -4,14 +4,15 @@ from class_player import Player
 from config import *
 from class_channel import Channel
 from class_challenge import Challenge
+from normal_config import REGIO_RATIO
 from what_time_period import *
+from pointcalc import distance_dict
 import random
 import pickle
 import datetime
 import glob
 import os
 import json
-
 
 class Team:
     def __init__(self, players: list[Player], channel: Channel, name: str, is_catcher: bool = False) -> None:
@@ -21,7 +22,7 @@ class Team:
         self.name = name
         self.is_catcher = is_catcher
         self.points = 0
-        self.bounty = BOUNTY_START_POINTS
+        self.bounty = 0
         self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
         self.zkaffs_visited = []  # ids
@@ -54,15 +55,25 @@ class Team:
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
         return self.points > other.points
 
-    def generate_specific_challenge(self, zone: int, delta: int, zurich_only: bool = False) -> Challenge:  # TODO: Walking Distance
+    def generate_specific_challenge(self, zone: int, delta: int, zurich_only: bool = False, min_perim_distance: int = -1, max_perim_distance: int | None = None, min_personal_distance: int = -1, max_personal_distance: int = 69420, zoneables: bool = True) -> Challenge:  # TODO: Walking Distance
         time = time_now()
+        # Set min/max times
+        if max_perim_distance is None:
+            max_perim_distance = maximum_perimeter_distance(time)
 
         # Randomly select incomplete challenge (int)
         print("spec ", end="")
         place = random.randint(0, specific_challenges_amount - 1)
         challenge = specific_challenge_generate(place, zone, delta)
         for _ in range(2000):
-            if place in self.places_visited or (challenge.perimeter_distance > maximum_perimeter_distance(time)) or (challenge.kaff > maximum_kaffness(time)):
+            if (place in self.places_visited or
+                    (challenge.perimeter_distance <= min_perim_distance) or
+                    (challenge.perimeter_distance >= max_perim_distance) or
+                    (challenge.kaff > maximum_kaffness(time)) or
+                    (distance_dict[zone][challenge.zone] <= min_personal_distance) or
+                    (distance_dict[zone][challenge.zone] >= max_personal_distance) or
+                    (not zoneables and challenge.zoneable)):
+
                 print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
                 if zurich_only:
@@ -90,7 +101,7 @@ class Team:
 
         return challenge
 
-    def generate_unspecific_challenge(self, zone: int, delta: int) -> Challenge:
+    def generate_unspecific_challenge(self, zone: int, delta: int, make_regionspecific: bool = False) -> Challenge:
         time = time_now()
         time_period = what_time_period()
         # Randomly select incomplete challenge (int)
@@ -98,7 +109,7 @@ class Team:
         index = random.randint(0, unspecific_challenges_amount - 1)
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
-            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or ((time_period == "Zurich Period" or time_period == "End Game Period") and challenge.regionspecific):
+            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or (challenge.regionspecific != make_regionspecific):
                 print("unsp ", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
@@ -112,60 +123,9 @@ class Team:
         # Generate challenge and return it
         return challenge
 
-#    def generate_place_challenge(self, zone: int) -> Challenge:
-#        # Randomly select unvisited place (int)
-#        place = random.randint(0, specific_challenges_amount - 1)
-#        if len(self.places_visited) == specific_challenges_amount:
-#            self.places_visited = []
-#            print(f'Oh shit, ran out of places, aww man, team {self}')
-#        while place in self.places_visited:
-#            place = random.randint(0, specific_challenges_amount - 1)
-#
-#        # Generate challenge and return it
-#        return generate_specific_challenge(place, zone)
+    def generate_regionspecific_challenge(self, zone: int, delta: int):
+        return self.generate_unspecific_challenge(zone, delta, True)
 
-    '''
-    def generate_creative_challenge(self) -> Challenge:
-        # Randomly select incomplete challenge (int)
-        index = random.randint(0, unspecific_challenges_amount - 1)
-        while index in self.completed_unspecific_challenges:
-            index = random.randint(0, unspecific_challenges_amount - 1)
-
-        # Generate challenge and return it
-        return generate_creative_challenge(index)
-    '''
-    '''
-    def generate_challenges(self, zone: int, delta: int) -> None:
-        time = datetime.datetime.now().time()
-        self.last_challenge_generation = time
-
-        if (time < self.normal_mode_time):
-            self.open_challenges = [self.generate_specific_challenge(zone, delta)]
-            for _ in range(2):
-                challenge = self.generate_specific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
-
-        elif (time < UNSPECIFIC_TIME):
-            self.open_challenges = [self.generate_specific_challenge(zone, delta), None, self.generate_unspecific_challenge(zone, delta)]
-    
-            # Randomly select a specific challenge that's neither completed nor active
-            challenge = self.generate_specific_challenge(zone, delta)
-            while challenge == self.open_challenges[0]:
-                challenge = self.generate_specific_challenge(zone, delta)
-    
-            # Append the challenge to the open challenges
-            self.open_challenges[1] = challenge
-
-        else:
-            self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
-            for _ in range(2):
-                challenge = self.generate_unspecific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_unspecific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
-    '''
     def generate_challenges(self, zone: int, delta: int) -> None:
         time_period = what_time_period()
 
@@ -197,22 +157,27 @@ class Team:
             self.open_challenges.append(challenge)
         self.shuffle_challenges()
 
-    def generate_normal_challenges(self, zone: int, delta: int):  # 2x Specific, 1x Unspecific
+    def generate_normal_challenges(self, zone: int, delta: int):  # 1x Unspecific, 1x specific near team (may be zoneable), 1x specific further from team (may be regionspecific)
+        # unspecific
         self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
-        for _ in range(2):
-            challenge = self.generate_specific_challenge(zone, delta)
-            while challenge in self.open_challenges:
-                challenge = self.generate_specific_challenge(zone, delta)
-            self.open_challenges.append(challenge)
+
+        # specific near
+        challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=NORMAL_PERIOD_NEAR[0], max_personal_distance=NORMAL_PERIOD_NEAR[1], zoneables=True)
+        self.open_challenges.append(challenge)
+
+        # specific far
+        if random.random() < REGIO_RATIO: # Chose a regionspecific challenge
+            challenge = self.generate_regionspecific_challenge(zone, delta)
+        else:
+            challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=NORMAL_PERIOD_FAR[0], max_personal_distance=NORMAL_PERIOD_FAR[1])
+        self.open_challenges.append(challenge)
+
         self.shuffle_challenges()
 
     def generate_zurich_challenges(self, zone: int, delta: int):   # 2x Specific (with a growing chance to be in 110), 1x Unspecific
         self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
         for _ in range(2):
-            random_float = random.random() * 100
-            print("zufallsprozent: ", random_float)
-            zurich_percentage = zurich_probability()
-            print("zurichsprozent: ", zurich_percentage)
+
             if zurich_percentage > random_float:
                 challenge = self.generate_zurich_challenge(zone, delta)
                 while challenge in self.open_challenges:
@@ -225,8 +190,52 @@ class Team:
                 self.open_challenges.append(challenge)
         self.shuffle_challenges()
 
-    def generate_perimeter_challenges(self, zone: int, delta: int):  # 2x Specific (in shrinking perim), 1x Unspecific
-        self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
+        time = time_now()
+        max_perim_distance = maximum_perimeter_distance(time)
+        # unspecific
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+
+        random_float = random.random() * 100
+        print("zufallsprozent: ", random_float)
+        zurich_percentage = zurich_probability()
+        print("zurichsprozent: ", zurich_percentage)
+
+        replace_near = ((zurich_percentage - 50) * 2) > random_float
+        replace_far = (zurich_percentage * 2) > random_float
+
+        # specific near
+        if replace_near:
+            challenge = self.generate_zurich_challenge(zone, delta)
+        else:
+            challenge = self.generate_specific_challenge(zone, delta, min_perim_distance=0, max_perim_distance=max_perim_distance / 2)
+        self.open_challenges.append(challenge)
+
+        # specific far
+        if replace_far:
+            challenge = self.generate_zurich_challenge(zone, delta)
+        else:
+            challenge = self.generate_specific_challenge(zone, delta, min_perim_distance=max_perim_distance / 2 + 1, max_perim_distance=max_perim_distance)
+        self.open_challenges.append(challenge)
+
+        self.shuffle_challenges()
+
+    def generate_perimeter_challenges(self, zone: int, delta: int):  # 1x Specific (outer half)(may not be Regio), 1x specific (inner half)(may not be zoneable), 1x Unspecific
+        time = time_now()
+        max_perim_distance = maximum_perimeter_distance(time)
+        # unspecific
+        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
+
+        # specific near
+        challenge = self.generate_specific_challenge(zone, delta, min_perim_distance=0,
+                                                     max_perim_distance=max_perim_distance/2)
+        self.open_challenges.append(challenge)
+
+        # specific far
+        challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=max_perim_distance/2+1,
+                                                         max_personal_distance=max_perim_distance)
+        self.open_challenges.append(challenge)
+
+        self.shuffle_challenges()
 
     # def generate_zurich_challenges(self, zone: int, delta: int):  # 2x Specific (within 20 min of ZUE or in 110 itself), 1x Unspecific (no regio) TODO: Add Züri-Challenges to generation
     #     self.generate_normal_challenges(zone, delta)  # I mean, it should work... TODO: Test
