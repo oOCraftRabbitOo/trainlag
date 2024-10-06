@@ -169,27 +169,12 @@ class Team:
         if random.random() < REGIO_RATIO: # Chose a regionspecific challenge
             challenge = self.generate_regionspecific_challenge(zone, delta)
         else:
-            challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=NORMAL_PERIOD_FAR[0], max_personal_distance=NORMAL_PERIOD_FAR[1])
+            challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=NORMAL_PERIOD_FAR[0], max_personal_distance=NORMAL_PERIOD_FAR[1], zoneables=False)
         self.open_challenges.append(challenge)
 
         self.shuffle_challenges()
 
     def generate_zurich_challenges(self, zone: int, delta: int):   # 2x Specific (with a growing chance to be in 110), 1x Unspecific
-        self.open_challenges = [self.generate_unspecific_challenge(zone, delta)]
-        for _ in range(2):
-
-            if zurich_percentage > random_float:
-                challenge = self.generate_zurich_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_zurich_challenge(zone, delta)
-                self.open_challenges.append(challenge)
-            else:
-                challenge = self.generate_specific_challenge(zone, delta)
-                while challenge in self.open_challenges:
-                    challenge = self.generate_specific_challenge(zone, delta)
-                self.open_challenges.append(challenge)
-        self.shuffle_challenges()
-
         time = time_now()
         max_perim_distance = maximum_perimeter_distance(time)
         # unspecific
@@ -231,8 +216,8 @@ class Team:
         self.open_challenges.append(challenge)
 
         # specific far
-        challenge = self.generate_specific_challenge(zone, delta, min_personal_distance=max_perim_distance/2+1,
-                                                         max_personal_distance=max_perim_distance)
+        challenge = self.generate_specific_challenge(zone, delta, min_perim_distance=max_perim_distance/2+1,
+                                                         max_perim_distance=max_perim_distance, zoneables=False)
         self.open_challenges.append(challenge)
 
         self.shuffle_challenges()
