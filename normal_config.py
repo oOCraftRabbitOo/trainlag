@@ -5,9 +5,9 @@ from add_datetime import *
 # = Main Stuff =
 # ==============
 # team compositions and channels
-TEAM_FILE = 'teams.json'
-PLAYER_FILE = 'players.json'
-GENERAL_CHANNEL = 1276606635166666895 # channel for game info
+TEAM_FILE = 'zoller_teams.json'
+PLAYER_FILE = 'zoller_players.json'
+GENERAL_CHANNEL = 1150146980509667478 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.05
@@ -15,8 +15,8 @@ POINTS_PER_KAFFNESS = 60
 POINTS_PER_GRADE = 20
 POINTS_PER_WALKING_MINUTE = 10
 POINTS_PER_STATIONARY_MINUTE = 10
-POINTS_PER_TRAVEL_MINUTE = 10
-START_ZONE = 121
+POINTS_PER_TRAVEL_MINUTE = 10 # currently useless
+START_ZONE = 110
 
 # underdog system
 UNDERDOG_MULTIPLYER_PER_1000 = 0.25
@@ -36,7 +36,7 @@ NUM_CATCHERS = 2
 
 # bounty system
 BOUNTY_BASE_POINTS = 0
-BOUNTY_START_POINTS = 250 # Now, catchers get this at the beginning
+BOUNTY_START_POINTS = 500 # Now, catchers get this at the beginning
 BOUNTY_PERCENTAGE = 1/3
 
 # perimeter system
