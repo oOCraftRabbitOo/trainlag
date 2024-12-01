@@ -5,9 +5,9 @@ from add_datetime import *
 # = Main Stuff =
 # ==============
 # team compositions and channels
-TEAM_FILE = 'zoller_teams.json'
-PLAYER_FILE = 'zoller_players.json'
-GENERAL_CHANNEL = 1150146980509667478 # channel for game info
+TEAM_FILE = 'teams.json'
+PLAYER_FILE = 'players.json'
+GENERAL_CHANNEL = 1312741650820501504 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.05
@@ -32,7 +32,7 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 2
+NUM_CATCHERS = 3
 
 # bounty system
 BOUNTY_BASE_POINTS = 0
@@ -50,7 +50,7 @@ REGIO_RATIO = 0.3
 
 # times
 # Specific Period -> Normal Period -> Perimeter Period -> Zurich Period -> End Game Period
-GAME_START_TIME = datetime.time(hour=10, minute=0)
+GAME_START_TIME = datetime.time(hour=9, minute=0)
 GAME_OVER_TIME = datetime.time(hour=17, minute=0)
 
 END_GAME_PERIOD = datetime.timedelta(minutes=30)
