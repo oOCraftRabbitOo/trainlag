@@ -32,7 +32,7 @@ POINTS_FOR_MONGUS = 50
 EMOJI = {1: ":first_place:", 2: ":second_place:", 3: ":third_place:", 4: ":four:", 5: ":five:", 6: ":six:", 7: ":seven:", 8: ":eight:", 9: ":nine:", "last": ":poo:"}
 
 # number of catchers
-NUM_CATCHERS = 3
+NUM_CATCHERS = 2
 
 # bounty system
 BOUNTY_BASE_POINTS = 0
