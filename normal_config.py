@@ -53,7 +53,7 @@ REGIO_RATIO = 0.3
 GAME_START_TIME = datetime.time(hour=9, minute=0)
 GAME_OVER_TIME = datetime.time(hour=17, minute=0)
 
-END_GAME_PERIOD = datetime.timedelta(minutes=30)
+END_GAME_PERIOD = datetime.timedelta(minutes=45)
 END_GAME_START_TIME = subtract_datetimes(GAME_OVER_TIME, END_GAME_PERIOD)  # GAME_OVER_TIME - END_GAME_PERIOD
 
 ZURICH_PERIOD = datetime.timedelta(hours=2, minutes=0)

@@ -105,8 +105,7 @@ def pointcalc(kaffness: int,
     points += reps * ppr
     points += challenge_points
     points += 100 if zoneable_and_zoned else 0
-    # points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
-    points += distance_dict[current_zone][zone]**1.4 * 3 if zone is not None else 0
+    points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
     points += 50 if dead_end else 0
     points += int(station_distance/20)
     points += time_to_hb * 5
