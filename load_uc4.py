@@ -251,6 +251,7 @@ print('Generating challenges')
 for i in range(len(uc4)):
     row = uc4.loc[i]
     challenge_type = row['challenge_type']  # str
+    status = row['status'] # str
     title = row['title']  # str | None
     description = row['description']  # str | None
     place = row['place']  # str | None
@@ -274,12 +275,16 @@ for i in range(len(uc4)):
     fixed_points = row['fixed_points']  # bool
     in_perim = row['in_perim']  # bool | None
 
+    status = str(status)
     challenge_type = str(challenge_type)
     title = None if pd.isna(title) else str(title)
     description = None if pd.isna(description) else str(description)
     place = None if pd.isna(place) else str(place)
     kaffskala = int(k) if pd.notna(k := pd.to_numeric(kaffskala, errors='coerce')) else None
     grade = int(g) if pd.notna(g := pd.to_numeric(grade, errors='coerce')) else None
+
+    if status not in {'approved', 'refactor'}:
+        continue
 
     if pd.isna(zone):
         zone = None
@@ -318,7 +323,7 @@ for i in range(len(uc4)):
         print(f"Invalid challenge found at index {i}. Ignoreth :)")
         continue
 
-    if challenge_type == "kaff" or challenge_type == "ortspezifisch":
+    if challenge_type == "kaff" or challenge_type == "ortsspezifisch":
         specific_challenges.append(challenge)
     elif challenge_type == "zkaff":
         zurich_challenges.append(challenge)
