@@ -314,6 +314,10 @@ for i in range(len(uc4)):
                  station_distance, time_to_hb, departures, dead_end, no_disembark, fixed_points, in_perim)
     challenge.refine()
 
+    if not challenge.valid():
+        print(f"Invalid challenge found at index {i}. Ignoreth :)")
+        continue
+
     if challenge_type == "kaff" or challenge_type == "ortspezifisch":
         specific_challenges.append(challenge)
     elif challenge_type == "zkaff":

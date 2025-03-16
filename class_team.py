@@ -1,4 +1,4 @@
-from load_challenges import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, zurich_challenge_generate, zurich_challenges_amount
+from load_uc4 import specific_challenge_generate, specific_challenges_amount, unspecific_challenge_generate, unspecific_challenges_amount, zurich_challenge_generate, zurich_challenges_amount
 import discord
 from class_player import Player
 from config import *
