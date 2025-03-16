@@ -48,8 +48,8 @@ class Team:
         for player in self.players:
             names += player.name + " "
         strink = f'Team {self.name} ({names[:-1]})'
-        if self.is_catcher:
-            strink += ' [fänger]'
+        # if self.is_catcher:
+        #     strink += ' [fänger]'
         return strink
 
     def __lt__(self, other):  # Used for sorting "less than", ich weiss nöd wieso ich das muss so ummä iigäh, aber isch halt so
