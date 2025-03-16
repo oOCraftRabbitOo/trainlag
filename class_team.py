@@ -66,14 +66,14 @@ class Team:
         place = random.randint(0, specific_challenges_amount - 1)
         challenge = specific_challenge_generate(place, zone, delta)
         for _ in range(2000):
-            if (place in self.places_visited or
+            if (challenge is None or
+                    place in self.places_visited or
                     (challenge.perimeter_distance <= min_perim_distance) or
                     (challenge.perimeter_distance >= max_perim_distance) or
                     (challenge.kaff > maximum_kaffness(time)) or
                     (distance_dict[zone][challenge.zone] <= min_personal_distance) or
                     (distance_dict[zone][challenge.zone] >= max_personal_distance) or
-                    (not zoneables and challenge.zoneable) or
-                    challenge is None):
+                    (not zoneables and challenge.zoneable)):
 
                 print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
@@ -113,7 +113,7 @@ class Team:
         index = random.randint(0, unspecific_challenges_amount - 1)
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
-            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or (challenge.regionspecific != make_regionspecific) or challenge is None:
+            if challenge is None or index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or (challenge.regionspecific != make_regionspecific):
                 print("unsp ", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
