@@ -265,7 +265,7 @@ for i in range(len(uc4)):
     additional_points = row['additional_points']  # int
     min_reps = row['min_reps']  # int | None
     max_reps = row['max_reps']  # int | None
-    points_per_repetition = row['points_per_repetition']  # int | None
+    points_per_repetition = row['points_per_rep']  # int | None
     station_distance = row['station_distance']  # int | None
     time_to_hb = row['time_to_hb']  # int | None
     departures = row['departures']  # int | None
