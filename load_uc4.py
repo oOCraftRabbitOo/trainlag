@@ -162,7 +162,7 @@ class RawChallenge:
                 print("station_distance, time_to_hb, departures, and dead_end are required for z_kaff challenges")
                 return False
         else:
-            if any(attr is not None for attr in [self.station_distance, self.time_to_hb, self.departures, self.dead_end]):
+            if any(attr is not None for attr in [self.station_distance, self.time_to_hb, self.departures]) or self.dead_end:
                 print("station_distance, time_to_hb, departures, and dead_end must be None for non-z_kaff challenges")
                 return False
 
