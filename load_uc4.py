@@ -37,7 +37,7 @@ class RawChallenge:
                  additional_points: int = 0,
                  min_reps: int | None = None,
                  max_reps: int | None = None,
-                 points_per_repetition: int | None = None,
+                 points_per_rep: int | None = None,
                  station_distance: int | None = None,
                  time_to_hb: int | None = None,
                  departures: int | None = None,
@@ -61,7 +61,7 @@ class RawChallenge:
         self.additional_points = additional_points
         self.min_reps = min_reps
         self.max_reps = max_reps
-        self.points_per_repetition = points_per_repetition
+        self.points_per_rep = points_per_rep
         self.station_distance = station_distance
         self.time_to_hb = time_to_hb
         self.departures = departures
@@ -88,7 +88,7 @@ class RawChallenge:
                 f'ap "{self.additional_points}" '
                 f'min "{self.min_reps}" '
                 f'max "{self.max_reps}" '
-                f'ppr "{self.points_per_repetition}" '
+                f'ppr "{self.points_per_rep}" '
                 f'sd "{self.station_distance}" '
                 f'hb "{self.time_to_hb}" '
                 f'dep "{self.departures}" '
@@ -109,14 +109,14 @@ class RawChallenge:
             (isinstance(self.grade, (int, type(None))), "grade must be an int or None"),
             (isinstance(self.zone, (int, list, str, type(None))), "zone must be int, list, str, or None"),
             (isinstance(self.weight, int), "weight must be an int"),
-            (isinstance(self.bias_sat, float), "bias_sat must be an int"),
-            (isinstance(self.bias_sun, float), "bias_sun must be an int"),
+            (isinstance(self.bias_sat, float), "bias_sat must be a float"),
+            (isinstance(self.bias_sun, float), "bias_sun must be a float"),
             (isinstance(self.walking_time, int), "walking_time must be an int"),
             (isinstance(self.stationary_time, int), "stationary_time must be an int"),
             (isinstance(self.additional_points, int), "additional_points must be an int"),
             (isinstance(self.min_reps, (int, type(None))), "min_reps must be an int or None"),
             (isinstance(self.max_reps, (int, type(None))), "max_reps must be an int or None"),
-            (isinstance(self.points_per_repetition, (int, type(None))), "points_per_repetition must be an int or None"),
+            (isinstance(self.points_per_rep, (int, type(None))), "points_per_rep must be an int or None"),
             (isinstance(self.station_distance, (int, type(None))), "station_distance must be an int or None"),
             (isinstance(self.time_to_hb, (int, type(None))), "time_to_hb must be an int or None"),
             (isinstance(self.departures, (int, type(None))), "departures must be an int or None"),
@@ -202,7 +202,7 @@ class RawChallenge:
         out_reps = random.randint(self.min_reps, self.max_reps)
 
         out_points = pointcalc(self.kaffskala, self.grade, self.additional_points,
-                           self.walking_time, self.stationary_time, self.points_per_repetition,
+                           self.walking_time, self.stationary_time, self.points_per_rep,
                            out_reps, out_zone, self.bias, self.fixed_points, current_zone, delta,
                            (self.challenge_type == "zoneable" and zoned), self.dead_end,
                            self.station_distance, self.time_to_hb, self.departures)
@@ -265,7 +265,7 @@ for i in range(len(uc4)):
     additional_points = row['additional_points']  # int
     min_reps = row['min_reps']  # int | None
     max_reps = row['max_reps']  # int | None
-    points_per_repetition = row['points_per_rep']  # int | None
+    points_per_rep= row['points_per_rep']  # int | None
     station_distance = row['station_distance']  # int | None
     time_to_hb = row['time_to_hb']  # int | None
     departures = row['departures']  # int | None
@@ -293,14 +293,14 @@ for i in range(len(uc4)):
             zone = None
 
     weight = int(w) if pd.notna(w := pd.to_numeric(walking_time, errors='coerce')) else 1
-    bias_sat = float(b) if pd.notna(b := pd.to_numeric(bias_sat, errors='coerce')) else 1
-    bias_sun = float(b) if pd.notna(b := pd.to_numeric(bias_sun, errors='coerce')) else 1
+    bias_sat = float(b) if pd.notna(b := pd.to_numeric(bias_sat, errors='coerce')) else 1.0
+    bias_sun = float(b) if pd.notna(b := pd.to_numeric(bias_sun, errors='coerce')) else 1.0
     walking_time = int(w) if pd.notna(w := pd.to_numeric(walking_time, errors='coerce')) else 0
     stationary_time = int(s) if pd.notna(s := pd.to_numeric(stationary_time, errors='coerce')) else 0
     additional_points = int(a) if pd.notna(a := pd.to_numeric(additional_points, errors='coerce')) else 0
     min_reps = int(m) if pd.notna(m := pd.to_numeric(min_reps, errors='coerce')) else None
     max_reps = int(m) if pd.notna(m := pd.to_numeric(max_reps, errors='coerce')) else None
-    points_per_repetition = int(p) if pd.notna(p := pd.to_numeric(points_per_repetition, errors='coerce')) else None
+    points_per_rep = int(p) if pd.notna(p := pd.to_numeric(points_per_rep, errors='coerce')) else None
     station_distance = int(s) if pd.notna(s := pd.to_numeric(station_distance, errors='coerce')) else None
     time_to_hb = int(t) if pd.notna(t := pd.to_numeric(time_to_hb, errors='coerce')) else None
     departures = int(d) if pd.notna(d := pd.to_numeric(departures, errors='coerce')) else None
@@ -309,8 +309,8 @@ for i in range(len(uc4)):
     fixed_points = False if pd.isna(fixed_points) else bool(fixed_points)
     in_perim = None if pd.isna(in_perim) else bool(in_perim)
 
-    challenge = RawChallenge(challenge_type, title, description, place, kaffskala, grade, zone, bias_sat, bias_sun,
-                 walking_time, stationary_time, additional_points, min_reps, max_reps, points_per_repetition,
+    challenge = RawChallenge(challenge_type, title, description, place, kaffskala, grade, zone, weight, bias_sat, bias_sun,
+                 walking_time, stationary_time, additional_points, min_reps, max_reps, points_per_rep,
                  station_distance, time_to_hb, departures, dead_end, no_disembark, fixed_points, in_perim)
     challenge.refine()
 
