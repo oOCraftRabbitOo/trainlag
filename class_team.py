@@ -25,7 +25,7 @@ class Team:
         self.bounty = 0
         self.completed_unspecific_challenges = []  # ids
         self.places_visited = []  # ids
-        self.zkaffs_visited = []  # ids
+        self.z_kaffs_visited = []  # ids
         self.completed_challenges = []  # Challenge Objects
         self.open_challenges = []
         #self.normal_mode_time = (datetime.datetime.now() + SPECIFIC_PERIOD).time()
@@ -91,13 +91,13 @@ class Team:
         return challenge
 
     def generate_zurich_challenge(self, zone: int, delta: int) -> Challenge:
-        zkaff = random.randint(0, zurich_challenges_amount-1)
-        challenge = zurich_challenge_generate(zkaff, zone, delta)
-        if len(self.zkaffs_visited) == zurich_challenges_amount:
-            self.zkaffs_visited = []
-        while zkaff in self.zkaffs_visited:
-            zkaff = random.randint(0, zurich_challenges_amount-1)
-            challenge = zurich_challenge_generate(zkaff, zone, delta)
+        z_kaff = random.randint(0, zurich_challenges_amount-1)
+        challenge = zurich_challenge_generate(z_kaff, zone, delta)
+        if len(self.z_kaffs_visited) == zurich_challenges_amount:
+            self.z_kaffs_visited = []
+        while z_kaff in self.z_kaffs_visited:
+            z_kaff = random.randint(0, zurich_challenges_amount-1)
+            challenge = zurich_challenge_generate(z_kaff, zone, delta)
 
         return challenge
 
@@ -244,8 +244,8 @@ class Team:
         # Save challenge completion
         self.completed_challenges.append(completed_challenge)
 
-        if completed_challenge.zkaff:
-            self.zkaffs_visited.append(completed_challenge.id)
+        if completed_challenge.z_kaff:
+            self.z_kaffs_visited.append(completed_challenge.id)
         else:
             if not completed_challenge.specific:
                 self.completed_unspecific_challenges.append(completed_challenge.id)

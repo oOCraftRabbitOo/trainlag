@@ -174,7 +174,7 @@ class RawChallenge:
         return True
 
 
-    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int, zkaff: bool = False) -> Challenge | None: # TODO: handle None when its important
+    def challenge(self, zoned: bool, id: int, specific: bool, current_zone: int, delta: int, z_kaff: bool = False) -> Challenge | None: # TODO: handle None when its important
         if not self.valid():
             return None
 
@@ -223,7 +223,7 @@ class RawChallenge:
         return Challenge(self.title, description, out_points, id, specific, out_zone, kaff=self.kaffskala,
                          perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark,
                          regionspecific=(self.challenge_type == "regionsspezifisch"), in_perim=self.in_perim,
-                         zkaff=zkaff, zoneable=(self.challenge_type == "zoneable"))
+                         z_kaff=z_kaff, zoneable=(self.challenge_type == "zoneable"))
 
     def refine(self):
         if self.challenge_type == "z_kaff":
@@ -325,7 +325,7 @@ for i in range(len(uc4)):
 
     if challenge_type == "kaff" or challenge_type == "ortsspezifisch":
         specific_challenges.append(challenge)
-    elif challenge_type == "zkaff":
+    elif challenge_type == "z_kaff":
         zurich_challenges.append(challenge)
     elif challenge_type == "regionsspezifisch": # TODO: doesn't a separate regio list make sense?
         unspecific_challenges.append(challenge)
@@ -348,7 +348,7 @@ def specific_challenge_generate(index, current_zone, delta: int) -> Challenge:
 
 
 def zurich_challenge_generate(index, current_zone, delta: int) -> Challenge:
-    return zurich_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta, zkaff=True)
+    return zurich_challenges[index].challenge(zoned=True, id=index, specific=True, current_zone=current_zone, delta=delta, z_kaff=True)
 
 
 def unspecific_challenge_generate(index, current_zone, delta: int):

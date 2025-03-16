@@ -1,5 +1,5 @@
 class Challenge:
-    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int, kaff: int, perimeter_distance: int, no_disembark: bool, regionspecific: bool = False, in_perim: bool = True, zkaff: bool = False, zoneable: bool = False):
+    def __init__(self, title: str, description: str, points: int, id: int, specific: bool, zone: int, kaff: int, perimeter_distance: int, no_disembark: bool, regionspecific: bool = False, in_perim: bool = True, z_kaff: bool = False, zoneable: bool = False):
         self.title: str = title
         self.description: str = description
         self.points: int = points
@@ -11,11 +11,11 @@ class Challenge:
         self.no_disembark: bool = no_disembark
         self.regionspecific = regionspecific
         self.in_perim = in_perim
-        self.zkaff = zkaff
+        self.z_kaff = z_kaff
         self.zoneable = zoneable
 
     def __str__(self):
         return f"**{self.title}** \n{self.description}"
 
     def __eq__(self, other):
-        return self.specific == other.specific and self.id == other.id and self.zkaff == other.zkaff
+        return self.specific == other.specific and self.id == other.id and self.z_kaff == other.z_kaff
