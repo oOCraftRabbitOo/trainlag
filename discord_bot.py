@@ -53,7 +53,10 @@ async def discord_switch_roles(team: Team, ctx: commands.Context, zone: int | No
 
     for player_id in player_ids:
         # will get member of discord server corresponding to id
-        member = await ctx.guild.fetch_member(player_id)
+        try:
+            member = await ctx.guild.fetch_member(player_id)
+        except discord.errors.NotFound:
+            continue
 
         if not team.is_catcher:
             # add catcher role to current roles
@@ -183,7 +186,10 @@ async def assign(ctx: commands.Context, *args):
                 team['players'].append(player_given_by_cmd)
         # assign Discord Role to player whenever possible
         if team_role_success:
-            member = await ctx.guild.fetch_member(player_given_by_cmd_id)
+            try:
+                member = await ctx.guild.fetch_member(player_given_by_cmd_id)
+            except discord.errors.NotFound:
+                continue
             try:
                 if not team_role in member.roles:
                     await member.edit(roles=member.roles + [team_role])
@@ -287,7 +293,10 @@ async def test(ctx: commands.Context):
     players = [player for team in teams for player in team.players]
     discord_players = []
     for player in players:
-        discord_player = await ctx.guild.fetch_member(player.id)
+        try:
+            discord_player = await ctx.guild.fetch_member(player.id)
+        except discord.errors.NotFound:
+            continue
         if discord_player is None:
             await ctx.send(f"Couldn't find player {player.name} ({player.id})")
             print(f"Couldn't find player {player.name} ({player.id})")
@@ -354,7 +363,10 @@ async def setup(ctx: commands.Context) -> None:
     for player_id in player_ids:
         # Get the member object for the user
         print(player_id)
-        member = await ctx.guild.fetch_member(player_id)
+        try:
+            member = await ctx.guild.fetch_member(player_id)
+        except discord.errors.NotFound:
+            continue
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
         print(f'catcher role of {member} removed')
@@ -366,7 +378,10 @@ async def setup(ctx: commands.Context) -> None:
             team.points = BOUNTY_START_POINTS
             for player in team.players:
                 # Get the member object for the user
-                member = await ctx.guild.fetch_member(player.id)
+                try:
+                    member = await ctx.guild.fetch_member(player.id)
+                except discord.errors.NotFound:
+                    continue
                 # Add the role to the user
                 await member.edit(roles=member.roles + [catcher_role])
                 print(f'catcher role added to {member}')
@@ -542,7 +557,10 @@ async def finish(ctx: commands.Context) -> None:
     player_ids = [player.id for team in teams for player in team.players]
     for player_id in player_ids:
         # Get the member object for the user
-        member = await ctx.guild.fetch_member(player_id)
+        try:
+            member = await ctx.guild.fetch_member(player_id)
+        except discord.errors.NotFound:
+            continue
         # Remove the role from the user
         await member.edit(roles=[r for r in member.roles if r != catcher_role])
         print(f'removed catcher role for {member.name}')
@@ -594,7 +612,10 @@ async def sync(ctx: commands.Context) -> None:
     global catcher_role
     for team in teams:
         for player in team.players:
-            member = await ctx.guild.fetch_member(player.id)
+            try:
+                member = await ctx.guild.fetch_member(player.id)
+            except discord.errors.NotFound:
+                continue
             if catcher_role in member.roles and not team.is_catcher:
                 await member.edit(roles=[role for role in member.roles if role != catcher_role])
             elif not catcher_role in member.roles and team.is_catcher:
