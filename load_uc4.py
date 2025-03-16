@@ -228,7 +228,7 @@ class RawChallenge:
         print(out_zone, perimeter_distances[out_zone], self.kaffskala, self.title)
 
         return Challenge(self.title, description, out_points, id, specific, out_zone, kaff=self.kaffskala,
-                         perimeter_distance=perimeter_distances[zone], no_disembark=self.no_disembark,
+                         perimeter_distance=perimeter_distances[out_zone], no_disembark=self.no_disembark,
                          regionspecific=(self.challenge_type == "regionsspezifisch"), in_perim=self.in_perim,
                          z_kaff=z_kaff, zoneable=(self.challenge_type == "zoneable"))
 
