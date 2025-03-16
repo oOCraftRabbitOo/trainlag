@@ -72,7 +72,8 @@ class Team:
                     (challenge.kaff > maximum_kaffness(time)) or
                     (distance_dict[zone][challenge.zone] <= min_personal_distance) or
                     (distance_dict[zone][challenge.zone] >= max_personal_distance) or
-                    (not zoneables and challenge.zoneable)):
+                    (not zoneables and challenge.zoneable) or
+                    challenge is None):
 
                 print("spec ", end="")
                 place = random.randint(0, specific_challenges_amount - 1)
@@ -84,8 +85,11 @@ class Team:
                 break
         else:
             print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
-            index = random.randint(0, unspecific_challenges_amount - 1)
-            challenge = unspecific_challenge_generate(index, zone, delta)
+            for _ in range(2000):
+                index = random.randint(0, unspecific_challenges_amount - 1)
+                challenge = unspecific_challenge_generate(index, zone, delta)
+                if challenge is not None:
+                    break
 
         # Generate challenge and return it
         return challenge
@@ -95,7 +99,7 @@ class Team:
         challenge = zurich_challenge_generate(z_kaff, zone, delta)
         if len(self.z_kaffs_visited) == zurich_challenges_amount:
             self.z_kaffs_visited = []
-        while z_kaff in self.z_kaffs_visited:
+        while z_kaff in self.z_kaffs_visited or challenge is None: # TODO: for
             z_kaff = random.randint(0, zurich_challenges_amount-1)
             challenge = zurich_challenge_generate(z_kaff, zone, delta)
 
@@ -109,7 +113,7 @@ class Team:
         index = random.randint(0, unspecific_challenges_amount - 1)
         challenge = unspecific_challenge_generate(index, zone, delta)
         for _ in range(2000):
-            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or (challenge.regionspecific != make_regionspecific):
+            if index in self.completed_unspecific_challenges or (time_period == "Perimeter Period" and not challenge.in_perim) or (challenge.regionspecific != make_regionspecific) or challenge is None:
                 print("unsp ", end="")
                 index = random.randint(0, unspecific_challenges_amount - 1)
                 challenge = unspecific_challenge_generate(index, zone, delta)
@@ -117,8 +121,11 @@ class Team:
                 break
         else:
             print(f"fuck:\nTeam: {self.deb_str()}\ncompleted unspec: {self.completed_unspecific_challenges}\nplaces visited: {self.places_visited}\npoints: {self.points}\nlast zone: {self.last_zone}\nis catcher: {self.is_catcher}\ntime: {time}, current time: {datetime.datetime.now().time()}\nchallenge: {challenge}")
-            index = random.randint(0, unspecific_challenges_amount - 1)
-            challenge = unspecific_challenge_generate(index, zone, delta)
+            for _ in range(2000):
+                index = random.randint(0, unspecific_challenges_amount - 1)
+                challenge = unspecific_challenge_generate(index, zone, delta)
+                if challenge is not None:
+                    break
 
         # Generate challenge and return it
         return challenge

@@ -196,7 +196,7 @@ class RawChallenge:
         elif type(self.zone) == int:
             out_zone = self.zone
         else:
-            print(f"Unexpected error with zone {self.zone}. Got {type(self.zone)} instead of int, list, %s, or %z.")
+            print(f"Unexpected error with zone {self.zone}. Got {type(self.zone)} instead of int, list, %s, or %z. (generating challenge {self.title})")
             return None
 
         out_reps = random.randint(self.min_reps, self.max_reps)
