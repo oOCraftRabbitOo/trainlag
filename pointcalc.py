@@ -79,11 +79,11 @@ def pointcalc_creative(points: int, ppr: int, random_number: int, fixed: int) ->
 def pointcalc_zone(zone: int) -> int:
     return zonic_kaffness_dict[zone]
 
-def pointcalc(kaffskala: int,
-              grade: int,
-              additional_points: int,
-              walking_minutes: int,
-              stationary_minutes: int,
+def pointcalc(kaffskala: int | None,
+              grade: int | None,
+              additional_points: int | None,
+              walking_minutes: int | None,
+              stationary_minutes: int | None,
               ppr: int,
               reps: int,
               zone: int | None,
@@ -97,13 +97,13 @@ def pointcalc(kaffskala: int,
               time_to_hb: int,
               departures: int | None) -> int:
     points = 0
-    points += POINTS_PER_KAFFNESS * kaffskala
-    points += POINTS_PER_GRADE * grade
-    points += POINTS_PER_WALKING_MINUTE * walking_minutes
-    points += POINTS_PER_STATIONARY_MINUTE * stationary_minutes
+    points += (POINTS_PER_KAFFNESS * kaffskala) if kaffskala is not None else 0
+    points += (POINTS_PER_GRADE * grade) if grade is not None else 0
+    points += (POINTS_PER_WALKING_MINUTE * walking_minutes) if walking_minutes is not None else 0
+    points += (POINTS_PER_STATIONARY_MINUTE * stationary_minutes) if stationary_minutes is not None else 0
     points += pointcalc_zone(zone) if zone is not None else 0
     points += reps * ppr
-    points += additional_points
+    points += additional_points if additional_points is not None else 0
     points += 100 if zoneable_and_zoned else 0
     points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
     points += 50 if dead_end else 0

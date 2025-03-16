@@ -203,7 +203,12 @@ class RawChallenge:
 
         out_reps = random.randint(self.min_reps, self.max_reps)
 
-        out_points = pointcalc(self.kaffskala, self.grade, self.additional_points,
+        if self.kaffskala is None:
+            out_kaffskala = 0
+        else:
+            out_kaffskala = self.kaffskala
+
+        out_points = pointcalc(out_kaffskala, self.grade, self.additional_points,
                            self.walking_time, self.stationary_time, self.points_per_rep,
                            out_reps, out_zone, self.bias, self.fixed_points, current_zone, delta,
                            (self.challenge_type == "zoneable" and zoned), self.dead_end,
