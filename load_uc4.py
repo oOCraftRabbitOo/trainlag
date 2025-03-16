@@ -228,11 +228,13 @@ class RawChallenge:
         if out_zone is None:
             out_zone = current_zone
 
+        out_in_perim = self.in_perim if self.in_perim is not None else (True if self.challenge_type == "z_kaff" else False) # so schön
+
         print(out_zone, perimeter_distances[out_zone], self.kaffskala, self.title)
 
-        return Challenge(self.title, description, out_points, id, specific, out_zone, kaff=self.kaffskala,
+        return Challenge(self.title, description, out_points, id, specific, out_zone, kaff=out_kaffskala,
                          perimeter_distance=perimeter_distances[out_zone], no_disembark=self.no_disembark,
-                         regionspecific=(self.challenge_type == "regionsspezifisch"), in_perim=self.in_perim,
+                         regionspecific=(self.challenge_type == "regionsspezifisch"), in_perim=out_in_perim,
                          z_kaff=z_kaff, zoneable=(self.challenge_type == "zoneable"))
 
     def refine(self):
