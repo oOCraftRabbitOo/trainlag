@@ -195,6 +195,8 @@ class RawChallenge:
 
         elif type(self.zone) == int:
             out_zone = self.zone
+        elif self.challenge_type in {"unspezifisch", "zoneable", "regionsspezifisch", "z_kaff"}:
+            out_zone = None
         else:
             print(f"Unexpected error with zone {self.zone}. Got {type(self.zone)} instead of int, list, %s, or %z. (generating challenge {self.title})")
             return None
