@@ -4,7 +4,7 @@ from normal_config import *
 # team compositions and channels
 TEAM_FILE = 'test_teams.json'
 PLAYER_FILE = 'test_players.json'
-GENERAL_CHANNEL = 1276606112463847454
+GENERAL_CHANNEL = 1113388616845107262
 
 # number of catchers
 NUM_CATCHERS = 3
