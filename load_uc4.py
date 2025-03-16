@@ -201,7 +201,10 @@ class RawChallenge:
             print(f"Unexpected error with zone {self.zone}. Got {type(self.zone)} instead of int, list, %s, or %z. (generating challenge {self.title})")
             return None
 
-        out_reps = random.randint(self.min_reps, self.max_reps)
+        if self.min_reps is None or self.max_reps is None:
+            out_reps = 0
+        else:
+            out_reps = random.randint(self.min_reps, self.max_reps)
 
         if self.kaffskala is None:
             out_kaffskala = 0
