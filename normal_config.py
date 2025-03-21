@@ -7,7 +7,7 @@ from add_datetime import *
 # team compositions and channels
 TEAM_FILE = 'teams.json'
 PLAYER_FILE = 'players.json'
-GENERAL_CHANNEL = 1312741650820501504 # channel for game info
+GENERAL_CHANNEL = 1352742280187871283 # channel for game info
 
 # point calculation
 RELATIVE_STANDARD_DEVIATION = 0.05
