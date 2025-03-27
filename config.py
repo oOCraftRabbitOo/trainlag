@@ -1,4 +1,4 @@
-import normal_config as config
+import zoller_config as config
 
 # team compositions and channels
 TEAM_FILE = config.TEAM_FILE

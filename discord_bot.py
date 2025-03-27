@@ -282,9 +282,9 @@ async def test(ctx: commands.Context):
 
     # Test catcher role
     roles = ctx.guild.roles
-    catcher_role = discord.utils.get(roles, name='Fänger')
+    catcher_role = discord.utils.get(roles, name='Jäger')
     if catcher_role is None:
-        await ctx.send('Cannot find catcher role (must be named "Fänger")')
+        await ctx.send('Cannot find catcher role (must be named "Jäger")')
         print('Cannot find catcher role')
         return
 
@@ -345,9 +345,9 @@ async def setup(ctx: commands.Context) -> None:
     print('getting server catcher role')
     roles = ctx.guild.roles
     global catcher_role
-    catcher_role = discord.utils.get(roles, name='Fänger')
+    catcher_role = discord.utils.get(roles, name='Jäger')
     if catcher_role is None:
-        await ctx.send('Es existiert kei "Fänger"-Rolle. Abbruch.')
+        await ctx.send('Es existiert kei "Jäger"-Rolle. Abbruch.')
         raise Exception('No catcher role found')
     print(f'the type of catcher_role is {type(catcher_role)}')
     
@@ -386,7 +386,7 @@ async def setup(ctx: commands.Context) -> None:
                 await member.edit(roles=member.roles + [catcher_role])
                 print(f'catcher role added to {member}')
             team_channel = bot.get_channel(team.channel.id)
-            await team_channel.send("## Ihr sind Fänger!\nIn 15 Minute geyts für üch ou los, denn chönder es anders Team go fange.\nBitte spreched eu während dere Zyt mit de andere Fänger ab.")
+            await team_channel.send("## Ihr sind Jäger!\nIn 15 Minute geyts für üch ou los, denn chönder es anders Team go fange.\nBitte spreched eu während dere Zyt mit de andere Jäger ab.")
 
     # Generate and send challenges to all non-catcher Teams
     print('generate and send challenges')
@@ -406,7 +406,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
     await setup_check(ctx)
 
-    # Check if the author has the "Fänger" role
+    # Check if the author has the "Jäger" role
     if author_is_catcher(ctx):
         # Get the ID of the channel where the command was used
         channel_id = ctx.message.channel.id
@@ -424,9 +424,9 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await ctx.send('error')
                 raise Exception("couldn't find the channel's id in any team, even though there was a check before to see whether it is present, rewrite your software you idiot")
 
-        # Check if the caught team is already the "Fänger" team
+        # Check if the caught team is already the "Jäger" team
             if caught_team.is_catcher:
-                await ctx.send('Das Team isch scho es Fänger-Team...')
+                await ctx.send('Das Team isch scho es Jäger-Team...')
             else:
                 # Get the catcher player object
                 players_by_id = {player.id : player.name for team in teams for player in team.players}
@@ -479,8 +479,8 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
             # The channel is not in the list of channels
             await ctx.send('Das isch keis Team...')
     else:
-        # The author does not have the "Fänger" role
-        await ctx.send('Du bisch kein Fänger. Das chan nur en Fänger usfüehre.')
+        # The author does not have the "Jäger" role
+        await ctx.send('Du bisch kein Jäger. Das chan nur en Jäger usfüehre.')
 
 @bot.command(aliases=['abschlüsse', 'done', 'challenge', 'abschliessen'])
 async def complete(ctx: commands.Context, challenge_id: int) -> None:
@@ -488,7 +488,7 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
 
     # Only runnable by runners
     if author_is_catcher(ctx):
-        await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Fänger bisch, oder?')
+        await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Jäger bisch, oder?')
         return
 
     # Get channel's team
@@ -591,9 +591,9 @@ async def switch(ctx: commands.Context) -> None:
     await discord_switch_roles(team, ctx)
 
     if team.is_catcher:
-        state = 'Fänger'
+        state = 'Jäger'
     else:
-        state = 'Devoränner'
+        state = 'Sammler'
 
     team.bounty = BOUNTY_BASE_POINTS
     
@@ -651,7 +651,7 @@ async def points(ctx: commands.Context) -> None:
 async def catchers(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
-    output = "Das sind d Fänger: \n"
+    output = "Das sind d Jäger: \n"
     catchers = [team for team in teams if team.is_catcher]
     for catcher in catchers:
         pleiers = [pleier.name for pleier in catcher.players]
