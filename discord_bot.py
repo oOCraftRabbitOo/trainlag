@@ -9,7 +9,7 @@ import json
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenleki o ', 'ß', '#', 'use any prefix ', '&', '?', '§', '%', '/', '+', '.', ',', '¿'), intents=intents)
+bot = commands.Bot(command_prefix=('$', '-', '!', 'ilo tulenleki o ', 'ß', '#', 'use any prefix ', '&', '?', '§', '%', '/', '+', '.', ',', '¿', ':', ';', '\'', '"', '\\', 'any prefix ', '£', '>', '<', 'sudo ', '@', '∑', '}', ':joy:', '😂'), intents=intents)
 setup_complete = False  # Run setup to set to True
 setup_in_progress = False
 teams = []  # Run setup to fill
