@@ -105,7 +105,7 @@ def pointcalc(kaffskala: int | None,
     points += (reps if reps is not None else 0) * (ppr if ppr is not None else 0)
     points += additional_points if additional_points is not None else 0
     points += 100 if zoneable_and_zoned else 0
-    points += distance_dict[current_zone][zone] * POINTS_PER_TRAVEL_MINUTE if zone is not None else 0
+    points += 3 * (distance_dict[current_zone][zone] ** 1.4) if zone is not None else 0
     points += 50 if dead_end else 0
     points += int(station_distance/20) if station_distance is not None else 0
     points += (time_to_hb * 5) if time_to_hb is not None else 0
