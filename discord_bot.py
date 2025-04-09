@@ -386,7 +386,7 @@ async def setup(ctx: commands.Context) -> None:
                 await member.edit(roles=member.roles + [catcher_role])
                 print(f'catcher role added to {member}')
             team_channel = bot.get_channel(team.channel.id)
-            await team_channel.send("## Ihr sind Jäger!\nIn 15 Minute geyts für üch ou los, denn chönder es anders Team go fange.\nBitte spreched eu während dere Zyt mit de andere Jäger ab.")
+            await team_channel.send("## Ihr seid Jäger!\nIn 15 Minuten gehts für euch los, dann könnt ihr ein anderes Team fangen.\nBitte sprecht euch während dieser Zeit mit den anderen Jägerteams ab.")
 
     # Generate and send challenges to all non-catcher Teams
     print('generate and send challenges')
@@ -398,7 +398,7 @@ async def setup(ctx: commands.Context) -> None:
     setup_complete = True
     setup_in_progress = False
     print("Setup completed. Have fun!")
-    await ctx.send('Setup fertig. Vill Spass!')
+    await ctx.send('Setup fertig. Viel Spass!')
 
 @bot.command(aliases=['hetz', 'hätz', 'häts', 'hets', 'fang', 'häx', 'hex', 'hats', 'lolduopferbischfängerjetztimaginewürmicringe'])
 async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No Fun II), vorläufig: kei Pünkt, wänn dete gfangä
@@ -426,7 +426,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
 
         # Check if the caught team is already the "Jäger" team
             if caught_team.is_catcher:
-                await ctx.send('Das Team isch scho es Jäger-Team...')
+                await ctx.send('Das Team ist schon ein Jägerteam...')
             else:
                 # Get the catcher player object
                 players_by_id = {player.id : player.name for team in teams for player in team.players}
@@ -464,7 +464,7 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                     caught_names += player.name + ' '
                 catcher_names = catcher_names[:-1]
                 caught_names = caught_names[:-1]
-                await general_channel.send(f'S Team **{catcher_team.name}** *({catcher_names})* hät s Team **{caught_team.name}** *({caught_names})* gfangä und defür **{caught_team.bounty} Pünkt** Chopfgeld kassiert!')
+                await general_channel.send(f'Team **{catcher_team.name}** *({catcher_names})* hat Team **{caught_team.name}** *({caught_names})* gefangen und dafür **{caught_team.bounty} Punkte** Kopfgeld kassiert!')
 
                 # Grant bounty
                 catcher_team.points += caught_team.bounty
@@ -477,10 +477,10 @@ async def catch(ctx: commands.Context) -> None:  # TODO: ifangstrass (No Risk No
                 await team_channel.send(embeds=catcher_team.return_challenges())
         else:
             # The channel is not in the list of channels
-            await ctx.send('Das isch keis Team...')
+            await ctx.send('Das ist kein Team')
     else:
         # The author does not have the "Jäger" role
-        await ctx.send('Du bisch kein Jäger. Das chan nur en Jäger usfüehre.')
+        await ctx.send('Du bist kein Jäger. Das kann nur ein Jäger ausführen.')
 
 @bot.command(aliases=['abschlüsse', 'done', 'challenge', 'abschliessen'])
 async def complete(ctx: commands.Context, challenge_id: int) -> None:
@@ -488,7 +488,7 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
 
     # Only runnable by runners
     if author_is_catcher(ctx):
-        await ctx.send(f'{ctx.message.author.mention}, du weisch scho, dass du Jäger bisch, oder?')
+        await ctx.send(f'{ctx.message.author.mention}, du weisst schon, dass du Jäger bist, oder?')
         return
 
     # Get channel's team
@@ -498,7 +498,7 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
             team = t
             break
     else:
-        await ctx.send(f'Das isch nöd de channel vo eme Team :/')
+        await ctx.send(f'Das ist kein Teamkanal')
         return
 
     # calculate delta
@@ -514,15 +514,15 @@ async def complete(ctx: commands.Context, challenge_id: int) -> None:
         challenge_name = completed_challenge.title
         challenge_reward = completed_challenge.points
         team.complete_challenge(int(challenge_id)-1, delta)
-        await ctx.send(f'Nice, d Challenge "{challenge_name}" hät eu {challenge_reward} Pünkt gäh. '
-                       f'Das heisst, ihr händ jetzt {team.points} Pünkt!\n'
+        await ctx.send(f'Nice, die Challenge "{challenge_name}" hat euch {challenge_reward} Punkte gegeben. '
+                       f'Das heisst, ihr habt jetzt {team.points} Punkte!\n'
                        f'--------------------------------------------')
         # Send challenges to the team
         await ctx.send(embeds=team.return_challenges())
     except ValueError:
-        await ctx.send(f'{challenge_id} isch kei Zahl. Gänd bitte 1, 2 oder 3 ii.')
+        await ctx.send(f'{challenge_id} ist keine Zahl. Gebt bitte 1, 2 oder 3 ein.')
     except IndexError:
-        await ctx.send(f'Challenge {challenge_id} schiint nöd z existiere. Gänd bitte 1, 2 oder 3 ii.')
+        await ctx.send(f'Challenge {challenge_id} scheint nicht zu existieren. Gebt bitte 1, 2 oder 3 ein.')
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -541,14 +541,14 @@ async def finish(ctx: commands.Context) -> None:
 
     # Generate the output string
     print('Generating rankings')
-    out = f"""# Das isch s Podescht:
-{EMOJI[1]} **{winners[0]}** mit *{winners[0].points} Pünkt*
-{EMOJI[2]} **{winners[1]}** mit *{winners[1].points} Pünkt*
-{EMOJI[3]} **{winners[2]}** mit *{winners[2].points} Pünkt*\n"""
+    out = f"""# Das Podest:
+{EMOJI[1]} **{winners[0]}** mit *{winners[0].points} Punkte*
+{EMOJI[2]} **{winners[1]}** mit *{winners[1].points} Punkte*
+{EMOJI[3]} **{winners[2]}** mit *{winners[2].points} Punkte*\n"""
 
     for n, team in enumerate(winners[3:-1]):
-        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit *{winners[3+n].points} Pünkt*\n"
-    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit *{winners[len(teams)-1].points} Pünkt*"
+        out += f"{EMOJI[4+n]} **{winners[3+n]}** mit *{winners[3+n].points} Punkte*\n"
+    out += f"{EMOJI['last']} **{winners[len(teams)-1]}** mit *{winners[len(teams)-1].points} Punkte*"
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(out)
@@ -602,7 +602,7 @@ async def switch(ctx: commands.Context) -> None:
         await ctx.send(embeds=team.return_challenges())
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
-    await general_channel.send(f"S'Team {team.name} isch jetzt {state}.")
+    await general_channel.send(f"Team {team.name} ist jetzt {state}.")
 
 @bot.command()
 @commands.has_permissions(manage_guild=True)
@@ -625,11 +625,11 @@ async def sync(ctx: commands.Context) -> None:
 async def bounty(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
-    output = "So stahts mit de Chopfgelder:"
+    output = "So stehts mit den Kopfgeldern:"
     bounties = {team.name: team.bounty for team in teams if not team.is_catcher}
     sorted_teams_by_bounty = sorted(bounties.items(), key=lambda x:x[1])
     for team, bounty in reversed(sorted_teams_by_bounty):
-        output += f"\nS Team **{team}** hät es Chopfgeld vo **{bounty}** uf sich"
+        output += f"\nTeam **{team}** hat ein Kopfgeld von **{bounty}** auf sich"
 
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)
@@ -638,11 +638,11 @@ async def bounty(ctx: commands.Context) -> None:
 async def points(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
-    output = "Das isch d Ranglischte bis jetzt:"
+    output = "Das ist die Rangliste bis jetzt:"
     pointses = {team.name: team.points for team in teams}
     sorted_teams_by_points = sorted(pointses.items(), key=lambda x:x[1])
     for team, points in reversed(sorted_teams_by_points):
-        output += f"\nS Team **{team}** hät momentan **{points}**."
+        output += f"\nTeam **{team}** hat momentan **{points}**."
         
     general_channel = bot.get_channel(GENERAL_CHANNEL)
     await general_channel.send(output)

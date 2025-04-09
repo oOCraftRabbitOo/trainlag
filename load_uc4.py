@@ -222,7 +222,7 @@ class RawChallenge:
         description = description.replace('%s', str(out_zone))
 
         if zoned and self.challenge_type == "zoneable":
-            description += f' Damit ihr Pünkt überchömed, mached das i de Zone {out_zone}.'
+            description += f' Damit ihr Punkte erhält, macht das in der Zone {out_zone}.'
 
         if out_zone is None:
             out_zone = current_zone
@@ -239,15 +239,15 @@ class RawChallenge:
     def refine(self):
         if self.challenge_type == "z_kaff":
             if self.title is None:
-                self.title = f'Tsüridrift nach {self.place}'
+                self.title = f'Züridrift nach {self.place}'
             if self.description is None:
-                self.description = f'Gönd ad Station "{self.place}" in Züri.'
+                self.description = f'Geht an die Haltestelle "{self.place}" in Zürich.'
 
         if self.challenge_type == "kaff":
             if self.title is None:
-                self.title = f'Usflug uf {self.place}'
+                self.title = f'Ausflug nach {self.place}'
             if self.description is None:
-                self.description = f'Gönd nach {place}.'
+                self.description = f'Geht nach {place}.'
 
         if date.today().weekday() == 6:
             self.bias = self.bias_sun
