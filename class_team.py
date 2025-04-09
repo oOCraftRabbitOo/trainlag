@@ -40,7 +40,7 @@ class Team:
             names += player.name + " "
         strink = f'--\n\nTeam {self.name}, \nchannel: {self.channel.name}, {self.channel.id}, \npoints: {self.points}, \ncompCChals: {self.completed_unspecific_challenges}, \nplaces visited: {self.places_visited}, \nopenChals: {self.open_challenges}, \ncompChals: {self.completed_challenges}, \nbounty: {self.bounty}, \nmembers: ({names[:-1]})'
         if self.is_catcher:
-            strink += '\n[Fänger]'
+            strink += '\n[Jäger]'
         return strink
     
     def __str__(self) -> str:
@@ -354,10 +354,10 @@ class Team:
         out = []
         for num, challenge in enumerate(self.open_challenges):
             embed = discord.Embed(title=f"{u'🛤️ ' if challenge.no_disembark else ''}{challenge.title}", description=challenge.description)
-            embed.set_footer(text=f"{challenge.points} Pünkt")
+            embed.set_footer(text=f"{challenge.points} Punkte")
             embed.set_author(name=f"Challenge {num+1}")
             out.append(embed)
-        out.append(discord.Embed(title=f"Aktuells Chopfgeld: {self.bounty}", colour=15823957))
+        out.append(discord.Embed(title=f"Aktuelles Kopfgeld: {self.bounty}", colour=15823957))
         return out
 
 

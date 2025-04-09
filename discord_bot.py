@@ -651,7 +651,7 @@ async def points(ctx: commands.Context) -> None:
 async def catchers(ctx: commands.Context) -> None:
     await setup_check(ctx)
 
-    output = "Das sind d Jäger: \n"
+    output = "Das sind die Jäger: \n"
     catchers = [team for team in teams if team.is_catcher]
     for catcher in catchers:
         pleiers = [pleier.name for pleier in catcher.players]
