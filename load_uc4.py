@@ -71,7 +71,6 @@ class RawChallenge:
         self.in_perim = in_perim
         self.bias = 1  # will be changed in refine
 
-
     def __str__(self):
         return (f'ct "{self.challenge_type}" \n'
                 f't "{self.title}" \n'
@@ -264,8 +263,8 @@ for i in range(len(uc4)):
     row = uc4.loc[i]
     challenge_type = row['challenge_type']  # str
     status = row['status'] # str
-    title = row['title']  # str | None
-    description = row['description']  # str | None
+    title = row['title_de_ch']  # str | None
+    description = row['description_de_ch']  # str | None
     place = row['place']  # str | None
     kaffskala = row['kaffskala']  # int | None
     grade = row['grade']  # int | None
