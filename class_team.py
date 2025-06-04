@@ -14,6 +14,8 @@ import glob
 import os
 import json
 
+small_zones = [110, 111, 112, 120, 121, 122, 123, 130, 131, 132, 133, 134, 135, 140, 141, 142, 143, 150, 152, 153, 154, 155, 160, 163, 164, 180, 181]
+
 class Team:
     def __init__(self, players: list[Player], channel: Channel, name: str, is_catcher: bool = False) -> None:
         self.players = players
@@ -68,6 +70,8 @@ class Team:
         for _ in range(2000):
             if (challenge is None or
                     place in self.places_visited or
+                    challenge.zone is None or
+                    challenge.zone not in small_zones or
                     (challenge.perimeter_distance <= min_perim_distance) or
                     (challenge.perimeter_distance >= max_perim_distance) or
                     (challenge.kaff > maximum_kaffness(time)) or
